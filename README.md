@@ -103,8 +103,10 @@ See manifests/todo.pp
 
 ## Reference
 
-This module manages `device.conf` and `<confdir>/facter/facts.d/puppet_devices.yaml` ... adding entries for each `puppet_device` resource declared on the puppet agent.
+This module manages `device.conf` and `<confdir>/facter/facts.d/puppet_devices.yaml`.
+It manages entries for each `puppet_device` resource declared on the puppet agent.
 
-https://docs.puppet.com/puppet/latest/config_file_device.html
+For more information about devices, see:
 
 https://docs.puppet.com/puppet/latest/man/device.html
+https://docs.puppet.com/puppet/latest/config_file_device.html
