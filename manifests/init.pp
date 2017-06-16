@@ -1,10 +1,10 @@
 # Manage devices.
 
 define puppet_device (
-  Enum['present', 'absent'] $ensure = 'present',
   String $type,
   String $url,
   Boolean $run = false,
+  Enum['present', 'absent'] $ensure = 'present',
 ) {
 
   puppet_device::conf::device { $title:

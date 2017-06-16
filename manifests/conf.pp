@@ -20,21 +20,3 @@ class puppet_device::conf {
     order   => '01',
   }
 }
-
-# Manage a device in device.conf.
-# @api private
-
-define puppet_device::conf::device (
-  Enum['present', 'absent'] $ensure = 'present',
-  String $type,
-  String $url,
-) {
-  include puppet_device::conf
-  if ($ensure == 'present') {
-    concat::fragment{ "puppet_device_conf [${title}]":
-      target  => $puppet_device::conf::device_conf,
-      content => "[${title}]\ntype ${type}\nurl ${url}\n\n",
-      order   => '99',
-    }
-  }
-}
