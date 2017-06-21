@@ -10,9 +10,9 @@
 
 ## Description
 
-Devices need a (proxy) puppet agent to collect facts, retrieve and apply catalogs, and store reports.
+Devices require a (proxy) Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports.
 
-This module manages the configuration of devices used by `puppet device` on puppet agents.
+This module manages the configuration of devices used by `puppet device` on Puppet agents.
 
 This module also provides the potential for indirect orchestration of `puppet device` runs.
 
@@ -34,7 +34,7 @@ puppet_device { 'bigip':
 }
 ~~~
 
-Note that the 'f5' device type is used as an example: this module is not limited to 'f5' devices.
+Note that the 'f5' device type is used as an example: this module is not limited to F5 devices.
 
 ## Parameters
 
@@ -42,7 +42,7 @@ Note that the 'f5' device type is used as an example: this module is not limited
 
 Data type: String
 
-Specifies the certname of the device.
+Specifies the `certname` of the device.
 
 ### ensure
 
@@ -101,7 +101,7 @@ See manifests/todo.pp
 
 ## Reference
 
-This module manages `device.conf` and `<confdir>/facter/facts.d/puppet_devices.yaml`, including entries for each `puppet_device` resource declared on the puppet agent.
+This module manages device.conf and puppet_devices.yaml, including entries for each `puppet_device` resource declared on the puppet agent.
 
 For more information about devices, see:
 
