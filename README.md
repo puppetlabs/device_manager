@@ -30,7 +30,6 @@ Declare `puppet_device` resource(s):
 puppet_device { 'bigip':
   type   => 'f5',
   url    => 'https://admin:fffff55555@10.0.0.245/',
-  run    => true,
 }
 ~~~
 
@@ -64,6 +63,14 @@ Data type: String
 
 Specifies the URL used to configure the device.
 
+### debug
+
+Data type: Boolean
+
+This parameter is optional, with a default of false.
+
+Specifies transport-level debug output for the device, and is limited to telnet and ssh transports.
+
 ### run
 
 Data type: Boolean
@@ -90,6 +97,7 @@ The following illustrates the PQL query:
     "ensure" : "present",
     "type" : "f5",
     "url" : "https://admin:fffff55555@10.0.0.245/",
+    "debug" : false,
     "run" : true,
   }
 }
