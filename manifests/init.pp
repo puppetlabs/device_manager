@@ -21,7 +21,7 @@ define puppet_device (
 
   if ($run and ($ensure == 'present')) {
 
-    if ($facts['os']['family'] == 'windows') {
+    if ($facts['osfamily'] == 'windows') {
       $windows_installdir = $facts['env_windows_installdir']
       $puppet_command = "${windows_installdir}/puppet/bin/puppet"
     } else {

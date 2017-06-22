@@ -8,13 +8,16 @@ describe 'puppet_device' do
         :ensure => 'present',
         :type   => 'f5',
         :url    => 'https://admin:fffff55555@10.0.0.245/',
+        :debug  => true,
         :run    => true,
       }
     }
 
     let(:facts) { {
-        :puppet_deviceconfig => '/etc/puppetlabs/puppet/device.conf ', 
-        :puppetlabs_confdir  => '/etc/puppetlabs',
+        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf ', 
+        :puppetlabs_confdir     => '/etc/puppetlabs',
+        :osfamily               => 'redhat',
+        :env_windows_installdir => "C:/Program Files/Puppet Labs/Puppet/bin",
       }
     }
 
