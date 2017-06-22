@@ -20,9 +20,18 @@ define puppet_device (
   }
 
   if ($run and ($ensure == 'present')) {
+
+    if ($facts['os']['family'] == 'windows') {
+      windows_installdir = $facts['env_windows_installdir']
+      puppet_command = "${windows_installdir}/puppet/bin/puppet"
+    } else {
+      puppet_command = '/opt/puppetlabs/puppet/bin/puppet'
+    }
+
     exec {"run puppet_device target ${title}":
-      command => '/usr/local/bin/puppet device --target $title --user=root --waitforcert 0',
+      command => "{$puppet_command} device --target ${title} --user=root --waitforcert 0",
       require => Puppet_device::Conf::Device[$title],
     }
   }
+
 }
