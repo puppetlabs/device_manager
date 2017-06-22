@@ -13,14 +13,14 @@ define puppet_device::conf::device (
   if ($ensure == 'present') {
 
     if ($debug) {
-      $transport_debug = 'debug'
+      $debug_transport = 'debug'
     } else {
-      $transport_debug = '',
+      $debug_transport = ''
     }
 
     concat::fragment{ "puppet_device_conf [${title}]":
       target  => $puppet_device::conf::device_conf,
-      content => "[${title}]\ntype ${type}\nurl ${url}\n${transport_debug}\n",
+      content => "[${title}]\ntype ${type}\nurl ${url}\n${debug_transport}\n",
       order   => '99',
     }
   }
