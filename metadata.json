@@ -1,6 +1,6 @@
 {
   "name": "tkishel-puppet_device",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Thomas Kishel",
   "summary": "Manage devices used by 'puppet device' on puppet agents.",
   "license": "Apache-2.0",
@@ -44,7 +44,7 @@
   ],
   "requirements": [{
     "name": "puppet",
-    "version_requirement": "> 4.6.0 < 5.0.0"
+    "version_requirement": "> 4.7.0 < 6.0.0"
   }],
   "description": "Manage devices used by 'puppet device' on proxy puppet agents."
 }
