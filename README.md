@@ -79,6 +79,8 @@ This parameter is optional, with a default of false.
 
 Specifies whether to run `puppet device` during each `puppet agent` run on the puppet agent.
 
+If `puppet device --target` is available, it will create an Exec resource for each device; otherwise, it will create one Exec resource for all devices.
+
 Setting to true, it can be combined with Orchestration (and a PQL query) to indirectly orchestrate a `puppet device` run on the puppet agent for a device:
 
 ~~~
