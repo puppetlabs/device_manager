@@ -16,11 +16,13 @@ define puppet_device::run::device {
       command => "${puppet_command} device --target ${title} --user=root --waitforcert 0",
       require => Puppet_device::Conf::Device[$title],
       unless  => "test -f ${::puppet_vardir}/devices/${title}/ssl/certs/${title}.pem",
+      tag     => ['run_puppet_device', "run_puppet_device_${title}"],
     }
     exec {"run puppet_device target ${title}":
       command => "${puppet_command} device --target ${title} --waitforcert 0",
       require => Puppet_device::Conf::Device[$title],
       onlyif  => "test -f ${::puppet_vardir}/devices/${title}/ssl/certs/${title}.pem",
+      tag     => ['run_puppet_device', "run_puppet_device_${title}"],
     }
   } else {
     include puppet_device::run

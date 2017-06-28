@@ -5,7 +5,6 @@
 1. [Description](#description)
 1. [Usage](#usage)
 1. [Parameters](#parameters)
-1. [Limitations](#limitations)
 1. [Reference](#reference)
 
 ## Description
@@ -77,39 +76,20 @@ Data type: Boolean
 
 This parameter is optional, with a default of false.
 
-Specifies whether to run `puppet device` during each `puppet agent` run on the puppet agent.
+Specifies whether to run `puppet device` during each `puppet agent` run on the Puppet agent.
 
-If `puppet device --target` is available, it will create an Exec resource for each device; otherwise, it will create one Exec resource for all devices.
+Setting to true will create one Exec resource for all devices on the Puppet agent.
 
-Setting to true, it can be combined with Orchestration (and a PQL query) to indirectly orchestrate a `puppet device` run on the puppet agent for a device:
-
-~~~
-puppet job run --query 'resources[certname, type, title] { type = "Puppet_device::Run::Device" and title = "bigip"}'
-~~~
-
-Given the following PQL query:
+If `puppet device --target` is available (Puppet 5.x) on the Puppet agent, setting to true will create an Exec resource for each device (tagged with `run_puppet_device_${certname}`) which can be combined with Orchestration (and a PQL query) to indirectly orchestrate a `puppet device` run on the Puppet agent for a device. For example:
 
 ~~~
-puppet query 'resources[certname, type, title] { type = "Puppet_device::Run::Device" and title = "bigip"}'
+puppet job run --query 'resources[certname] { tag = "run_puppet_device_bigip"}'
 ~~~
-
-~~~
-[ {
-  "certname" : "device-proxy.example.com",
-  "type" : "Puppet_device::Run::Device",
-  "title" : "bigip",
-}
-~~~
-
-## Limitations
-
-See manifests/todo.pp
 
 ## Reference
-
-This module manages device.conf and puppet_devices.yaml, including entries for each `puppet_device` resource declared on the puppet agent.
 
 For more information about devices, see:
 
 https://docs.puppet.com/puppet/latest/man/device.html
+
 https://docs.puppet.com/puppet/latest/config_file_device.html
