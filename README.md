@@ -78,9 +78,7 @@ This parameter is optional, with a default of false.
 
 Specifies whether to run `puppet device` during each `puppet agent` run on the Puppet agent.
 
-Setting to true will create one Exec resource for all devices on the Puppet agent.
-
-If `puppet device --target` is available (Puppet 5.x) on the Puppet agent, setting to true will create an Exec resource for each device (tagged with `run_puppet_device_${certname}`) which can be combined with Orchestration (and a PQL query) to indirectly orchestrate a `puppet device` run on the Puppet agent for a device. For example:
+Setting to true will create one Exec resource for all devices on the Puppet agent. If `puppet device --target` is available (Puppet 5.x) on the Puppet agent, setting to true will create an Exec resource for each device (tagged with `run_puppet_device_${certname}`) which can be combined with Orchestration (and a PQL query) to indirectly orchestrate a `puppet device` run on the Puppet agent for a device. For example:
 
 ~~~
 puppet job run --query 'resources[certname] { tag = "run_puppet_device_bigip"}'
