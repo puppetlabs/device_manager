@@ -84,24 +84,20 @@ If `puppet device --target` is available, it will create an Exec resource for ea
 Setting to true, it can be combined with Orchestration (and a PQL query) to indirectly orchestrate a `puppet device` run on the puppet agent for a device:
 
 ~~~
-puppet job run --query 'resources[certname, type, title, parameters] { type = "Puppet_device" and title = "bigip" and parameters.ensure = "present"}'
+puppet job run --query 'resources[certname, type, title] { type = "Puppet_device::Run::Device" and title = "bigip"}'
 ~~~
 
-The following illustrates the PQL query:
+Given the following PQL query:
 
 ~~~
-[root@pe-201645-master ~]# puppet query 'resources[certname, type, title, parameters] { type = "Puppet_device" and title = "bigip" and parameters.ensure = "present"}'
+puppet query 'resources[certname, type, title] { type = "Puppet_device::Run::Device" and title = "bigip"}'
+~~~
+
+~~~
 [ {
-  "certname" : "pe-201645-master.puppetdebug.vlan",
-  "type" : "Puppet_device",
+  "certname" : "device-proxy.example.com",
+  "type" : "Puppet_device::Run::Device",
   "title" : "bigip",
-  "parameters" : {
-    "ensure" : "present",
-    "type" : "f5",
-    "url" : "https://admin:fffff55555@10.0.0.245/",
-    "debug" : false,
-    "run" : true,
-  }
 }
 ~~~
 
