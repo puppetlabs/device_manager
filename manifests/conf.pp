@@ -1,4 +1,5 @@
 # Manage device.conf file.
+# Using concat instead of inifile, because: purgable.
 # @api private
 
 class puppet_device::conf {
