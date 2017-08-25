@@ -1,4 +1,5 @@
-# Manage a device in device.conf.
+# Manage device in device.conf.
+# 
 # @api private
 
 define puppet_device::conf::device (
@@ -12,15 +13,11 @@ define puppet_device::conf::device (
 
   if ($ensure == 'present') {
 
-    if ($debug) {
-      $debug_transport = 'debug'
-    } else {
-      $debug_transport = ''
-    }
+    $debug_transport = $debug ? { true => 'debug', default => '' }
 
-    concat::fragment{ "puppet_device_conf [${title}]":
+    concat::fragment{ "puppet_device_conf [${name}]":
       target  => $puppet_device::conf::device_conf,
-      content => "[${title}]\ntype ${type}\nurl ${url}\n${debug_transport}\n",
+      content => "[${name}]\ntype ${type}\nurl ${url}\n${debug_transport}\n",
       order   => '99',
     }
   }

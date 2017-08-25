@@ -8,19 +8,19 @@ define puppet_device (
   Enum['present', 'absent'] $ensure = 'present',
 ) {
 
-  puppet_device::conf::device { $title:
+  puppet_device::conf::device { $name:
     ensure => $ensure,
     type   => $type,
     url    => $url,
     debug  => $debug,
   }
 
-  puppet_device::fact::device { $title:
+  puppet_device::fact::device { $name:
     ensure => $ensure,
   }
 
   if ($run and ($ensure == 'present')) {
-    puppet_device::run::device { $title: }
+    puppet_device::run::device { $name: }
   }
 
 }

@@ -26,7 +26,7 @@ puppet module install tkishel-puppet_device
 Declare `puppet_device` resources:
 
 ~~~
-puppet_device { 'bigip.example.com':
+puppet_device {'bigip.example.com':
   type   => 'f5',
   url    => 'https://admin:fffff55555@10.0.0.245/',
 }

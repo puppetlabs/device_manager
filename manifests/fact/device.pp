@@ -9,9 +9,9 @@ define puppet_device::fact::device (
 
   if ($ensure == 'present') {
 
-    concat::fragment{ "puppet_devices_yaml_fact ${title}":
-      target  => $puppet_device::fact::puppet_devices_yaml,
-      content => "  - ${title}",
+    concat::fragment{ "puppet_devices_fact_value ${name}":
+      target  => $puppet_device::fact::puppet_devices,
+      content => "  - ${name}",
       order   => '99',
     }
 

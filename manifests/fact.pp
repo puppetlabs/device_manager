@@ -1,4 +1,5 @@
-# Manage puppet_devices fact.
+# Manage puppet_devices structured fact.
+# Structured as an array, but could be a hash.
 # @api private
 
 class puppet_device::fact {
@@ -16,25 +17,25 @@ class puppet_device::fact {
     ensure => directory,
   }
 
-  $puppet_devices_yaml = "${::puppetlabs_confdir}/facter/facts.d/puppet_devices.yaml"
+  $puppet_devices = "${::puppetlabs_confdir}/facter/facts.d/puppet_devices.yaml"
 
-  concat { $puppet_devices_yaml:
+  concat { $puppet_devices:
     backup         => false,
     ensure_newline => true,
   }
 
-  concat::fragment{ 'puppet_devices_yaml_header':
-    target  => $puppet_devices_yaml,
+  concat::fragment{ 'puppet_devices_fact_header':
+    target  => $puppet_devices,
     content => '---',
     order   => '01',
   }
-  concat::fragment{ 'puppet_devices_yaml_comment':
-    target  => $puppet_devices_yaml,
+  concat::fragment{ 'puppet_devices_fact_comment':
+    target  => $puppet_devices,
     content => '# This file is managed by the puppet_device module.',
     order   => '02',
   }
-  concat::fragment{ 'puppet_devices_yaml_facts':
-    target  => $puppet_devices_yaml,
+  concat::fragment{ 'puppet_devices_fact_name':
+    target  => $puppet_devices,
     content => 'puppet_devices:',
     order   => '03',
   }
