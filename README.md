@@ -13,7 +13,7 @@ Devices require a (proxy) Puppet agent to request certificates, collect facts, r
 
 This module manages the configuration of devices used by `puppet device` on Puppet agents.
 
-This module also provides the potential for indirect orchestration of `puppet device` runs.
+This module also provides the potential for (indirect) orchestration of `puppet device` runs.
 
 ## Usage
 
@@ -23,20 +23,20 @@ Install the `puppet_device` module:
 puppet module install tkishel-puppet_device
 ~~~
 
-Declare `puppet_device` resource(s):
+Declare `puppet_device` resources:
 
 ~~~
-puppet_device { 'bigip':
+puppet_device { 'bigip.example.com':
   type   => 'f5',
   url    => 'https://admin:fffff55555@10.0.0.245/',
 }
 ~~~
 
-Note that the 'f5' device type is used as an example: this module is not limited to F5 devices.
+Note that an f5 device is used as an example: but this module is not limited to F5 devices.
 
 ## Parameters
 
-### title
+### name
 
 Data type: String
 
@@ -78,10 +78,16 @@ This parameter is optional, with a default of false.
 
 Specifies whether to run `puppet device` during each `puppet agent` run on the Puppet agent.
 
-Setting to true will create one Exec resource for all devices on the Puppet agent. If `puppet device --target` is available (Puppet 5.x) on the Puppet agent, setting to true will create an Exec resource for each device (tagged with `run_puppet_device_${certname}`) which can be combined with Orchestration (and a PQL query) to indirectly orchestrate a `puppet device` run on the Puppet agent for a device. For example:
+Setting to true will create one Exec resource for all devices on the Puppet agent.
+
+#### run and orchestration
+
+If `puppet device --target` is available (Puppet 5.x) on the Puppet agent, setting `run` to true will create an Exec resource for each device (tagged with `run_puppet_device_${name}`) which can be combined with Orchestration (via a PQL query) to orchestrate a `puppet device` run on the Puppet agent for a device. 
+
+For example:
 
 ~~~
-puppet job run --query 'resources[certname] { tag = "run_puppet_device_bigip"}'
+puppet job run --query 'resources[certname] { tag = "run_puppet_device_bigip.example.com"}'
 ~~~
 
 ## Reference
