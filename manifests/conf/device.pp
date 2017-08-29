@@ -13,7 +13,7 @@ define puppet_device::conf::device (
 
   if ($ensure == 'present') {
 
-    $debug_transport = $debug ? { true => 'debug', default => '' }
+    $debug_transport = $debug ? { true => "debug\n", default => '' }
 
     concat::fragment{ "puppet_device_conf [${name}]":
       target  => $puppet_device::conf::device_conf,
