@@ -12,6 +12,6 @@ class puppet_device::devices {
       url   => $device['url'],
       debug => $device['debug'],
       run   => $device['run'],
-     }
+    }
   }
 }
