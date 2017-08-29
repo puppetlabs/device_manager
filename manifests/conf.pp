@@ -1,5 +1,5 @@
 # Manage device.conf file.
-# Using concat instead of inifile, because: purgable.
+# Using concat instead of inifile, because purgable.
 # @api private
 
 class puppet_device::conf {
@@ -12,7 +12,8 @@ class puppet_device::conf {
   $device_conf = $::puppet_deviceconfig
 
   concat { $device_conf:
-    backup => false,
+    backup    => false,
+    show_diff => false,
   }
 
   concat::fragment{ 'puppet_device_conf_comment':
