@@ -5,6 +5,7 @@
 1. [Description](#description)
 1. [Usage](#usage)
 1. [Parameters](#parameters)
+1. [Orchestration](#orchestration)
 1. [Reference](#reference)
 
 ## Description
@@ -23,13 +24,32 @@ Install the `puppet_device` module:
 puppet module install tkishel-puppet_device
 ~~~
 
-Declare `puppet_device` resources:
+Declare individual `puppet_device` resources in a manifest:
 
 ~~~
 puppet_device {'bigip.example.com':
   type   => 'f5',
   url    => 'https://admin:fffff55555@10.0.0.245/',
 }
+~~~
+
+Or declare multiple `puppet_device` resources in Hiera ...
+
+~~~
+---
+puppet_device::devices:
+  bigip1.example.com:
+    type: 'f5'
+    url:  'https://admin:fffff55555@10.0.1.245/'
+  bigip2.example.com:
+    type: 'f5'
+    url:  'https://admin:fffff55555@10.0.2.245/'
+~~~
+
+... and declare the `puppet_device::devices` class:
+
+~~~
+include puppet_device::devices
 ~~~
 
 Note that an f5 device is used as an example: but this module is not limited to F5 devices.
@@ -41,6 +61,8 @@ Note that an f5 device is used as an example: but this module is not limited to 
 Data type: String
 
 Specifies the `certname` of the device.
+
+This parameter is optional, and defaults to the title of the resource.
 
 ### ensure
 
@@ -80,9 +102,9 @@ Specifies whether to run `puppet device` during each `puppet agent` run on the P
 
 Setting to true will create one Exec resource for all devices on the Puppet agent.
 
-#### run and orchestration
+## Orchestration
 
-If `puppet device --target` is available (Puppet 5.x) on the Puppet agent, setting `run` to true will create an Exec resource for each device (tagged with `run_puppet_device_${name}`) which can be combined with Orchestration (via a PQL query) to orchestrate a `puppet device` run on the Puppet agent for a device. 
+If `puppet device --target` is available (Puppet 5.x) on the Puppet agent, setting `run` to true will create an Exec resource for each device (tagged with `run_puppet_device_${name}`) which can be combined with Orchestration (via a PQL query) to orchestrate a `puppet device` run on the Puppet agent for a device.
 
 For example:
 
