@@ -11,7 +11,7 @@ define puppet_device::fact::device (
 
     concat::fragment{ "puppet_devices_fact_value ${name}":
       target  => $puppet_device::fact::puppet_devices,
-      content => "  - ${name}",
+      content => "  ${name}: true",
       order   => '99',
     }
 

@@ -1,3 +1,14 @@
+## Release 2.0.0
+
+- Add support for tasks.
+- Change structured fact format from array to hash.
+- Fully qualify the path to the test command.
+- Normalize the waitforcert and user parameters of the puppet device command.
+
+### Summary
+
+This release adds support for tasks.
+
 ## Release 1.1.1
 
 ### Summary
@@ -19,7 +30,6 @@ Minor changes.
 
 - Use hiera_hash to improve compatibility.
 - Use iteration instead of create_resource to improve readability.
-
 
 ## Release 1.0.9
 

@@ -19,6 +19,7 @@ define puppet_device::conf::device (
       target  => $puppet_device::conf::device_conf,
       content => "[${name}]\ntype ${type}\nurl ${url}\n${debug_transport}\n",
       order   => '99',
+      tag     => "device_${name}",
     }
   }
 

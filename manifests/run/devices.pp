@@ -4,7 +4,7 @@
 class puppet_device::run::devices {
 
   exec {'run puppet_device':
-    command => "${puppet_device::run::command} device --user=root --waitforcert 0",
+    command => "${puppet_device::run::command} device --user=root --waitforcert=0",
     tag     => 'run_puppet_device',
   }
 
