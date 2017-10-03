@@ -4,7 +4,7 @@ define puppet_device (
   String                    $type,
   String                    $url,
   Boolean                   $debug = false,
-  Boolean                   $run  = false,
+  Boolean                   $autorun  = false,
   Enum['present', 'absent'] $ensure = 'present',
 ) {
 
@@ -19,7 +19,7 @@ define puppet_device (
     ensure => $ensure,
   }
 
-  if ($run and ($ensure == 'present')) {
+  if ($autorun and ($ensure == 'present')) {
     puppet_device::run::device { $name: }
   }
 

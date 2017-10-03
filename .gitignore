@@ -1,6 +1,7 @@
 Gemfile.lock
-pkg
-spec/fixtures/manifests/
-spec/fixtures/modules/
+/bin/
+/doc/
+/pkg/
+/spec/fixtures/manifests/
+/spec/fixtures/modules/
 .DS_Store
-
