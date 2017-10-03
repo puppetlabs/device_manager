@@ -41,7 +41,7 @@ if target == ''
     exitcode = 1
     results['targets'] = {
       result: 'none',
-      errors: error
+      errors: error.gsub(/\e\[(\d+)m/, '')
     }
   end
 else
@@ -96,7 +96,7 @@ devices.each do |device|
 
   results[device] = {
     result: device_result,
-    errors: device_error
+    errors: device_error.gsub(/\e\[(\d+)m/, '')
   }
 end
 
