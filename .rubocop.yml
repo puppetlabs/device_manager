@@ -102,3 +102,5 @@ Style/HashSyntax:
   Enabled: false
 Style/BlockDelimiters:
   Enabled: false
+Style/CollectionMethods:
+  Enabled: false

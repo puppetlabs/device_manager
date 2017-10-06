@@ -24,7 +24,6 @@ timeout = (args['timeout'].to_i > 0) ? args['timeout'].to_i : default_timeout
 # Variables
 
 command = "#{puppet} device --user=root -v --waitforcert=0 #{noop}"
-devices = []
 results = {}
 result = {}
 exitcode = 0
@@ -34,7 +33,7 @@ exitcode = 0
 Puppet[:deviceconfig] = device_conf
 devices = Puppet::Util::NetworkDevice::Config.devices.dup
 # Select the target device, if specified.
-devices.select! { |key, value| key == target } if target != ''
+devices.select! { |key, _value| key == target } if target != ''
 if devices.empty?
   result[:_error] = {
     msg: 'deviceconfig error: unable to find device(s) in device.conf',
@@ -43,7 +42,7 @@ if devices.empty?
       params: {
         noop: noop,
         target: target
-      } 
+      }
     }
   }
   exitcode = 1
@@ -53,7 +52,7 @@ end
 
 # Execute the task
 
-devices.collect do |device_name, device|
+devices.collect do |device_name, _device|
   line = ''
   device_error = ''
   device_version = ''
@@ -98,7 +97,7 @@ devices.collect do |device_name, device|
 
   results[device_name] = {
     result: device_result,
-    errors: device_error.gsub(/\e\[(\d+)m/, '')
+    errors: device_error.gsub(%r{\e\[(\d+)m}, '')
   }
 end
 
