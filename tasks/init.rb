@@ -9,10 +9,7 @@ require 'timeout'
 # Constants
 
 puppet = '/opt/puppetlabs/bin/puppet'
-
 default_timeout = 64
-# TODO: Identify 'deviceconfig' via 'puppet' library
-device_conf = `#{puppet} config print deviceconfig 2>/dev/null`.chomp
 
 # Input
 
@@ -28,15 +25,15 @@ results = {}
 result = {}
 exitcode = 0
 
-# Read device.conf to identify devices
+# Read deviceconfig to identify devices
 
-Puppet[:deviceconfig] = device_conf
+Puppet.initialize_settings
 devices = Puppet::Util::NetworkDevice::Config.devices.dup
-# Select the target device, if specified.
+# Select the target device, if target is specified.
 devices.select! { |key, _value| key == target } if target != ''
 if devices.empty?
   result[:_error] = {
-    msg: 'deviceconfig error: unable to find device(s) in device.conf',
+    msg: "deviceconfig error: unable to find device(s) in #{Puppet[:deviceconfig]}",
     kind: 'tkishel/puppet_device',
     details: {
       params: {
