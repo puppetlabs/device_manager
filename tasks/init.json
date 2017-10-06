@@ -1,7 +1,7 @@
 {
-  "summary": "Run puppet device on a (proxy) Puppet agent",
-  "supports_noop": true,
+  "description": "Run puppet device on a (proxy) Puppet agent",
   "input_method": "stdin",
+  "supports_noop": true,
   "parameters": {
     "target": {
       "description": "The name of a device in device.conf on the (proxy) Puppet agent",
