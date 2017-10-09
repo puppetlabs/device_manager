@@ -54,6 +54,7 @@ devices.collect do |device_name, _device|
   device_error = ''
   device_version = ''
   device_seconds = ''
+  device_status = ''
   device_result = ''
 
   begin
@@ -85,28 +86,32 @@ devices.collect do |device_name, _device|
     exitcode = 1
   end
 
+  device_error.gsub!(%r{\e\[(\d+)m}, '')
   if device_version != '' && device_seconds != '' && device_error == ''
-    device_result = "success: applied configuration version '#{device_version}' in #{device_seconds} seconds"
+    device_status = 'success'
+    device_result = "applied configuration version '#{device_version}' in #{device_seconds} seconds"
   else
-    device_result = 'error'
-    device_error  = 'unable to parse the output of the puppet device command' if device_error == ''
+    device_status = 'error'
+    device_error = 'unable to parse the output of the puppet device command' if device_error == ''
+    device_result = device_error
   end
 
   results[device_name] = {
+    status: device_status,
     result: device_result,
-    errors: device_error.gsub(%r{\e\[(\d+)m}, '')
   }
 end
 
 # Compose the result
 
 if exitcode.zero?
+  result['status'] = 'success'
   result['results'] = results
 else
   noop.slice! '--'
   target.slice! '--target '
   result[:_error] = {
-    msg: 'puppet device errors',
+    msg: 'puppet device error',
     kind: 'tkishel/puppet_device',
     details: {
       params: {
