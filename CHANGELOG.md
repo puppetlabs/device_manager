@@ -9,7 +9,6 @@
 ### Summary
 
 This release adds support for tasks, and uses Puppet Development Kit (PDK).
-.
 
 ## Release 1.1.1
 
