@@ -1,9 +1,11 @@
 # Conditional class.
 
+# TODO: Use facts['env_windows_installdir' on Windows.
+
 class puppet_device::run {
 
   if ($facts['osfamily'] == 'windows') {
-    $command = "\"${facts['env_windows_installdir']}/puppet\""
+    $command = '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"'
   } else {
     $command = '/opt/puppetlabs/puppet/bin/puppet'
   }
