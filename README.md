@@ -5,7 +5,7 @@
 1. [Description](#description)
 1. [Usage](#usage)
 1. [Parameters](#parameters)
-1. [Tasks](#tasks)
+1. [Puppet Tasks](#puppet-tasks)
 1. [Reference](#reference)
 
 ## Description
@@ -132,7 +132,7 @@ puppet job run --query 'inventory { facts.puppet_devices."bigip.example.com" = t
 
 [comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "run_puppet_device_bigip.example.com"}')
 
-## Tasks
+## Puppet Tasks
 
 On versions of Puppet Enterprise (2017.3.x or higher) that support tasks, this module provides a `puppet_device` task which can be used with the `puppet task` command to orchestrate a `puppet device` run on the Puppet agent. This task does not require `autorun` set to true.
 
