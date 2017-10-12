@@ -19,7 +19,7 @@ describe 'puppet_device' do
         :puppetlabs_confdir     => '/etc/puppetlabs',
         :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
         :osfamily               => 'redhat',
-        :env_windows_installdir => 'C:/Program Files/Puppet Labs/Puppet/bin'
+        :env_windows_installdir => 'C:\Program Files\Puppet Labs\Puppet\bin'
       }
     }
 
@@ -58,7 +58,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_class('puppet_device::conf') }
     it { is_expected.to contain_class('puppet_device::fact') }
     it { is_expected.to contain_class('puppet_device::run') }
-    it { is_expected.to contain_exec('run puppet_device').with_command('"C:/Program Files/Puppet Labs/Puppet/bin/puppet" device --user=root --waitforcert=0') }
+    it { is_expected.to contain_exec('run puppet_device').with_command('"C:\Program Files\Puppet Labs\Puppet\bin\puppet" device --user=root --waitforcert=0') }
   end
 
   context 'running Puppet 5.0, on Linux, with values for all parameters' do
@@ -79,7 +79,7 @@ describe 'puppet_device' do
         :puppetlabs_confdir     => '/etc/puppetlabs',
         :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
         :osfamily               => 'redhat',
-        :env_windows_installdir => 'C:/Program Files/Puppet Labs/Puppet/bin'
+        :env_windows_installdir => 'C:\Program Files\Puppet Labs\Puppet\bin'
       }
     }
 
@@ -87,7 +87,6 @@ describe 'puppet_device' do
     it { is_expected.to contain_puppet_device__run__device('bigip') }
     it { is_expected.to contain_class('puppet_device::conf') }
     it { is_expected.to contain_class('puppet_device::fact') }
-    it { is_expected.to contain_exec('init puppet_device target bigip').with_command('/opt/puppetlabs/puppet/bin/puppet device --target bigip --user=root --waitforcert=0') }
     it { is_expected.to contain_exec('run puppet_device target bigip').with_command('/opt/puppetlabs/puppet/bin/puppet device --target bigip --user=root --waitforcert=0') }
   end
 end
