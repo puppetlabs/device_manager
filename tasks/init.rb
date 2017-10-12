@@ -6,9 +6,8 @@ require 'puppet'
 require 'puppet/util/network_device/config'
 require 'timeout'
 
-# Constants
+# Defaults
 
-puppet = '/opt/puppetlabs/bin/puppet'
 default_timeout = 64
 
 # Input
@@ -20,6 +19,7 @@ timeout = (args['timeout'].to_i > 0) ? args['timeout'].to_i : default_timeout
 
 # Variables
 
+puppet = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
 command = "#{puppet} device --user=root -v --waitforcert=0 #{noop}"
 results = {}
 result = {}
@@ -29,7 +29,7 @@ exitcode = 0
 
 Puppet.initialize_settings
 devices = Puppet::Util::NetworkDevice::Config.devices.dup
-# Select the target device, if target is specified.
+# Create device list, optionally limited to a list of one target device
 devices.select! { |key, _value| key == target } if target != ''
 if devices.empty?
   result[:_error] = {
