@@ -1,3 +1,12 @@
+## Release 2.0.1
+
+- Fix anchor in README.
+- Simplify run.
+
+### Summary
+
+Minor changes.
+
 ## Release 2.0.0
 
 - Add support for tasks.
