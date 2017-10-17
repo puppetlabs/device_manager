@@ -10,7 +10,7 @@
 
 ## Description
 
-Devices require a (proxy) Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command on Puppet agents; provides a `puppet_device` task for direct orchestration of `puppet device` runs on Puppet agents; and provides indirect orchestration of `puppet device` runs on Puppet agents.
+Devices require a (proxy) Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command on Puppet agents; defines a structured fact that can be used to query PuppetDB to identify the Puppet agent proxying for a device; provides a `puppet_device` task for direct orchestration of `puppet device` runs on Puppet agents; and provides indirect orchestration of `puppet device` runs on older Puppet agents that do not support tasks.
 
 ## Usage
 
@@ -20,7 +20,7 @@ Install the `puppet_device` module:
 puppet module install tkishel-puppet_device
 ~~~
 
-Declare individual `puppet_device` resources in a manifest:
+Declare individual `puppet_device` resources in a manifest of a Puppet agent:
 
 ~~~
 node 'agent.example.com' {
@@ -102,27 +102,29 @@ Data type: Boolean
 
 This parameter is optional, with a default of false.
 
-Specifies whether to automatically run `puppet device` during each `puppet agent` run on the Puppet agent. Setting `autorun` to true will create an Exec resource for all devices on the Puppet agent. On versions of Puppet (Puppet 5.x.x or higher) that support `puppet device --target`, setting `autorun` to true will create an Exec resource for each device on the Puppet agent. Note that this will increase the execution time of a puppet agent run by the execution time of each puppet device autorun.
+Specifies whether to automatically run `puppet device` during each `puppet agent` run on the Puppet agent.
+
+Setting `autorun` to true will create an Exec resource for all devices on the Puppet agent. On versions of Puppet (Puppet 5.x.x or higher) that support `puppet device --target`, setting `autorun` to true will create an Exec resource for each device on the Puppet agent. Note that this will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
 
 ## Orchestration
 
 ### Puppet Task
 
-On versions of Puppet Enterprise (2017.3.x or higher) that support tasks, this module provides a `puppet_device` task which can be used by the `puppet task` command to orchestrate a `puppet device` run on the (proxy) Puppet agent.
+On versions of Puppet Enterprise (2017.3.x or higher) that support tasks, this module provides a `puppet_device` task which can be used by the `puppet task` command to orchestrate a `puppet device` run on a (proxy) Puppet agent.
 
-To orchestrate a run of the `puppet device` command, for all devices on the Puppet agent:
+To orchestrate a run of the `puppet device` command, for all devices on a specified Puppet agent:
 
 ~~~
 puppet task run puppet_device --nodes 'agent.example.com'
 ~~~
 
-To query PuppetDB to orchestrate a run of the `puppet device` command, for all devices on the Puppet agent:
+To orchestrate a run of the `puppet device` command, for all devices on a Puppet agent identified by a PuppetDB query:
 
 ~~~
 puppet task run puppet_device --query 'inventory { facts.puppet_devices."bigip.example.com" = true }'
 ~~~
 
-To query PuppetDB to orchestrate a run of the `puppet device --target` command, for one device on the Puppet agent:
+To orchestrate a run of the `puppet device --target` command, for a specific device on a Puppet agent identified by a PuppetDB query:
 
 ~~~
 puppet task run puppet_device --query 'inventory { facts.puppet_devices."bigip.example.com" = true }' target=bigip.example.com
@@ -136,13 +138,13 @@ For help with the `puppet_device` task, run the `puppet task show puppet_device`
 
 On versions of Puppet Enterprise (2017.2.x or lower) that do not support tasks, this module provides an `autorun` parameter which can be used by the `puppet job` command to indirectly orchestrate a `puppet device` run via a `puppet agent` run on the (proxy) Puppet agent.
 
-To orchestrate a run of the `puppet device` command, for each device with `autorun` set to true on the Puppet agent:
+To orchestrate a run of the `puppet device` command (for each device with `autorun` set to true) on a specified Puppet agent:
 
 ~~~
 puppet job run --nodes 'agent.example.com'
 ~~~
 
-To query PuppetDB to orchestrate a run of the `puppet device` command, for each device with `autorun` set to true on the Puppet agent:
+To orchestrate a run of the `puppet device` command (for each device with `autorun` set to true) on a Puppet agent identified by a PuppetDB query:
 
 ~~~
 puppet job run --query 'inventory { facts.puppet_devices."bigip.example.com" = true }'
@@ -152,8 +154,10 @@ puppet job run --query 'inventory { facts.puppet_devices."bigip.example.com" = t
 
 ## Reference
 
-For more information about devices, see:
+For more information, see:
 
 https://docs.puppet.com/puppet/latest/man/device.html
 
 https://docs.puppet.com/puppet/latest/config_file_device.html
+
+https://puppet.com/docs/pe/latest/orchestrator/running_tasks.html
