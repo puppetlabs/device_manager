@@ -141,7 +141,7 @@ This parameter is optional, with a default of false.
 Specifies whether to automatically run `puppet device` during each `puppet agent` run on the Puppet agent.
 
 Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` on the Puppet agent.
-On older versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, setting `run_via_exec` to true will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
+On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, setting `run_via_exec` to true will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
 
 Note that this will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
 
