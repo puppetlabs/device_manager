@@ -113,7 +113,6 @@ Data type: Boolean
 This parameter is optional, with a default of false.
 
 Setting `run_via_cron` to true will create a Cron resource for the device that executes `puppet device --target` on the Puppet agent.
-[comment]: # (On older versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, setting `run_via_cron` to true will instead create one Cron resource that executes `puppet device` for all devices on the Puppet agent.)
 
 When this parameter is set to true, either `run_via_cron_hour` or `run_via_cron_minute` must be specified.
 
