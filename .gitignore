@@ -5,3 +5,4 @@ Gemfile.lock
 /spec/fixtures/manifests/
 /spec/fixtures/modules/
 .DS_Store
+.bundle/
