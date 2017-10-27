@@ -1,6 +1,6 @@
 # Conditional class.
 
-# TODO: Use facts['env_windows_installdir' on Windows.
+# TODO: Use facts['env_windows_installdir'] on Windows.
 
 class puppet_device::run {
 

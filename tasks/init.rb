@@ -19,6 +19,7 @@ timeout = (args['timeout'].to_i > 0) ? args['timeout'].to_i : default_timeout
 
 # Variables
 
+# TODO: Replace this with code that references INSTALLDIR on Windows.
 puppet = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
 command = "#{puppet} device --user=root -v --waitforcert=0 #{noop}"
 results = {}
