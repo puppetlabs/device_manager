@@ -1,3 +1,10 @@
+## Release 2.1.
+
+Parameter changes.
+
+- Rename the autorun parameter to run_via_exec.
+- Implement run_via_cron, similar to runinverval.
+
 ## Release 2.0.1
 
 - Fix anchor in README.
@@ -10,7 +17,7 @@ Minor changes.
 ## Release 2.0.0
 
 - Add support for tasks.
-- Rename the run paramater to autorun.
+- Rename the run parameter to autorun.
 - Change structured fact format from array to hash.
 - Fully qualify the path to the test command.
 - Normalize the waitforcert and user parameters of the puppet device command.

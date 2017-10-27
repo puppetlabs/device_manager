@@ -15,11 +15,12 @@ class puppet_device::devices {
 
   $devices.each |$title, $device| {
     puppet_device {$title:
-      name  => $device['name'],
-      type  => $device['type'],
-      url   => $device['url'],
-      debug => $device['debug'],
-      run   => $device['run'],
+      name         => $device['name'],
+      type         => $device['type'],
+      url          => $device['url'],
+      debug        => $device['debug'],
+      run_via_exec => $device['run_via_exec'],
+      run_via_cron => $device['run_via_cron'],
     }
   }
 }

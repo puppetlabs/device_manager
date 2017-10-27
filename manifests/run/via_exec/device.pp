@@ -1,9 +1,10 @@
 # Conditional class.
-# Perform a 'puppet device' run with every 'puppet agent' run.
 
 # TODO: Remove '--user=root' after PUP-1391 is resolved.
 
-define puppet_device::run::device {
+# Perform a 'puppet device' run with every 'puppet agent' run.
+
+define puppet_device::run::via_exec::device {
 
   include puppet_device::run
 
@@ -17,7 +18,7 @@ define puppet_device::run::device {
 
   } else {
 
-    include puppet_device::run::devices
+    include puppet_device::run::via_exec::devices
 
   }
 

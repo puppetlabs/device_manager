@@ -5,11 +5,12 @@ describe 'puppet_device' do
     let(:title)  { 'bigip' }
     let(:params) {
       {
-        :ensure  => 'present',
-        :type    => 'f5',
-        :url     => 'https://admin:fffff55555@10.0.0.245/',
-        :debug   => true,
-        :autorun => true
+        :ensure        => 'present',
+        :type          => 'f5',
+        :url           => 'https://admin:fffff55555@10.0.0.245/',
+        :debug         => true,
+        :run_via_cron  => true,
+        :run_via_exec  => true
       }
     }
     let(:facts) {
@@ -24,7 +25,8 @@ describe 'puppet_device' do
     }
 
     it { is_expected.to contain_puppet_device('bigip') }
-    it { is_expected.to contain_puppet_device__run__device('bigip') }
+    it { is_expected.to contain_puppet_device__run__via_cron__device('bigip') }
+    it { is_expected.to contain_puppet_device__run__via_exec__device('bigip') }
     it { is_expected.to contain_class('puppet_device::conf') }
     it { is_expected.to contain_class('puppet_device::fact') }
     it { is_expected.to contain_class('puppet_device::run') }
@@ -35,11 +37,12 @@ describe 'puppet_device' do
     let(:title)  { 'bigip' }
     let(:params) {
       {
-        :ensure  => 'present',
-        :type    => 'f5',
-        :url     => 'https://admin:fffff55555@10.0.0.245/',
-        :debug   => true,
-        :autorun => true
+        :ensure        => 'present',
+        :type          => 'f5',
+        :url           => 'https://admin:fffff55555@10.0.0.245/',
+        :debug         => true,
+        :run_via_cron  => true,
+        :run_via_exec  => true
       }
     }
     let(:facts) {
@@ -54,7 +57,8 @@ describe 'puppet_device' do
     }
 
     it { is_expected.to contain_puppet_device('bigip') }
-    it { is_expected.to contain_puppet_device__run__device('bigip') }
+    it { is_expected.to contain_puppet_device__run__via_cron__device('bigip') }
+    it { is_expected.to contain_puppet_device__run__via_exec__device('bigip') }
     it { is_expected.to contain_class('puppet_device::conf') }
     it { is_expected.to contain_class('puppet_device::fact') }
     it { is_expected.to contain_class('puppet_device::run') }
@@ -65,11 +69,12 @@ describe 'puppet_device' do
     let(:title)  { 'bigip' }
     let(:params) {
       {
-        :ensure  => 'present',
-        :type    => 'f5',
-        :url     => 'https://admin:fffff55555@10.0.0.245/',
-        :debug   => true,
-        :autorun => true
+        :ensure        => 'present',
+        :type          => 'f5',
+        :url           => 'https://admin:fffff55555@10.0.0.245/',
+        :debug         => true,
+        :run_via_cron  => true,
+        :run_via_exec  => true
       }
     }
     let(:facts) {
@@ -84,7 +89,8 @@ describe 'puppet_device' do
     }
 
     it { is_expected.to contain_puppet_device('bigip') }
-    it { is_expected.to contain_puppet_device__run__device('bigip') }
+    it { is_expected.to contain_puppet_device__run__via_cron__device('bigip') }
+    it { is_expected.to contain_puppet_device__run__via_exec__device('bigip') }
     it { is_expected.to contain_class('puppet_device::conf') }
     it { is_expected.to contain_class('puppet_device::fact') }
     it { is_expected.to contain_exec('run puppet_device target bigip').with_command('/opt/puppetlabs/puppet/bin/puppet device --target bigip --user=root --waitforcert=0') }

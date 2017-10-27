@@ -3,6 +3,7 @@
 #### Table of Contents
 
 1. [Description](#description)
+1. [What does this module provide?](#what-does-this-module-provide)
 1. [Usage](#usage)
 1. [Parameters](#parameters)
 1. [Orchestration](#orchestration)
@@ -10,7 +11,15 @@
 
 ## Description
 
-Devices require a (proxy) Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command on Puppet agents; defines a structured fact that can be used to query PuppetDB to identify the Puppet agent proxying for a device; provides a `puppet_device` task for direct orchestration of `puppet device` runs on Puppet agents; and provides indirect orchestration of `puppet device` runs on older Puppet agents that do not support tasks.
+Devices require a (proxy) Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command on Puppet agents, and provides additional resources.
+
+## What does this module provide?
+
+1. Allows for the configuration of `device.conf` via manifests or Hiera.
+1. Implements the equivalent of `runinterval` for devices.
+1. Provides a `puppet_device` task for direct orchestration of `puppet device` runs on newer Puppet agents.
+1. Provides indirect orchestration of `puppet device` runs on older Puppet agents.
+1. Defines a structured fact that can be used to query PuppetDB to identify the Puppet agent proxying for a device.
 
 ## Usage
 
@@ -96,7 +105,17 @@ This parameter is optional, with a default of false.
 
 Specifies transport-level debug output for the device, and is limited to telnet and ssh transports.
 
-### autorun
+### run_via_cron (beta)
+
+Data type: Boolean
+
+This parameter is optional, with a default of false.
+
+Setting `run_via_cron` to true will create a Cron resource that executes `puppet device` for all devices on the Puppet agent. On versions of Puppet (Puppet 5.x.x or higher) that support `puppet device --target`, setting `run_via_cron` to true will create a Cron resource for each device that executes `puppet device --target` on the Puppet agent. This provides the equivalent of `runinterval=60` for devices.
+
+To Do: Implement with a configurable schedule, currently hard-coded as `minute=>45`.
+
+### run_via_exec
 
 Data type: Boolean
 
@@ -104,7 +123,7 @@ This parameter is optional, with a default of false.
 
 Specifies whether to automatically run `puppet device` during each `puppet agent` run on the Puppet agent.
 
-Setting `autorun` to true will create an Exec resource for all devices on the Puppet agent. On versions of Puppet (Puppet 5.x.x or higher) that support `puppet device --target`, setting `autorun` to true will create an Exec resource for each device on the Puppet agent. Note that this will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
+Setting `run_via_exec` to true will create an Exec resource for all devices on the Puppet agent. On versions of Puppet (Puppet 5.x.x or higher) that support `puppet device --target`, setting `run_via_exec` to true will create an Exec resource for each device on the Puppet agent. Note that this will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
 
 ## Orchestration
 
@@ -136,15 +155,15 @@ For help with the `puppet_device` task, run the `puppet task show puppet_device`
 
 ### Puppet Job
 
-On versions of Puppet Enterprise (2017.2.x or lower) that do not support tasks, this module provides an `autorun` parameter which can be used by the `puppet job` command to indirectly orchestrate a `puppet device` run via a `puppet agent` run on the (proxy) Puppet agent.
+On versions of Puppet Enterprise (2017.2.x or lower) that do not support tasks, this module provides an `run_via_exec` parameter which can be used by the `puppet job` command to indirectly orchestrate a `puppet device` run via a `puppet agent` run on the (proxy) Puppet agent.
 
-To orchestrate a run of the `puppet device` command (for each device with `autorun` set to true) on a specified Puppet agent:
+To orchestrate a run of the `puppet device` command (for each device with `run_via_exec` set to true) on a specified Puppet agent:
 
 ~~~
 puppet job run --nodes 'agent.example.com'
 ~~~
 
-To orchestrate a run of the `puppet device` command (for each device with `autorun` set to true) on a Puppet agent identified by a PuppetDB query:
+To orchestrate a run of the `puppet device` command (for each device with `run_via_exec` set to true) on a Puppet agent identified by a PuppetDB query:
 
 ~~~
 puppet job run --query 'inventory { facts.puppet_devices."bigip.example.com" = true }'
