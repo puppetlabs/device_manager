@@ -14,6 +14,7 @@ define puppet_device::run::via_cron::device {
       ensure  => present,
       command => "${puppet_device::run::command} device --target ${name} --user=root --waitforcert=0",
       user    => 'root',
+      hour    => absent,
       minute  => 45,
     }
 
