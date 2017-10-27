@@ -1,9 +1,9 @@
-## Release 2.1.
+## Release 2.1.0
 
 Parameter changes.
 
 - Rename the autorun parameter to run_via_exec.
-- Implement run_via_cron, similar to runinverval.
+- Implement a beta run_via_cron parameter.
 
 ## Release 2.0.1
 

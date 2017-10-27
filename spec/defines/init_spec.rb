@@ -9,9 +9,11 @@ describe 'puppet_device' do
         :type          => 'f5',
         :url           => 'https://admin:fffff55555@10.0.0.245/',
         :debug         => true,
-        :run_via_cron  => true,
-        :run_via_exec  => true
-      }
+        #:run_via_cron        => true,
+        #:run_via_cron_hour   => '23',
+        #:run_via_cron_minute => '59',
+        :run_via_exec        => true
+        }
     }
     let(:facts) {
       {
@@ -41,8 +43,10 @@ describe 'puppet_device' do
         :type          => 'f5',
         :url           => 'https://admin:fffff55555@10.0.0.245/',
         :debug         => true,
-        :run_via_cron  => true,
-        :run_via_exec  => true
+        #:run_via_cron        => true,
+        #:run_via_cron_hour   => '23',
+        #:run_via_cron_minute => '59',
+        :run_via_exec        => true
       }
     }
     let(:facts) {
@@ -73,8 +77,10 @@ describe 'puppet_device' do
         :type          => 'f5',
         :url           => 'https://admin:fffff55555@10.0.0.245/',
         :debug         => true,
-        :run_via_cron  => true,
-        :run_via_exec  => true
+        #:run_via_cron        => true,
+        #:run_via_cron_hour   => '23',
+        #:run_via_cron_minute => '59',
+        :run_via_exec        => true
       }
     }
     let(:facts) {
