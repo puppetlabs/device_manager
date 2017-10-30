@@ -27,6 +27,7 @@ result = {}
 exitcode = 0
 
 # Read deviceconfig to identify devices
+# TODO: Remove after PUP-8041 is resolved
 
 Puppet.initialize_settings
 devices = Puppet::Util::NetworkDevice::Config.devices.dup
