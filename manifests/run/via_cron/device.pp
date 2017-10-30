@@ -11,22 +11,10 @@ define puppet_device::run::via_cron::device (
 
   include puppet_device::run
 
-  if ($run_via_cron and ($ensure == 'present')) {
+  if ($run_via_cron and ($ensure == present)) {
     $cron_ensure = present
   } else {
     $cron_ensure = absent
-  }
-
-  if $run_via_cron_hour == '' {
-    $cron_hour = absent
-  } else {
-    $cron_hour = $run_via_cron_hour
-  }
-
-  if $run_via_cron_minute == '' {
-    $cron_minute = absent
-  } else {
-    $cron_minute = $run_via_cron_minute
   }
 
   if $puppet_device::run::targetable {
@@ -35,8 +23,8 @@ define puppet_device::run::via_cron::device (
       ensure  => $cron_ensure,
       command => "${puppet_device::run::command} --target ${name} --waitforcert=0",
       user    => 'root',
-      hour    => $cron_hour,
-      minute  => $cron_minute,
+      hour    => $run_via_cron_hour,
+      minute  => $run_via_cron_minute,
     }
 
   } else {

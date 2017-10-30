@@ -5,7 +5,7 @@ describe 'puppet_device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
-        :ensure       => 'present',
+        :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
         :debug        => true,
@@ -30,7 +30,7 @@ describe 'puppet_device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
-        :ensure       => 'present',
+        :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
         :debug        => true,
@@ -56,7 +56,7 @@ describe 'puppet_device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
-        :ensure       => 'present',
+        :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
         :debug        => true,
@@ -81,7 +81,7 @@ describe 'puppet_device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
-        :ensure       => 'present',
+        :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
         :debug        => true,
@@ -115,7 +115,7 @@ describe 'puppet_device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
-        :ensure       => 'present',
+        :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
         :debug        => true,
@@ -132,7 +132,7 @@ describe 'puppet_device' do
       }
     }
 
-    it { is_expected.to raise_error(%r{run_via_cron_hour and run_via_cron_minute cannot both be undefined}) }
+    it { is_expected.to raise_error(%r{run_via_cron_hour and run_via_cron_minute cannot both be absent or undefined}) }
   end
 
   context 'running Puppet 5.0, on Linux, with exec parameters' do
@@ -171,7 +171,7 @@ describe 'puppet_device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
-        :ensure       => 'present',
+        :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
         :debug        => true,

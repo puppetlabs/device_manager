@@ -34,7 +34,6 @@ Declare individual `puppet_device` resources in a manifest of a Puppet agent:
 ~~~
 node 'agent.example.com' {
   class {'f5': }
-
   puppet_device {'bigip.example.com':
     type   => 'f5',
     url    => 'https://admin:fffff55555@10.0.0.245/',
@@ -60,7 +59,6 @@ puppet_device::devices:
 ~~~
 node 'agent.example.com'  {
   class {'f5': }
-
   include puppet_device::devices
 }
 ~~~
@@ -115,6 +113,16 @@ Setting `run_via_cron` to true will create a Cron resource for the device that e
 
 When this parameter is set to true, either `run_via_cron_hour` or `run_via_cron_minute` must be specified.
 
+```
+puppet_device {'bigip.example.com':
+  type                => 'f5',
+  url                 => 'https://admin:fffff55555@10.0.0.245/',
+  run_via_cron        => true,
+  run_via_cron_hour   => '11',
+  run_via_cron_minute => '29',
+}
+```
+
 ### run_via_cron_hour (beta)
 
 Data type: String
@@ -123,6 +131,8 @@ This parameter is optional, without a default, and not specifying it is equivale
 
 Specifies the hour attribute of the Cron resource created by `run_via_cron`.
 
+The String type allows either values: `'11'` or steps `'*/2'` but not arrays: `'[0,11]'`.
+
 ### run_via_cron_minute (beta)
 
 Data type: String
@@ -130,6 +140,8 @@ Data type: String
 This parameter is optional, without a default, and not specifying it is equivalent to `minute => absent`.
 
 Specifies the minute attribute of the Cron resource created by `run_via_cron`.
+
+The String type allows either values: `'29'` or steps `'*/2'` but not arrays: `'[0,59]'`.
 
 ### run_via_exec
 
@@ -143,6 +155,14 @@ Setting `run_via_exec` to true will create an Exec resource for the device that 
 On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, setting `run_via_exec` to true will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
 
 Note that this will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
+
+```
+puppet_device {'bigip.example.com':
+  type         => 'f5',
+  url          => 'https://admin:fffff55555@10.0.0.245/',
+  run_via_exec => true,
+}
+```
 
 ## Orchestration
 

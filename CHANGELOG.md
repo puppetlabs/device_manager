@@ -1,3 +1,9 @@
+## Release 2.1.1
+
+Minor changes.
+
+- Cleanup parameter handling.
+
 ## Release 2.1.0
 
 Parameter changes.

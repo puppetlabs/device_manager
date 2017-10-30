@@ -6,14 +6,6 @@
 
 class puppet_device::run::via_cron::devices {
 
-  #notify {'Warning: run_via_cron is not available for this version of Puppet':}
-
-  #cron {'run puppet_device via cron':
-  #  ensure  => $puppet_device::run::via_cron::device::cron_ensure,
-  #  command => "${puppet_device::run::command} --waitforcert=0",
-  #  user    => 'root',
-  #  hour    => $puppet_device::run::via_cron::device::cron_hour,
-  #  minute  => $puppet_device::run::via_cron::device::cron_minute,
-  #}
+  # notify {'Warning: run_via_cron is not available for this version of Puppet':}
 
 }
