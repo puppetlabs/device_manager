@@ -11,13 +11,12 @@
 
 ## Description
 
-Devices require a (proxy) Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports.
-This module manages the configuration file used by the `puppet device` command on those Puppet agents, and provides additional resources for managing `puppet device` runs.
+Devices require a (proxy) Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command on those Puppet agents, and provides additional resources for managing `puppet device` runs.
 
 ## What does this module provide?
 
 1. Allows for the configuration of `device.conf` in a manifest or Hiera.
-1. Provides an option for scheduling of `puppet device` runs.
+1. Provides an option for scheduling of `puppet device` runs on Puppet agents.
 1. Provides an optional task for direct orchestration of `puppet device` runs on newer Puppet agents.
 1. Provides an option for indirect orchestration of `puppet device` runs on older Puppet agents.
 1. Defines a structured fact that can be used to query PuppetDB to identify the Puppet agent proxying for a device.
