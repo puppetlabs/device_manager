@@ -109,7 +109,7 @@ Data type: Boolean
 
 This parameter is optional, with a default of false.
 
-Setting `run_via_cron` to true will create a Cron resource for the device that executes `puppet device --target` on the Puppet agent.
+Setting `run_via_cron` to true will create a Cron resource for the device that executes `puppet device --target` on the Puppet agent. On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this feature is not supported and no Cron resource will be created.
 
 When this parameter is set to true, either `run_via_cron_hour` or `run_via_cron_minute` must be specified.
 
@@ -131,7 +131,7 @@ This parameter is optional, without a default, and not specifying it is equivale
 
 Specifies the hour attribute of the Cron resource created by `run_via_cron`.
 
-The String type allows either values: `'11'` or steps `'*/2'` but not arrays: `'[0,11]'`.
+The String type allows either values: `'11'` or steps: `'*/2'` but not arrays: `'[0,11]'`.
 
 ### run_via_cron_minute (beta)
 
@@ -141,7 +141,7 @@ This parameter is optional, without a default, and not specifying it is equivale
 
 Specifies the minute attribute of the Cron resource created by `run_via_cron`.
 
-The String type allows either values: `'29'` or steps `'*/2'` but not arrays: `'[0,59]'`.
+The String type allows either values: `'29'` or steps: `'*/2'` but not arrays: `'[0,59]'`.
 
 ### run_via_exec
 
@@ -151,8 +151,7 @@ This parameter is optional, with a default of false.
 
 Specifies whether to automatically run `puppet device` during each `puppet agent` run on the Puppet agent.
 
-Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` on the Puppet agent.
-On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, setting `run_via_exec` to true will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
+Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` on the Puppet agent. On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
 
 Note that this will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
 
@@ -172,19 +171,19 @@ On versions of Puppet Enterprise (2017.3.x or higher) that support tasks,
 this module provides a `puppet_device` task which can be used by the `puppet task` command
 to orchestrate a `puppet device` run on a (proxy) Puppet agent.
 
-To orchestrate a run of the `puppet device` command, for all devices on a specified Puppet agent:
+To run `puppet device` for all devices, on a specified Puppet agent:
 
 ~~~
 puppet task run puppet_device --nodes 'agent.example.com'
 ~~~
 
-To orchestrate a run of the `puppet device` command, for all devices on a Puppet agent identified by a PuppetDB query:
+To run `puppet device` for all devices, on a Puppet agent identified by a PuppetDB query:
 
 ~~~
 puppet task run puppet_device --query 'inventory { facts.puppet_devices."bigip.example.com" = true }'
 ~~~
 
-To orchestrate a run of the `puppet device --target` command, for a specific device on a Puppet agent identified by a PuppetDB query:
+To run `puppet device --target` for a specific device, on a Puppet agent identified by a PuppetDB query:
 
 ~~~
 puppet task run puppet_device --query 'inventory { facts.puppet_devices."bigip.example.com" = true }' target=bigip.example.com
@@ -200,13 +199,13 @@ On versions of Puppet Enterprise (2017.2.x or lower) that do not support tasks,
 this module provides an `run_via_exec` parameter which can be used by the `puppet job` command
 to indirectly orchestrate a `puppet device` run via a `puppet agent` run on the (proxy) Puppet agent.
 
-To orchestrate a run of the `puppet device` command (for each device with `run_via_exec` set to true) on a specified Puppet agent:
+To run `puppet device` for each device with `run_via_exec` set to true, on a specified Puppet agent:
 
 ~~~
 puppet job run --nodes 'agent.example.com'
 ~~~
 
-To orchestrate a run of the `puppet device` command (for each device with `run_via_exec` set to true) on a Puppet agent identified by a PuppetDB query:
+To run `puppet device` for each device with `run_via_exec` set to true, on a Puppet agent identified by a PuppetDB query:
 
 ~~~
 puppet job run --query 'inventory { facts.puppet_devices."bigip.example.com" = true }'
