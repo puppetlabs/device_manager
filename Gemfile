@@ -69,14 +69,14 @@ if Gem.win_platform? && (puppet_type != :gem || puppet_older_than?('3.5.0'))
   # For Puppet gems < 3.5.0 (tested as far back as 3.0.0) on Windows
   if puppet_type == :gem
     gems['ffi'] =            ['1.9.0',                require: false]
-    gems['minitar'] =        ['0.5.4',                require: false]
+    gems['minitar'] =        ['0.6',                  require: false]
     gems['win32-eventlog'] = ['0.5.3',    '<= 0.6.5', require: false]
     gems['win32-process'] =  ['0.6.5',    '<= 0.7.5', require: false]
     gems['win32-security'] = ['~> 0.1.2', '<= 0.2.5', require: false]
     gems['win32-service'] =  ['0.7.2',    '<= 0.8.8', require: false]
   else
     gems['ffi'] =            ['~> 1.9.0',             require: false]
-    gems['minitar'] =        ['~> 0.5.4',             require: false]
+    gems['minitar'] =        ['~> 0.6',               require: false]
     gems['win32-eventlog'] = ['~> 0.5',   '<= 0.6.5', require: false]
     gems['win32-process'] =  ['~> 0.6',   '<= 0.7.5', require: false]
     gems['win32-security'] = ['~> 0.1',   '<= 0.2.5', require: false]
