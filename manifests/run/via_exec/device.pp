@@ -1,6 +1,5 @@
-# Conditional class.
-
 # Perform a 'puppet device --target' run with every 'puppet agent' run.
+# @api private
 
 define puppet_device::run::via_exec::device {
 
@@ -16,7 +15,7 @@ define puppet_device::run::via_exec::device {
 
   } else {
 
-    include puppet_device::run::via_exec::devices
+    include puppet_device::run::via_exec::untargeted
 
   }
 

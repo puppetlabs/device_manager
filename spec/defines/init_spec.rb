@@ -111,6 +111,40 @@ describe 'puppet_device' do
     }
   end
 
+  context 'running Puppet 5.4, on Linux, with cron parameters' do
+    let(:title)  { 'bigip.example.com' }
+    let(:params) {
+      {
+        :ensure       => :present,
+        :type         => 'f5',
+        :url          => 'https://admin:fffff55555@10.0.0.245/',
+        :debug        => true,
+        :run_via_cron => true,
+        :run_via_cron_hour   => '23',
+        :run_via_cron_minute => '59',
+      }
+    }
+    let(:facts) {
+      {
+        :puppetversion          => '5.4.0',
+        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf',
+        :puppetlabs_confdir     => '/etc/puppetlabs',
+        :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
+        :osfamily               => 'redhat',
+      }
+    }
+
+    it { is_expected.to contain_puppet_device('bigip.example.com') }
+    it { is_expected.to contain_class('puppet_device::conf') }
+    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_puppet_device__run__via_cron__device('bigip.example.com') }
+    it {
+      is_expected.to contain_cron('run puppet_device target bigip.example.com via cron').with_command(
+        '/opt/puppetlabs/puppet/bin/puppet device  --target bigip.example.com --waitforcert=0',
+      )
+    }
+  end
+
   context 'running Puppet 5.0, on Linux, with cron and without hour or minute parameters' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
@@ -163,6 +197,38 @@ describe 'puppet_device' do
     it {
       is_expected.to contain_exec('run puppet_device target bigip.example.com').with_command(
         '/opt/puppetlabs/puppet/bin/puppet device --user=root --target bigip.example.com --waitforcert=0',
+      )
+    }
+  end
+
+  context 'running Puppet 5.4, on Linux, with exec parameters' do
+    let(:title)  { 'bigip.example.com' }
+    let(:params) {
+      {
+        :ensure       => 'present',
+        :type         => 'f5',
+        :url          => 'https://admin:fffff55555@10.0.0.245/',
+        :debug        => true,
+        :run_via_exec => true
+      }
+    }
+    let(:facts) {
+      {
+        :puppetversion          => '5.4.0',
+        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf',
+        :puppetlabs_confdir     => '/etc/puppetlabs',
+        :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
+        :osfamily               => 'redhat',
+      }
+    }
+
+    it { is_expected.to contain_puppet_device('bigip.example.com') }
+    it { is_expected.to contain_class('puppet_device::conf') }
+    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_puppet_device__run__via_exec__device('bigip.example.com') }
+    it {
+      is_expected.to contain_exec('run puppet_device target bigip.example.com').with_command(
+        '/opt/puppetlabs/puppet/bin/puppet device  --target bigip.example.com --waitforcert=0',
       )
     }
   end

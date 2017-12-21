@@ -123,6 +123,8 @@ puppet_device {'bigip.example.com':
 }
 ```
 
+Note that `run_via_cron` is not supported on agents (older than Puppet 5.0) where `puppet device` does not implement `--target`.
+
 ### run_via_cron_hour (beta)
 
 Data type: String

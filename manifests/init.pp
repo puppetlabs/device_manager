@@ -1,6 +1,4 @@
-# Manage devices.
-
-# TODO: Implement either/or for run_via_exec and run_device_via_cron.
+# Manage this device.
 
 define puppet_device (
   String                $type,
@@ -13,6 +11,8 @@ define puppet_device (
   Enum[present, absent] $ensure              = present,
 ) {
 
+  # Validate parameters.
+
   if ($run_via_cron and $run_via_exec) {
     fail('Parameter Error: run_via_cron and run_via_exec are mutually-exclusive')
   }
@@ -21,6 +21,8 @@ define puppet_device (
     fail('Parameter Error: run_via_cron_hour and run_via_cron_minute cannot both be absent or undefined')
   }
 
+  # Add, update, or remove this device in the deviceconfig file.
+
   puppet_device::conf::device { $name:
     ensure => $ensure,
     type   => $type,
@@ -28,9 +30,13 @@ define puppet_device (
     debug  => $debug,
   }
 
+  # Add, update, or remove this device in the puppet_devices structured fact.
+
   puppet_device::fact::device { $name:
     ensure => $ensure,
   }
+
+  # Add, update, or remove a `puppet device` Cron for this device.
 
   puppet_device::run::via_cron::device { $name:
     ensure              => $ensure,
@@ -38,6 +44,8 @@ define puppet_device (
     run_via_cron_hour   => $run_via_cron_hour,
     run_via_cron_minute => $run_via_cron_minute,
   }
+
+  # Optionally, add a `puppet device` Exec for this device.
 
   if ($run_via_exec and ($ensure == present)) {
     puppet_device::run::via_exec::device { $name: }

@@ -1,4 +1,4 @@
-# Read all devices from Hiera.
+# Configure multiple puppet_devices in Hiera.
 
 class puppet_device::devices {
 
@@ -23,4 +23,5 @@ class puppet_device::devices {
       run_via_cron => $device['run_via_cron'],
     }
   }
+
 }

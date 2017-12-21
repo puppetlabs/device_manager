@@ -1,13 +1,17 @@
-# Manage device.conf file.
+# Manage the deviceconfig file.
 # Using concat instead of inifile, because purgable.
 # @api private
 
 class puppet_device::conf {
+
   File {
     owner => 'root',
     group => 'root',
     mode  => '0644',
   }
+
+  # Use a fact to identify the deviceconfig file on this agent.
+  # Default: $confdir/device.conf
 
   $device_conf = $::puppet_deviceconfig
 
@@ -21,4 +25,5 @@ class puppet_device::conf {
     content => "# This file is managed by the puppet_device module.\n\n",
     order   => '01',
   }
+
 }

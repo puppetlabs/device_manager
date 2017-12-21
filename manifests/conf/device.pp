@@ -1,5 +1,5 @@
-# Manage device in device.conf.
-# 
+# Manage this device in the device.conf file.
+# Using concat instead of inifile, because purgable.
 # @api private
 
 define puppet_device::conf::device (
@@ -21,6 +21,11 @@ define puppet_device::conf::device (
       order   => '99',
       tag     => "device_${name}",
     }
+
+  } else {
+
+    # Do not define a concat::fragment for this device, ensuring 'absent'.
+
   }
 
 }

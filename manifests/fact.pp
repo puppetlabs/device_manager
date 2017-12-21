@@ -1,4 +1,4 @@
-# Manage puppet_devices structured fact.
+# Manage the puppet_devices structured fact.
 # Structured as an array, but could be a hash.
 # @api private
 
@@ -8,6 +8,8 @@ class puppet_device::fact {
     group => 'root',
     mode  => '0644',
   }
+
+  # Use a fact to identify the confdir on this agent.
 
   file { "${::puppetlabs_confdir}/facter":
     ensure => directory,
@@ -29,11 +31,13 @@ class puppet_device::fact {
     content => '---',
     order   => '01',
   }
+
   concat::fragment{ 'puppet_devices_fact_comment':
     target  => $puppet_devices,
     content => '# This file is managed by the puppet_device module.',
     order   => '02',
   }
+
   concat::fragment{ 'puppet_devices_fact_name':
     target  => $puppet_devices,
     content => 'puppet_devices:',

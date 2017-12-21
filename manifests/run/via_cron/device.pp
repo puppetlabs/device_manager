@@ -1,6 +1,5 @@
-# Conditional class.
-
 # Perform a 'puppet device' run via cron.
+# @api private
 
 define puppet_device::run::via_cron::device (
   String  $ensure,
@@ -29,7 +28,7 @@ define puppet_device::run::via_cron::device (
 
   } else {
 
-    include puppet_device::run::via_cron::devices
+    include puppet_device::run::via_cron::untargeted
 
   }
 

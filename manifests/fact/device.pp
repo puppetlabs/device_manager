@@ -1,4 +1,4 @@
-# Manage a fact for a device.
+# Manage this device in the puppet_devices fact.
 # @api private
 
 define puppet_device::fact::device (
@@ -14,6 +14,10 @@ define puppet_device::fact::device (
       content => "  ${name}: true",
       order   => '99',
     }
+
+  } else {
+
+    # Do not define a concat::fragment for this device, ensuring 'absent'.
 
   }
 

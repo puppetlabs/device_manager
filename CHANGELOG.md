@@ -1,3 +1,7 @@
+## Release 2.1.2
+
+- Added documentation.
+
 ## Release 2.1.1
 
 Minor changes.
