@@ -17,19 +17,22 @@ define puppet_device::run::via_cron::device (
   }
 
   if $puppet_device::run::targetable {
-
-    cron { "run puppet_device target ${name} via cron":
-      ensure  => $cron_ensure,
-      command => "${puppet_device::run::command} --target ${name} --waitforcert=0",
-      user    => 'root',
-      hour    => $run_via_cron_hour,
-      minute  => $run_via_cron_minute,
+    if ($facts['osfamily'] == 'windows') {
+      notify {'Warning: run_via_cron is not supported on Windows':}
+    } else {
+      cron { "run puppet_device target ${name}":
+        ensure  => $cron_ensure,
+        command => "${puppet_device::run::command} ${puppet_device::run::arguments} --target ${name}",
+        user    => 'root',
+        hour    => $run_via_cron_hour,
+        minute  => $run_via_cron_minute,
+      }
     }
-
   } else {
-
-    include puppet_device::run::via_cron::untargeted
-
+    if ($run_via_cron and ($ensure == present)) {
+      # The following is included to create just one Cron resource for all devices.
+      include puppet_device::run::via_cron::untargeted
+    }
   }
 
 }

@@ -1,6 +1,7 @@
 ## Release 2.1.2
 
 - Added documentation.
+- Tuneup cron, and prepare a scheduled_task.
 
 ## Release 2.1.1
 

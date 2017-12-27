@@ -3,17 +3,17 @@
 
 class puppet_device::run {
 
-  # PUP-1391
-  if (versioncmp($::puppetversion, '5.4.0') >= 0) {
-    $user_root = ''
+  if ($facts['osfamily'] == 'windows') {
+    $command = "${::env_windows_installdir}\\bin\\puppet"
   } else {
-    $user_root = '--user=root'
+    $command = '/opt/puppetlabs/puppet/bin/puppet'
   }
 
-  if ($facts['osfamily'] == 'windows') {
-    $command = "\"${::env_windows_installdir}\\bin\\puppet device\" ${user_root}"
+  # PUP-1391
+  if (versioncmp($::puppetversion, '5.4.0') >= 0) {
+    $arguments = 'device --waitforcert=0'
   } else {
-    $command = "/opt/puppetlabs/puppet/bin/puppet device ${user_root}"
+    $arguments = 'device --waitforcert=0 --user=root'
   }
 
   # PUP-7412

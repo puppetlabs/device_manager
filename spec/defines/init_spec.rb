@@ -105,8 +105,8 @@ describe 'puppet_device' do
     it { is_expected.to contain_class('puppet_device::fact') }
     it { is_expected.to contain_puppet_device__run__via_cron__device('bigip.example.com') }
     it {
-      is_expected.to contain_cron('run puppet_device target bigip.example.com via cron').with_command(
-        '/opt/puppetlabs/puppet/bin/puppet device --user=root --target bigip.example.com --waitforcert=0',
+      is_expected.to contain_cron('run puppet_device target bigip.example.com').with_command(
+        '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --target bigip.example.com',
       )
     }
   end
@@ -139,8 +139,8 @@ describe 'puppet_device' do
     it { is_expected.to contain_class('puppet_device::fact') }
     it { is_expected.to contain_puppet_device__run__via_cron__device('bigip.example.com') }
     it {
-      is_expected.to contain_cron('run puppet_device target bigip.example.com via cron').with_command(
-        '/opt/puppetlabs/puppet/bin/puppet device  --target bigip.example.com --waitforcert=0',
+      is_expected.to contain_cron('run puppet_device target bigip.example.com').with_command(
+        '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --target bigip.example.com',
       )
     }
   end
@@ -196,7 +196,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_puppet_device__run__via_exec__device('bigip.example.com') }
     it {
       is_expected.to contain_exec('run puppet_device target bigip.example.com').with_command(
-        '/opt/puppetlabs/puppet/bin/puppet device --user=root --target bigip.example.com --waitforcert=0',
+        '"/opt/puppetlabs/puppet/bin/puppet" device --waitforcert=0 --user=root --target bigip.example.com',
       )
     }
   end
@@ -228,7 +228,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_puppet_device__run__via_exec__device('bigip.example.com') }
     it {
       is_expected.to contain_exec('run puppet_device target bigip.example.com').with_command(
-        '/opt/puppetlabs/puppet/bin/puppet device  --target bigip.example.com --waitforcert=0',
+        '"/opt/puppetlabs/puppet/bin/puppet" device --waitforcert=0 --target bigip.example.com',
       )
     }
   end

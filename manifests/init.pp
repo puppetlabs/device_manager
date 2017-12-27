@@ -45,7 +45,7 @@ define puppet_device (
     run_via_cron_minute => $run_via_cron_minute,
   }
 
-  # Optionally, add a `puppet device` Exec for this device.
+  # Optionally, declare a `puppet device` Exec for this device.
 
   if ($run_via_exec and ($ensure == present)) {
     puppet_device::run::via_exec::device { $name: }

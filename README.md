@@ -17,8 +17,8 @@ Devices require a (proxy) Puppet agent to request certificates, collect facts, r
 
 1. Allows for the configuration of `device.conf` in a manifest or Hiera.
 1. Provides an option for scheduling of `puppet device` runs on Puppet agents.
-1. Provides an optional task for direct orchestration of `puppet device` runs on newer Puppet agents.
-1. Provides an option for indirect orchestration of `puppet device` runs on older Puppet agents.
+1. Provides a task for direct orchestration of `puppet device` runs on newer Puppet agents.
+1. Provides an Exec resource for indirect orchestration of `puppet device` runs on older Puppet agents.
 1. Defines a structured fact that can be used to query PuppetDB to identify the Puppet agent proxying for a device.
 
 ## Usage
@@ -119,11 +119,11 @@ puppet_device {'bigip.example.com':
   url                 => 'https://admin:fffff55555@10.0.0.245/',
   run_via_cron        => true,
   run_via_cron_hour   => '11',
-  run_via_cron_minute => '29',
+  run_via_cron_minute => '30',
 }
 ```
 
-Note that `run_via_cron` is not supported on agents (older than Puppet 5.0) where `puppet device` does not implement `--target`.
+Note that `run_via_cron` is not supported on older agents (earlier than Puppet 5.0) where `puppet device` does not implement `--target`.
 
 ### run_via_cron_hour (beta)
 
@@ -143,7 +143,7 @@ This parameter is optional, without a default, and not specifying it is equivale
 
 Specifies the minute attribute of the Cron resource created by `run_via_cron`.
 
-The String type allows either values: `'29'` or steps: `'*/2'` but not arrays: `'[0,59]'`.
+The String type allows either values: `'30'` or steps: `'*/2'` but not arrays: `'[0,59]'`.
 
 ### run_via_exec
 
