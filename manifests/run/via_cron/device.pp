@@ -16,14 +16,14 @@ define puppet_device::run::via_cron::device (
 
   if $puppet_device::run::targetable {
 
-    $random_minute = sprintf('%02d', fqdn_rand(59, $name))
+    $minute = sprintf('%02d', fqdn_rand(59, $name))
 
     cron { "run puppet_device target ${name}":
       ensure  => $cron_ensure,
       command => "${puppet_device::run::command} ${puppet_device::run::arguments} --target ${name}",
       user    => 'root',
       hour    => '*',
-      minute  => $random_minute,
+      minute  => $minute,
     }
 
   } else {

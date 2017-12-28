@@ -8,7 +8,7 @@
 class puppet_device::run::via_cron::untargeted {
   # notify {"Warning: run_interval uses a default of (${puppet_device::run::interval}) where 'puppet device' does not implement '--target'":}
 
-  $minute = "00:${puppet_device::run::random_minute}"
+  $minute = $puppet_device::run::random_minute
 
   cron { 'run puppet_device':
     ensure  => present,
