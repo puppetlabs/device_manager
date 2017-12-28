@@ -2,11 +2,23 @@
 # @api private
 
 # This class is declared via include to create just one Scheduled Task resource for all devices.
-
-# But the parameters specified in the calling class are not accessible,
-# and even if so, only one (the first) device's parameters would be applied.
-# Rather than deviating and specifying default parameters, don't create the resource.
+# But then the parameters specified in the calling class are not accessible.
+# Use reasonable defaults.
 
 class puppet_device::run::via_scheduled_task::untargeted {
-  notify {"Warning: via_scheduled_task is not supported where 'puppet device' does not implement '--target'":}
+  # notify {"Warning: run_interval uses a default of (${puppet_device::run::interval}) where 'puppet device' does not implement '--target'":}
+
+  $start_time = "00:${puppet_device::run::random_minute}"
+
+  scheduled_task { 'run puppet_device':
+    ensure    => present,
+    command   => $puppet_device::run::command,
+    arguments => $puppet_device::run::arguments,
+    trigger   => {
+      schedule         => 'daily',
+      minutes_interval => '60',
+      start_time       => $start_time,
+    }
+  }
+
 }

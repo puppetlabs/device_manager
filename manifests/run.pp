@@ -3,10 +3,10 @@
 
 class puppet_device::run {
 
-  if ($facts['osfamily'] == 'windows') {
-    $command = "${::env_windows_installdir}\\bin\\puppet"
-  } else {
+  if ($facts['osfamily'] != 'windows') {
     $command = '/opt/puppetlabs/puppet/bin/puppet'
+  } else {
+    $command = "${::env_windows_installdir}\\bin\\puppet"
   }
 
   # PUP-1391
@@ -19,4 +19,5 @@ class puppet_device::run {
   # PUP-7412
   $targetable = (versioncmp($::puppetversion, '5.0.0') >= 0)
 
+  $random_minute = sprintf('%02d', fqdn_rand(59, 'puppet_device'))
 }

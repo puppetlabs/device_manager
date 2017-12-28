@@ -3,10 +3,13 @@
 # @api private
 
 class puppet_device::fact {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
+
+  if ($facts['osfamily'] != 'windows') {
+    File {
+      owner => 'root',
+      group => 'root',
+      mode  => '0644',
+    }
   }
 
   # Use a fact to identify the confdir on this agent.

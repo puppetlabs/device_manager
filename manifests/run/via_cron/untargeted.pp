@@ -2,11 +2,20 @@
 # @api private
 
 # This class is declared via include to create just one Cron resource for all devices.
-
-# But the parameters specified in the calling class are not accessible,
-# and even if so, only one (the first) device's parameters would be applied.
-# Rather than deviating and specifying default parameters, don't create the resource.
+# But then the parameters specified in the calling class are not accessible.
+# Use reasonable defaults.
 
 class puppet_device::run::via_cron::untargeted {
-  notify {"Warning: run_via_cron is not supported where 'puppet device' does not implement '--target'":}
+  # notify {"Warning: run_interval uses a default of (${puppet_device::run::interval}) where 'puppet device' does not implement '--target'":}
+
+  $minute = "00:${puppet_device::run::random_minute}"
+
+  cron { 'run puppet_device':
+    ensure  => present,
+    command => "${puppet_device::run::command} ${puppet_device::run::arguments}",
+    user    => 'root',
+    hour    => '*',
+    minute  => $minute,
+  }
+
 }

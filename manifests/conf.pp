@@ -4,10 +4,12 @@
 
 class puppet_device::conf {
 
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
+  if ($facts['osfamily'] != 'windows') {
+    File {
+      owner => 'root',
+      group => 'root',
+      mode  => '0644',
+    }
   }
 
   # Use a fact to identify the deviceconfig file on this agent.

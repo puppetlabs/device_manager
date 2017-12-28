@@ -1,24 +1,18 @@
 # Manage this device.
 
 define puppet_device (
-  String                $type,
-  String                $url,
-  Boolean               $debug               = false,
-  Boolean               $run_via_cron        = false,
-  Boolean               $run_via_exec        = false,
-  Optional[String]      $run_via_cron_hour   = absent,
-  Optional[String]      $run_via_cron_minute = absent,
-  Enum[present, absent] $ensure              = present,
+  String[1]              $type,
+  String[5]              $url,
+  Boolean                $debug        = false,
+  Boolean                $run_via_cron = false,
+  Boolean                $run_via_exec = false,
+  Enum[present, absent]  $ensure       = present,
 ) {
 
   # Validate parameters.
 
   if ($run_via_cron and $run_via_exec) {
     fail('Parameter Error: run_via_cron and run_via_exec are mutually-exclusive')
-  }
-
-  if ($run_via_cron and $run_via_cron_hour == absent and $run_via_cron_minute == absent) {
-    fail('Parameter Error: run_via_cron_hour and run_via_cron_minute cannot both be absent or undefined')
   }
 
   # Add, update, or remove this device in the deviceconfig file.
@@ -36,13 +30,22 @@ define puppet_device (
     ensure => $ensure,
   }
 
-  # Add, update, or remove a `puppet device` Cron for this device.
+  # Add, update, or remove a `puppet device` cron (or scheduled task) for this device.
 
-  puppet_device::run::via_cron::device { $name:
-    ensure              => $ensure,
-    run_via_cron        => $run_via_cron,
-    run_via_cron_hour   => $run_via_cron_hour,
-    run_via_cron_minute => $run_via_cron_minute,
+  if ($facts['osfamily'] != 'windows') {
+
+    puppet_device::run::via_cron::device { $name:
+      ensure       => $ensure,
+      schedule_run => $run_via_cron,
+    }
+
+  } else {
+
+    puppet_device::run::via_scheduled_task::device { $name:
+      ensure       => $ensure,
+      schedule_run => $run_via_cron,
+    }
+
   }
 
   # Optionally, declare a `puppet device` Exec for this device.

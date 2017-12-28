@@ -10,9 +10,6 @@ class puppet_device::devices {
     $devices = hiera_hash('puppet_device::devices', {})
   }
 
-  # Use $devices.each ... or create_resources(puppet_device, $devices)?
-  # Consider: http://garylarizza.com/blog/2014/10/24/puppet-workflows-4-using-hiera-in-anger/
-
   $devices.each |$title, $device| {
     puppet_device {$title:
       name         => $device['name'],
