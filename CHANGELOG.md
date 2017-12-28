@@ -1,3 +1,8 @@
+## Release 2.2.0
+
+- Abstract cron and scheduled_task.
+- Correct fact location on Windows.
+
 ## Release 2.1.2
 
 - Added documentation.
