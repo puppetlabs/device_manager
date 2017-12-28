@@ -15,10 +15,10 @@ Devices require a (proxy) Puppet agent to request certificates, collect facts, r
 
 ## What does this module provide?
 
-1. Allows for the configuration of `device.conf` in a manifest or Hiera.
+1. Allows for the configuration of `device.conf` in a manifest or in Hiera.
 1. Provides an option for scheduling of `puppet device` runs on Puppet agents.
-1. Provides a task for direct orchestration of `puppet device` runs on newer Puppet agents.
-1. Provides an Exec resource for indirect orchestration of `puppet device` runs on older Puppet agents.
+1. Provides an optional task for direct orchestration of `puppet device` runs on newer Puppet agents.
+1. Provides an option for indirect orchestration of `puppet device` runs on older Puppet agents.
 1. Defines a structured fact that can be used to query PuppetDB to identify the Puppet agent proxying for a device.
 
 ## Usage
@@ -63,7 +63,7 @@ node 'agent.example.com'  {
 }
 ~~~
 
-(Note that an f5 device is used as an example, but this module is not limited to F5 devices.)
+Note: An f5 device is used as an example, but this module is not limited to F5 devices.
 
 ## Parameters
 
@@ -103,59 +103,15 @@ This parameter is optional, with a default of false.
 
 Specifies transport-level debug output for the device, and is limited to telnet and ssh transports.
 
-### run_via_cron (beta)
-
-Data type: Boolean
-
-This parameter is optional, with a default of false.
-
-Setting `run_via_cron` to true will create a Cron resource for the device that executes `puppet device --target` on the Puppet agent. On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this feature is not supported and no Cron resource will be created.
-
-When this parameter is set to true, either `run_via_cron_hour` or `run_via_cron_minute` must be specified.
-
-```
-puppet_device {'bigip.example.com':
-  type                => 'f5',
-  url                 => 'https://admin:fffff55555@10.0.0.245/',
-  run_via_cron        => true,
-  run_via_cron_hour   => '11',
-  run_via_cron_minute => '30',
-}
-```
-
-Note that `run_via_cron` is not supported on older agents (earlier than Puppet 5.0) where `puppet device` does not implement `--target`.
-
-### run_via_cron_hour (beta)
-
-Data type: String
-
-This parameter is optional, without a default, and not specifying it is equivalent to `hour => absent`.
-
-Specifies the hour attribute of the Cron resource created by `run_via_cron`.
-
-The String type allows either values: `'11'` or steps: `'*/2'` but not arrays: `'[0,11]'`.
-
-### run_via_cron_minute (beta)
-
-Data type: String
-
-This parameter is optional, without a default, and not specifying it is equivalent to `minute => absent`.
-
-Specifies the minute attribute of the Cron resource created by `run_via_cron`.
-
-The String type allows either values: `'30'` or steps: `'*/2'` but not arrays: `'[0,59]'`.
-
 ### run_via_exec
 
 Data type: Boolean
 
 This parameter is optional, with a default of false.
 
-Specifies whether to automatically run `puppet device` during each `puppet agent` run on the Puppet agent.
+Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` during each `puppet agent` on the Puppet agent.
 
-Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` on the Puppet agent. On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
-
-Note that this will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
+Note: This will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
 
 ```
 puppet_device {'bigip.example.com':
@@ -164,6 +120,26 @@ puppet_device {'bigip.example.com':
   run_via_exec => true,
 }
 ```
+
+Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
+
+### run_via_cron (beta)
+
+Data type: Boolean
+
+This parameter is optional, with a default of false.
+
+Setting `run_interval` to true will create a Cron or Scheduled Task resource for the device that executes `puppet device --target` every hour (at a randomized minute) on the Puppet agent.
+
+```
+puppet_device {'bigip.example.com':
+  type                => 'f5',
+  url                 => 'https://admin:fffff55555@10.0.0.245/',
+  run_via_cron        => true,
+}
+```
+
+Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this will instead create one Cron or Scheduled Task resource that executes `puppet device` for all devices every hour (at a randomized minute) on the Puppet agent.
 
 ## Orchestration
 
