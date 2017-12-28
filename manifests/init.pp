@@ -30,7 +30,7 @@ define puppet_device (
     ensure => $ensure,
   }
 
-  # Add, update, or remove a `puppet device` cron (or scheduled task) for this device.
+  # Add, update, or remove a `puppet device` Cron (or Scheduled Task) for this device.
 
   if ($facts['osfamily'] != 'windows') {
 
