@@ -53,14 +53,14 @@ describe 'puppet_device' do
     it { is_expected.to contain_class('puppet_device::fact') }
   end
 
-  context 'on Linux, running Puppet 4.10, with run_via_cron' do
+  context 'on Linux, running Puppet 4.10, with run_interval' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
         :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_via_cron => true,
+        :run_interval => 30,
       }
     }
     let(:facts) {
@@ -84,14 +84,14 @@ describe 'puppet_device' do
     }
   end
 
-  context 'on Linux, running Puppet 5.0, with run_via_cron' do
+  context 'on Linux, running Puppet 5.0, with run_interval' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
         :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_via_cron => true,
+        :run_interval => 30,
       }
     }
     let(:facts) {
@@ -115,14 +115,14 @@ describe 'puppet_device' do
     }
   end
 
-  context 'on Windows, running Puppet 5.0, with run_via_cron' do
+  context 'on Windows, running Puppet 5.0, with run_interval' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
         :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_via_cron => true,
+        :run_interval => 30,
       }
     }
     let(:facts) {
@@ -178,15 +178,15 @@ describe 'puppet_device' do
     }
   end
 
-  context 'on Linux, running Puppet 5.0, with run_via_cron and run_via_exec parameters' do
+  context 'on Linux, running Puppet 5.0, with run_interval and run_via_exec parameters' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
         :ensure       => :present,
         :type         => 'f5',
         :url          => 'https://admin:fffff55555@10.0.0.245/',
+        :run_interval => 30,
         :run_via_exec => true,
-        :run_via_cron => true,
       }
     }
     let(:facts) {

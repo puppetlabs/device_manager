@@ -4,15 +4,15 @@ define puppet_device (
   String[1]              $type,
   String[5]              $url,
   Boolean                $debug        = false,
-  Boolean                $run_via_cron = false,
+  Integer[0,1440]        $run_interval = 0,
   Boolean                $run_via_exec = false,
   Enum[present, absent]  $ensure       = present,
 ) {
 
   # Validate parameters.
 
-  if ($run_via_cron and $run_via_exec) {
-    fail('Parameter Error: run_via_cron and run_via_exec are mutually-exclusive')
+  if ($run_interval > 0 and $run_via_exec) {
+    fail('Parameter Error: run_interval and run_via_exec are mutually-exclusive')
   }
 
   # Add, update, or remove this device in the deviceconfig file.
@@ -36,14 +36,14 @@ define puppet_device (
 
     puppet_device::run::via_cron::device { $name:
       ensure       => $ensure,
-      schedule_run => $run_via_cron,
+      run_interval => $run_interval,
     }
 
   } else {
 
     puppet_device::run::via_scheduled_task::device { $name:
       ensure       => $ensure,
-      schedule_run => $run_via_cron,
+      run_interval => $run_interval,
     }
 
   }

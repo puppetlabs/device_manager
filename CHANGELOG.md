@@ -1,3 +1,7 @@
+## Release 2.3.0
+
+- Restore run_interval parameter for cron and scheduled_task.
+
 ## Release 2.2.0
 
 - Abstract cron and scheduled_task.

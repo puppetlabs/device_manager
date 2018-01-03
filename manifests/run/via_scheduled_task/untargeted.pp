@@ -13,8 +13,8 @@ class puppet_device::run::via_scheduled_task::untargeted {
     arguments => $puppet_device::run::arguments,
     trigger   => {
       schedule         => 'daily',
-      minutes_interval => '60',
       start_time       => $start_time,
+      minutes_interval => '60',
     }
   }
 

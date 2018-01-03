@@ -3,12 +3,12 @@
 
 define puppet_device::run::via_scheduled_task::device (
   String  $ensure,
-  Boolean $schedule_run,
+  Integer $run_interval,
 ){
 
   include puppet_device::run
 
-  if (($ensure == present) and $schedule_run) {
+  if (($ensure == present) and $run_interval > 0) {
     $scheduled_task_ensure = present
   } else {
     $scheduled_task_ensure = absent
@@ -25,14 +25,14 @@ define puppet_device::run::via_scheduled_task::device (
       arguments => "${puppet_device::run::arguments} --target ${name}",
       trigger   => {
         schedule         => 'daily',
-        minutes_interval => '60',
         start_time       => $start_time,
+        minutes_interval => $run_interval,
       }
     }
 
   } else {
 
-    if (($ensure == present) and $schedule_run) {
+    if (($ensure == present) and $run_interval > 0) {
       # The following is included to create just one resource for all devices.
       include puppet_device::run::via_scheduled_task::untargeted
     }

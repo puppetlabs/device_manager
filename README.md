@@ -103,19 +103,21 @@ This parameter is optional, with a default of false.
 
 Specifies transport-level debug output for the device, and is limited to telnet and ssh transports.
 
-### run_via_cron (beta)
+### run_interval (beta)
 
-Data type: Boolean
+Data type: Integer
 
-This parameter is optional, with a default of false.
+This parameter is optional, with a default of 0.
 
-Setting `run_interval` to true will create a Cron (or Scheduled Task) resource for the device that executes `puppet device --target` every hour (at a randomized minute) on the Puppet agent.
+Setting `run_interval` to a value between 1 an 1440 will create a Cron (or Scheduled Task) resource for the device that executes `puppet device --target` every `run_interval` minutes (with a randomized offset) on the Puppet agent. When creating a Cron resource, values greater than thirty minutes will be rounded up to the nearest hour.
+
+[comment]: # (Doing so avoids impractical cron mathematics.)
 
 ```
 puppet_device {'bigip.example.com':
   type                => 'f5',
   url                 => 'https://admin:fffff55555@10.0.0.245/',
-  run_via_cron        => true,
+  run_interval        => 30,
 }
 ```
 
