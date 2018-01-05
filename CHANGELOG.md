@@ -1,3 +1,8 @@
+## Release 2.3.1
+
+- Typo in README.
+- Tune run_interval.
+
 ## Release 2.3.0
 
 - Restore run_interval parameter for cron and scheduled_task.

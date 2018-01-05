@@ -109,7 +109,7 @@ Data type: Integer
 
 This parameter is optional, with a default of 0.
 
-Setting `run_interval` to a value between 1 an 1440 will create a Cron (or Scheduled Task) resource for the device that executes `puppet device --target` every `run_interval` minutes (with a randomized offset) on the Puppet agent. When creating a Cron resource, values greater than thirty minutes will be rounded up to the nearest hour.
+Setting `run_interval` to a value between 1 and 1440 will create a Cron (or Scheduled Task) resource for the device that executes `puppet device --target` every `run_interval` minutes (with a randomized offset) on the Puppet agent. When creating a Cron resource, values greater than thirty minutes will be rounded up to the nearest hour.
 
 [comment]: # (Doing so avoids impractical cron mathematics.)
 

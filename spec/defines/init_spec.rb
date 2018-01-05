@@ -111,6 +111,8 @@ describe 'puppet_device' do
     it {
       is_expected.to contain_cron('run puppet_device target bigip.example.com').with(
         'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --target bigip.example.com',
+        'hour'    => '*',
+        'minute'  => ["11", "41"],
       )
     }
   end

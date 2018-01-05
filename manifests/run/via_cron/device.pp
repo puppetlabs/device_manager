@@ -16,33 +16,29 @@ define puppet_device::run::via_cron::device (
 
   if $puppet_device::run::targetable {
 
-    # The following Puppet code is the equivalent to the Ruby code in the
-    # build_mcollective_metadata_cron_minute_array function for refresh-mcollective-metadata.
-    #
-    # $offset = fqdn_rand($interval)
-    # $intervals = range(0, ((60 / $interval) - 1))
-    # $minute = $intervals.map |$i| { $i * $interval + $offset }
-    #
-    # Both produce unexpected results when interval is greater than 30.
-    # The following addresses that by rounding interval up to the next hour.
-    # Doing so avoids impractical cron mathematics.
-
     if ($run_interval == 0) {
-      $hour = '*'
-      $minute = sprintf('%02d', fqdn_rand(59, $name))
+      $hour   = absent
+      $minute = absent
+    } elsif ($run_interval == 1) {
+      # Use '*' instead of generating a list of every minute in an hour.
+      $hour   = '*'
+      $minute = '*'
     } elsif ($run_interval <= 30) {
+      # Generate a randomly offset list of interval minutes.
       $intervals = range(0, ((60 / $run_interval) - 1))
-      $offset = fqdn_rand($run_interval, $name)
-      $hour = '*'
+      $offset = fqdn_rand(min($run_interval, 59), $name)
+      $hour   = '*'
       $minute = $intervals.map |$i| { sprintf('%02d', $i * $run_interval + $offset) }
     } elsif ($run_interval <= 60) {
-      # notify {'run_interval values greater than thirty minutes will be rounded up to the nearest hour':}
-      $hour = '*'
-      $minute = sprintf('%02d', fqdn_rand(59, $name))
+      debug('rounding run_interval up to an hour, to accommodate cron syntax')
+      $hour   = '*'
+      $offset = fqdn_rand(min($run_interval, 59), $name)
+      $minute = sprintf('%02d', $offset)
     } else {
-      # notify {'run_interval values greater than thirty minutes will be rounded up to the nearest hour':}
-      $hour = sprintf('*/%02d', ceiling($run_interval / 60.0))
-      $minute = fqdn_rand(59, $name)
+      debug('rounding run_interval up to the nearest hour, to accommodate cron syntax')
+      $offset = fqdn_rand(min($run_interval, 59), $name)
+      $hour   = sprintf('*/%d', ceiling($run_interval / 60.0))
+      $minute = sprintf('%02d', $offset)
     }
 
     cron { "run puppet_device target ${name}":
