@@ -6,125 +6,141 @@ require 'puppet'
 require 'puppet/util/network_device/config'
 require 'timeout'
 
-# Initialize
-
-default_timeout = 64
-results = {}
-result = {}
-exitcode = 0
-
-# Parameters
+####
 
 params = JSON.parse(STDIN.read)
 noop = (params['_noop']) ? '--noop' : ''
 target = (params['target']) ? params['target'] : ''
-timeout = (params['timeout'].to_i > 0) ? params['timeout'].to_i : default_timeout
-
-# TODO: Identify INSTALLDIR on Windows.
-
+timeout = (params['timeout'].to_i > 0) ? params['timeout'].to_i : 4
 puppet = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
 command = "#{puppet} device --user=root -v --waitforcert=0 #{noop}"
 
-# Read deviceconfig to identify devices
+####
 
-Puppet.initialize_settings
-devices = Puppet::Util::NetworkDevice::Config.devices.dup
-# Create device list, optionally limited to a list of one target device
-devices.select! { |key, _value| key == target } if target != ''
-if devices.empty?
+def read_device_config(target)
+  Puppet.initialize_settings
+  devices = Puppet::Util::NetworkDevice::Config.devices.dup
+  if target != ''
+    devices.select! { |key, _value| key == target }
+  end
+  devices
+end
+
+#
+
+def run_puppet_device(command, timeout, devices)
+  results = {}
+  results['error_count'] = 0
+
+  devices.collect do |device_name, _device|
+    line = ''
+    error_message = ''
+    configuration_version = ''
+    catalog_seconds = ''
+    status = ''
+    result = ''
+
+    begin
+      Open3.popen2e("#{command} --target #{device_name}") do |_, oe, w|
+        begin
+          Timeout.timeout(timeout) do
+            until oe.eof?
+              line = oe.readline
+              if (matched = line.match(%r{Error: (?<error>.*)}))
+                error_message = matched[:error]
+              end
+              if (matched = line.match(%r{Applying configuration version '(?<version>.*?)'}))
+                configuration_version = matched[:version]
+              end
+              if (matched = line.match(%r{Applied catalog in (?<seconds>.*?) seconds}))
+                catalog_seconds = matched[:seconds]
+              end
+            end
+          end
+        rescue Timeout::Error
+          Process.kill('KILL', w.pid)
+          error_message = 'timeout error'
+        end
+      end
+    rescue => e
+      error_message = e.message
+    end
+
+    error_message.gsub!(%r{\e\[(\d+)m}, '')
+
+    if configuration_version != '' && catalog_seconds != '' && error_message == ''
+      status = 'success'
+      result = "applied configuration version '#{configuration_version}' in #{catalog_seconds} seconds"
+    else
+      status = 'error'
+      if error_message == ''
+        error_message = 'unable to parse the output of the puppet device command'
+      end
+      result = error_message
+      results['error_count'] = results['error_count'] + 1
+    end
+
+    results[device_name] = {
+      status: status,
+      result: result,
+    }
+  end
+
+  results
+end
+
+#
+
+def return_result_read_device_config_error(params)
+  result = {}
   result[:_error] = {
-    msg: "deviceconfig error: unable to find device(s) in #{Puppet[:deviceconfig]}",
+    msg: "deviceconfig error: unable to find device in #{Puppet[:deviceconfig]}",
     kind: 'tkishel/puppet_device',
     details: {
       params: {
-        noop: noop,
-        target: target
+        noop: params['noop'],
+        target: params['target'],
+        timeout: params['timeout']
       }
     }
   }
-  exitcode = 1
   puts result.to_json
-  exit exitcode
+  exit 1
 end
 
-# Execute the task
+#
 
-devices.collect do |device_name, _device|
-  line = ''
-  device_error = ''
-  device_version = ''
-  device_seconds = ''
-  device_status = ''
-  device_result = ''
-
-  begin
-    Open3.popen2e("#{command} --target #{device_name}") do |_, oe, w|
-      begin
-        Timeout.timeout(timeout) do
-          until oe.eof?
-            line = oe.readline
-            if (matched = line.match(%r{Error: (?<error>.*)}))
-              device_error = matched[:error]
-              exitcode = 1
-            end
-            if (matched = line.match(%r{Applying configuration version '(?<version>.*?)'}))
-              device_version = matched[:version]
-            end
-            if (matched = line.match(%r{Applied catalog in (?<seconds>.*?) seconds}))
-              device_seconds = matched[:seconds]
-            end
-          end
-        end
-      rescue Timeout::Error
-        Process.kill('KILL', w.pid)
-        device_error = 'timeout error'
-        exitcode = 1
-      end
-    end
-  rescue => e
-    device_error = e.message
-    exitcode = 1
-  end
-
-  device_error.gsub!(%r{\e\[(\d+)m}, '')
-  if device_version != '' && device_seconds != '' && device_error == ''
-    device_status = 'success'
-    device_result = "applied configuration version '#{device_version}' in #{device_seconds} seconds"
-  else
-    device_status = 'error'
-    device_error = 'unable to parse the output of the puppet device command' if device_error == ''
-    device_result = device_error
-  end
-
-  results[device_name] = {
-    status: device_status,
-    result: device_result,
-  }
-end
-
-# Compose the result
-
-if exitcode.zero?
-  result['status'] = 'success'
-  result['results'] = results
-else
-  noop.slice! '--'
-  target.slice! '--target '
-  result[:_error] = {
-    msg: 'puppet device error',
-    kind: 'tkishel/puppet_device',
-    details: {
-      params: {
-        noop: noop,
-        target: target,
-        timeout: timeout
-      },
-      results: results
+def return_result(params, results)
+  result = {}
+  if results['error_count'] > 0
+    exit_code = 1
+    result[:_error] = {
+      msg: 'puppet device errors',
+      kind: 'tkishel/puppet_device',
+      details: {
+        params: {
+          noop: params['noop'],
+          target: params['target'],
+          timeout: params['timeout']
+        },
+        results: results
+      }
     }
-  }
+  else
+    exit_code = 0
+    result['status'] = 'success'
+    result['results'] = results
+  end
+  puts result.to_json
+  exit exit_code
 end
 
-# Return the result
+####
 
-puts result.to_json
-exit exitcode
+configured_devices = read_device_config(target)
+if configured_devices
+  results = run_puppet_device(command, timeout, configured_devices)
+  return_result(params, results)
+else
+  return_result_read_device_config_error(params)
+end
