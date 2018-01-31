@@ -22,7 +22,7 @@ describe "puppet_device::interval_to_cron_time" do
   context "when interval is less than 30" do
     it { is_expected.to run.with_params(15, 1).and_return({
         'hour'   => '*',
-        'minute' => ["01", "16", "31", "46"],
+        'minute' => [1, 16, 31, 46],
       })
     }
   end
@@ -30,7 +30,7 @@ describe "puppet_device::interval_to_cron_time" do
   context "when interval is equal to 30" do
     it { is_expected.to run.with_params(30, 1).and_return({
         'hour'   => '*',
-        'minute' => ["01", "31"],
+        'minute' => [1, 31],
       })
     }
   end
@@ -38,7 +38,7 @@ describe "puppet_device::interval_to_cron_time" do
   context "when interval is more than 30 and less than 60" do
     it { is_expected.to run.with_params(45, 1).and_return({
         'hour'   => '*',
-        'minute' => '01',
+        'minute' => 1,
       })
     }
   end
@@ -46,7 +46,7 @@ describe "puppet_device::interval_to_cron_time" do
   context "when interval is equal to 60" do
     it { is_expected.to run.with_params(60, 1).and_return({
         'hour'   => '*',
-        'minute' => '01',
+        'minute' => 1,
       })
     }
   end
@@ -54,7 +54,7 @@ describe "puppet_device::interval_to_cron_time" do
   context "when interval is greater than 60" do
     it { is_expected.to run.with_params(75, 1).and_return({
         'hour'   => '*/2',
-        'minute' => '01',
+        'minute' => 1,
       })
     }
   end

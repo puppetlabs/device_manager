@@ -28,18 +28,20 @@ define puppet_device::run::via_cron::device (
       $intervals = range(0, ((60 / $run_interval) - 1))
       $offset = fqdn_rand(min($run_interval, 59), $name)
       $hour   = '*'
-      $minute = $intervals.map |$i| { sprintf('%02d', $i * $run_interval + $offset) }
+      $minute = $intervals.map |$i| { ($i * $run_interval + $offset) }
     } elsif ($run_interval <= 60) {
       debug('rounding run_interval up to an hour, to accommodate cron syntax')
       $hour   = '*'
       $offset = fqdn_rand(min($run_interval, 59), $name)
-      $minute = sprintf('%02d', $offset)
+      $minute = $offset
     } else {
       debug('rounding run_interval up to the nearest hour, to accommodate cron syntax')
       $offset = fqdn_rand(min($run_interval, 59), $name)
       $hour   = sprintf('*/%d', ceiling($run_interval / 60.0))
-      $minute = sprintf('%02d', $offset)
+      $minute = $offset
     }
+
+    # $cron_time = puppet_device::interval_to_cron_time($run_interval, fqdn_rand(max(1,min($run_interval, 59)), $name))
 
     cron { "run puppet_device target ${name}":
       ensure  => $cron_ensure,
@@ -47,6 +49,8 @@ define puppet_device::run::via_cron::device (
       user    => 'root',
       hour    => $hour,
       minute  => $minute,
+      # hour     => $cron_time['hour'],
+      # minute   => $cron_time['minute'],
     }
 
   } else {
