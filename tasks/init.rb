@@ -6,25 +6,24 @@ require 'puppet'
 require 'puppet/util/network_device/config'
 require 'timeout'
 
-# Defaults
+# Initialize
 
 default_timeout = 64
-
-# Input
-
-args = JSON.parse(STDIN.read)
-noop = (args['_noop']) ? '--noop' : ''
-target = (args['target']) ? args['target'] : ''
-timeout = (args['timeout'].to_i > 0) ? args['timeout'].to_i : default_timeout
-
-# Variables
-
-# TODO: Replace this with code that references INSTALLDIR on Windows.
-puppet = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
-command = "#{puppet} device --user=root -v --waitforcert=0 #{noop}"
 results = {}
 result = {}
 exitcode = 0
+
+# Parameters
+
+params = JSON.parse(STDIN.read)
+noop = (params['_noop']) ? '--noop' : ''
+target = (params['target']) ? params['target'] : ''
+timeout = (params['timeout'].to_i > 0) ? params['timeout'].to_i : default_timeout
+
+# TODO: Identify INSTALLDIR on Windows.
+
+puppet = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
+command = "#{puppet} device --user=root -v --waitforcert=0 #{noop}"
 
 # Read deviceconfig to identify devices
 
