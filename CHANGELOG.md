@@ -1,3 +1,8 @@
+## Release 2.3.3
+
+- Rewrite task using methods
+- Update run_interval function
+
 ## Release 2.3.1
 
 - Typo in README.
