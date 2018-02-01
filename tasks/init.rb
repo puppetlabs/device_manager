@@ -93,8 +93,9 @@ end
 
 def return_result_read_device_config_error(params)
   result = {}
+  plurality = (params['target']) ? "device named [#{params['target']}]" : 'devices'
   result[:_error] = {
-    msg: "deviceconfig error: unable to find device in #{Puppet[:deviceconfig]}",
+    msg: "configuration error: no #{plurality} in #{Puppet[:deviceconfig]}",
     kind: 'tkishel/puppet_device',
     details: {
       params: {
@@ -114,8 +115,9 @@ def return_result(params, results)
   result = {}
   if results['error_count'] > 0
     exit_code = 1
+    plurality = (results['error_count'] > 1) ? 's' : ''
     result[:_error] = {
-      msg: 'puppet device errors',
+      msg: "puppet device run error#{plurality}: review status with `puppet job show`",
       kind: 'tkishel/puppet_device',
       details: {
         params: {
@@ -138,7 +140,8 @@ end
 ####
 
 configured_devices = read_device_config(target)
-if configured_devices
+
+if configured_devices.count > 0
   results = run_puppet_device(command, timeout, configured_devices)
   return_result(params, results)
 else
