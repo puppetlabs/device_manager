@@ -9,7 +9,7 @@
     },
     "timeout": {
       "description": "The timeout in seconds for the puppet device command(s), defaults to 64",
-      "type": "Optional[Variant[Integer, Pattern[/\A\d+\Z/]]]"
+      "type": "Optional[Variant[Integer, String[1]]]"
     }
   }
 }
