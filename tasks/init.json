@@ -5,11 +5,11 @@
   "parameters": {
     "target": {
       "description": "The name of a device in device.conf on the (proxy) Puppet agent",
-      "type": "Optional[String[1]]"
+      "type": "Optional[Pattern[/^[a-z0-9._-]+$/]]"
     },
     "timeout": {
       "description": "The timeout in seconds for the puppet device command(s), defaults to 64",
-      "type": "Optional[Variant[Integer, String[1]]]"
+      "type": "Optional[Variant[Integer, Pattern[/^[0-9]+$/]]]"
     }
   }
 }
