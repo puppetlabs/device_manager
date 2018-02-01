@@ -1,3 +1,7 @@
+## Release 2.3.4
+
+- Sanitize
+
 ## Release 2.3.3
 
 - Rewrite task using methods
