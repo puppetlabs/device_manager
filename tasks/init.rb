@@ -22,7 +22,7 @@ timeout = (params['timeout'].to_i > 0) ? params['timeout'].to_i : default_timeou
 
 #
 
-def read_device_config(target)
+def read_device_configuration(target)
   Puppet.initialize_settings
   devices = Puppet::Util::NetworkDevice::Config.devices.dup
   if target != ''
@@ -34,7 +34,7 @@ end
 #
 
 def run_puppet_device(devices, noop, timeout)
-  puppet = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
+  puppet_command = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
   results = {}
   results['error_count'] = 0
 
@@ -48,7 +48,7 @@ def run_puppet_device(devices, noop, timeout)
     result = ''
 
     begin
-      Open3.popen2e(puppet, 'device', '--user=root', '--waitforcert=0', '-v', target, noop) do |_, oe, w|
+      Open3.popen2e(puppet_command, 'device', '--user=root', '--waitforcert=0', '-v', target, noop) do |_, oe, w|
         begin
           Timeout.timeout(timeout) do
             until oe.eof?
@@ -76,17 +76,12 @@ def run_puppet_device(devices, noop, timeout)
       error_message = e.message
     end
 
-    error_message.gsub!(%r{\e\[(\d+)m}, '')
-
-    if error_message == ''
+    if error_message.empty?
       status = 'success'
       result = "applied configuration version '#{configuration_version}' in #{catalog_seconds} seconds"
     else
       status = 'error'
-      if error_message == ''
-        error_message = "unable to parse the output of the puppet device command: #{error_message}"
-      end
-      result = error_message
+      result = error_message.gsub(%r{\e\[(\d+)m}, '')
       results['error_count'] = results['error_count'] + 1
     end
 
@@ -101,11 +96,11 @@ end
 
 #
 
-def return_result_read_device_config_error(params)
+def return_configuration_error(params)
   result = {}
-  plurality = (params['target']) ? "device named [#{params['target']}]" : 'devices'
+  device_s = (params['target']) ? "device named [#{params['target']}]" : 'devices'
   result[:_error] = {
-    msg: "configuration error: no #{plurality} in #{Puppet[:deviceconfig]}",
+    msg: "configuration error: no #{device_s} in #{Puppet[:deviceconfig]}",
     kind: 'tkishel/puppet_device',
     details: {
       params: {
@@ -121,13 +116,13 @@ end
 
 #
 
-def return_result(params, results)
+def return_results(params, results)
   result = {}
   if results['error_count'] > 0
     exit_code = 1
-    plurality = (results['error_count'] > 1) ? 's' : ''
+    error_s = (results['error_count'] == 1) ? 'error' : 'errors'
     result[:_error] = {
-      msg: "puppet device run error#{plurality}: review status via the Console",
+      msg: "puppet device run #{error_s}: review task status via the Console",
       kind: 'tkishel/puppet_device',
       details: {
         params: {
@@ -142,6 +137,7 @@ def return_result(params, results)
     exit_code = 0
     result['status'] = 'success'
     result['results'] = results
+    result['_noop'] = 'true' if params['_noop'] == '--noop'
   end
   puts result.to_json
   exit exit_code
@@ -149,10 +145,10 @@ end
 
 ####
 
-devices = read_device_config(target)
-if devices.count > 0
-  results = run_puppet_device(devices, noop, timeout)
-  return_result(params, results)
+devices = read_device_configuration(target)
+if devices.count.zero?
+  return_configuration_error(params)
 else
-  return_result_read_device_config_error(params)
+  results = run_puppet_device(devices, noop, timeout)
+  return_results(params, results)
 end
