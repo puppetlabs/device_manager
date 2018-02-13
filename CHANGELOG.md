@@ -1,3 +1,7 @@
+## Release 2.3.5
+
+- Minor changes.
+
 ## Release 2.3.4
 
 - Sanitize
