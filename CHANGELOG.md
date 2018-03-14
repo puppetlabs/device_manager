@@ -1,3 +1,7 @@
+## Release 2.3.6
+
+- Replace reference to run_via_cron with run_interval (credit: Kris Amundson).
+
 ## Release 2.3.5
 
 - Minor changes.
