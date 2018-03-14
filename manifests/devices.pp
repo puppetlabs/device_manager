@@ -16,8 +16,8 @@ class puppet_device::devices {
       type         => $device['type'],
       url          => $device['url'],
       debug        => $device['debug'],
+      run_interval => $device['run_interval'],
       run_via_exec => $device['run_via_exec'],
-      run_via_cron => $device['run_via_cron'],
     }
   }
 
