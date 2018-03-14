@@ -4,23 +4,10 @@
 
 class puppet_device::fact {
 
-  if ($facts['osfamily'] != 'windows') {
-    File {
-      owner => 'root',
-      group => 'root',
-      mode  => '0644',
-    }
-  }
-
   # Use a fact to identify the confdir on this agent.
 
-  file { "${::puppetlabs_confdir}/facter":
-    ensure => directory,
-  }
-
-  file { "${::puppetlabs_confdir}/facter/facts.d":
-    ensure => directory,
-  }
+  ensure_resource('file', "${::puppetlabs_confdir}/facter", {'ensure' => 'directory'})
+  ensure_resource('file', "${::puppetlabs_confdir}/facter/facts.d", {'ensure' => 'directory'})
 
   $puppet_devices = "${::puppetlabs_confdir}/facter/facts.d/puppet_devices.yaml"
 
