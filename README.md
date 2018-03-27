@@ -103,7 +103,7 @@ This parameter is optional, with a default of false.
 
 Specifies transport-level debug output for the device, and is limited to telnet and ssh transports.
 
-### run_interval (beta)
+### run_interval
 
 Data type: Integer
 
@@ -123,7 +123,7 @@ puppet_device {'bigip.example.com':
 
 Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this will instead create one Cron (or Scheduled Task) resource that executes `puppet device` for all devices every hour (at a randomized minute) on the Puppet agent.
 
-### run_via_exec
+### run_via_exec (deprecated)
 
 Data type: Boolean
 
@@ -131,7 +131,7 @@ This parameter is optional, with a default of false.
 
 Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` during each `puppet agent` on the Puppet agent.
 
-Note: This will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
+Note: This parameter is deprecated in favor of `run_interval`, as `run_via_exec` will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
 
 ```
 puppet_device {'bigip.example.com':
@@ -141,15 +141,11 @@ puppet_device {'bigip.example.com':
 }
 ```
 
-Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this will instead create one Exec resource that executes `puppet device` for all devices on the Puppet agent.
-
 ## Orchestration
 
-### Puppet Task
+### Puppet Tasks
 
-On versions of Puppet Enterprise (2017.3.x or higher) that support tasks,
-this module provides a `puppet_device` task which can be used by the `puppet task` command
-to orchestrate a `puppet device` run on a (proxy) Puppet agent.
+On versions of Puppet Enterprise (2017.3.x or higher) that support Puppet Tasks, this module provides a `puppet_device` task which can be used by the `puppet task` command to orchestrate a `puppet device` run on a (proxy) Puppet agent.
 
 To run `puppet device` for all devices, on a specified Puppet agent:
 
@@ -175,9 +171,7 @@ For help with the `puppet_device` task, run the `puppet task show puppet_device`
 
 ### Puppet Job
 
-On versions of Puppet Enterprise (2017.2.x or lower) that do not support tasks,
-this module provides an `run_via_exec` parameter which can be used by the `puppet job` command
-to indirectly orchestrate a `puppet device` run via a `puppet agent` run on the (proxy) Puppet agent.
+On versions of Puppet Enterprise (2017.2.x or lower) that do not support Puppet Tasks, this module provides an `run_via_exec` parameter which can be used by the `puppet job` command to indirectly orchestrate a `puppet device` run via a `puppet agent` run on the (proxy) Puppet agent.
 
 To run `puppet device` for each device with `run_via_exec` set to true, on a specified Puppet agent:
 
