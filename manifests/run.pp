@@ -9,14 +9,17 @@ class puppet_device::run {
     $command = "${::env_windows_installdir}\\bin\\puppet"
   }
 
-  # PUP-1391
+  # PUP-1391 Puppet 5.4.0 does not require '--user=root'.
   if (versioncmp($::puppetversion, '5.4.0') >= 0) {
-    $arguments = 'device --waitforcert=0'
+    $user = ''
   } else {
-    $arguments = 'device --waitforcert=0 --user=root'
+    $user = '--user=root'
   }
 
-  # PUP-7412
+  # TODO: Consider removing multiple spaces using join(), delete(), rstrip().
+  $arguments = "device --waitforcert=0 ${user} --verbose"
+
+  # PUP-7412 Puppet 5.4.0 introduces '--target=root'.
   $targetable = (versioncmp($::puppetversion, '5.0.0') >= 0)
 
   $random_minute = sprintf('%02d', fqdn_rand(59, 'puppet_device'))

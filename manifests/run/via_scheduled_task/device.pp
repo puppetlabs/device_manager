@@ -22,7 +22,7 @@ define puppet_device::run::via_scheduled_task::device (
     scheduled_task { "run puppet_device target ${name}":
       ensure    => $scheduled_task_ensure,
       command   => $puppet_device::run::command,
-      arguments => "${puppet_device::run::arguments} --target ${name}",
+      arguments => "${puppet_device::run::arguments} --target=${name}",
       trigger   => {
         schedule         => 'daily',
         start_time       => $start_time,

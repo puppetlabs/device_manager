@@ -45,7 +45,7 @@ define puppet_device::run::via_cron::device (
 
     cron { "run puppet_device target ${name}":
       ensure  => $cron_ensure,
-      command => "${puppet_device::run::command} ${puppet_device::run::arguments} --target ${name}",
+      command => "${puppet_device::run::command} ${puppet_device::run::arguments} --target=${name}",
       user    => 'root',
       hour    => $hour,
       minute  => $minute,

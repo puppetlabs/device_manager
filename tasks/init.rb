@@ -1,5 +1,6 @@
 #!/opt/puppetlabs/puppet/bin/ruby
 
+require 'facter'
 require 'json'
 require 'open3'
 require 'puppet'
@@ -34,6 +35,14 @@ end
 #
 
 def run_puppet_device(devices, noop, timeout)
+  # TODO: Use facter to access env_windows_installdir fact on Windows.
+  # if Facter.value(:osfamily) != 'windows'
+  #   puppet_command = '/opt/puppetlabs/puppet/bin/puppet'
+  # else
+  #   # Default: C:\Program Files\Puppet Labs\Puppet
+  #   env_windows_installdir = Facter.value(:env_windows_installdir)
+  #   puppet_command = %Q("#{env_windows_installdir}\bin\puppet")
+  # end
   puppet_command = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
   results = {}
   results['error_count'] = 0
@@ -48,7 +57,7 @@ def run_puppet_device(devices, noop, timeout)
     result = ''
 
     begin
-      Open3.popen2e(puppet_command, 'device', '--user=root', '--waitforcert=0', '-v', target, noop) do |_, oe, w|
+      Open3.popen2e(puppet_command, 'device', '--waitforcert=0', '--user=root', '--verbose', target, noop) do |_, oe, w|
         begin
           Timeout.timeout(timeout) do
             until oe.eof?

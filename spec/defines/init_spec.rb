@@ -79,7 +79,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_puppet_device__run__via_cron__device('bigip.example.com') }
     it {
       is_expected.to contain_cron('run puppet_device').with(
-        'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root',
+        'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose',
       )
     }
   end
@@ -110,7 +110,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_puppet_device__run__via_cron__device('bigip.example.com') }
     it {
       is_expected.to contain_cron('run puppet_device target bigip.example.com').with(
-        'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --target bigip.example.com',
+        'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose --target=bigip.example.com',
         'hour'    => '*',
         'minute'  => ["11", "41"],
       )
@@ -175,7 +175,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_puppet_device__run__via_exec__device('bigip.example.com') }
     it {
       is_expected.to contain_exec('run puppet_device target bigip.example.com').with_command(
-        '"/opt/puppetlabs/puppet/bin/puppet" device --waitforcert=0 --user=root --target bigip.example.com',
+        '"/opt/puppetlabs/puppet/bin/puppet" device --waitforcert=0 --user=root --verbose --target=bigip.example.com',
       )
     }
   end
