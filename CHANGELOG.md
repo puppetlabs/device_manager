@@ -1,3 +1,8 @@
+## Release 2.4.0
+
+- Specify '--verbose' by default.
+- Deprecate 'run_via_exec' parameter
+
 ## Release 2.3.7
 
 - Use ensure_resource to prevent duplicate resource for facter/facts.s path (credit: Kris Amundson).
