@@ -4,7 +4,7 @@
 
 class puppet_device::conf {
 
-  if ($facts['osfamily'] != 'windows') {
+  if ($facts['os']['family'] != 'windows') {
     File {
       owner => 'root',
       group => 'root',

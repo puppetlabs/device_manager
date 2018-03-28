@@ -14,11 +14,10 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
-        :puppetversion          => '5.0.0',
-        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf',
-        :puppetlabs_confdir     => '/etc/puppetlabs',
-        :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
-        :osfamily               => 'redhat',
+        :puppetversion                => '5.0.0',
+        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
+        :puppet_settings_confdir      => '/etc/puppetlabs',
+        :os                           => { :family => 'redhat' },
       }
     }
 
@@ -39,12 +38,11 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
-        :puppetversion          => '5.0.0',
-        :puppet_deviceconfig    => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
-        :puppetlabs_confdir     => 'C:/ProgramData/PuppetLabs/puppet',
-        :puppetlabs_vardir      => 'C:/ProgramData/PuppetLabs/puppet/cache',
-        :osfamily               => 'windows',
-        :env_windows_installdir => "C:\\Program Files\\Puppet Labs\\Puppet"
+        :puppetversion                => '5.0.0',
+        :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
+        :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
+        :os                           => { :family => 'windows' },
+        :env_windows_installdir       => "C:\\Program Files\\Puppet Labs\\Puppet"
       }
     }
 
@@ -65,11 +63,10 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
-        :puppetversion          => '4.10.0',
-        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf',
-        :puppetlabs_confdir     => '/etc/puppetlabs',
-        :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
-        :osfamily               => 'redhat',
+        :puppetversion                => '4.10.0',
+        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
+        :puppet_settings_confdir      => '/etc/puppetlabs',
+        :os                           => { :family => 'redhat' },
       }
     }
 
@@ -96,11 +93,10 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
-        :puppetversion          => '5.0.0',
-        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf',
-        :puppetlabs_confdir     => '/etc/puppetlabs',
-        :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
-        :osfamily               => 'redhat',
+        :puppetversion                => '5.0.0',
+        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
+        :puppet_settings_confdir      => '/etc/puppetlabs',
+        :os                           => { :family => 'redhat' },
       }
     }
 
@@ -129,12 +125,11 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
-        :puppetversion          => '5.0.0',
-        :puppet_deviceconfig    => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
-        :puppetlabs_confdir     => 'C:/ProgramData/PuppetLabs/puppet',
-        :puppetlabs_vardir      => 'C:/ProgramData/PuppetLabs/puppet/cache',
-        :osfamily               => 'windows',
-        :env_windows_installdir => "C:\\Program Files\\Puppet Labs\\Puppet"
+        :puppetversion                => '5.0.0',
+        :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
+        :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
+        :os                           => { :family => 'windows' },
+        :env_windows_installdir       => "C:\\Program Files\\Puppet Labs\\Puppet"
       }
     }
 
@@ -161,11 +156,10 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
-        :puppetversion          => '5.0.0',
-        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf',
-        :puppetlabs_confdir     => '/etc/puppetlabs',
-        :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
-        :osfamily               => 'redhat',
+        :puppetversion                => '5.0.0',
+        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
+        :puppet_settings_confdir      => '/etc/puppetlabs',
+        :os                           => { :family => 'redhat' },
       }
     }
 
@@ -193,11 +187,10 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
-        :puppetversion          => '5.0.0',
-        :puppet_deviceconfig    => '/etc/puppetlabs/puppet/device.conf',
-        :puppetlabs_confdir     => '/etc/puppetlabs',
-        :puppet_vardir          => '/opt/puppetlabs/puppet/cache',
-        :osfamily               => 'redhat',
+        :puppetversion                => '5.0.0',
+        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
+        :puppet_settings_confdir      => '/etc/puppetlabs',
+        :os                           => { :family => 'redhat' },
       }
     }
 

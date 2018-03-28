@@ -3,10 +3,10 @@
 
 class puppet_device::run {
 
-  if ($facts['osfamily'] != 'windows') {
-    $command = '/opt/puppetlabs/puppet/bin/puppet'
-  } else {
+  if ($facts['os']['family'] == 'windows') {
     $command = "${::env_windows_installdir}\\bin\\puppet"
+  } else {
+    $command = '/opt/puppetlabs/puppet/bin/puppet'
   }
 
   # PUP-1391 Puppet 5.4.0 does not require '--user=root'.

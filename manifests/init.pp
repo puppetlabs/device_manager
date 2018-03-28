@@ -32,16 +32,16 @@ define puppet_device (
 
   # Add, update, or remove a `puppet device` Cron (or Scheduled Task) for this device.
 
-  if ($facts['osfamily'] != 'windows') {
+  if ($facts['os']['family'] == 'windows') {
 
-    puppet_device::run::via_cron::device { $name:
+    puppet_device::run::via_scheduled_task::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
     }
 
   } else {
 
-    puppet_device::run::via_scheduled_task::device { $name:
+    puppet_device::run::via_cron::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
     }

@@ -35,15 +35,14 @@ end
 #
 
 def run_puppet_device(devices, noop, timeout)
-  # TODO: Use facter to access env_windows_installdir fact on Windows.
-  # if Facter.value(:osfamily) != 'windows'
-  #   puppet_command = '/opt/puppetlabs/puppet/bin/puppet'
-  # else
-  #   # Default: C:\Program Files\Puppet Labs\Puppet
-  #   env_windows_installdir = Facter.value(:env_windows_installdir)
-  #   puppet_command = %Q("#{env_windows_installdir}\bin\puppet")
-  # end
-  puppet_command = (%r{mingw} =~ RUBY_PLATFORM) ? '"C:\Program Files\Puppet Labs\Puppet\bin\puppet"' : '/opt/puppetlabs/puppet/bin/puppet'
+  os = Facter.value(:os) || {}
+  osfamily = os['family']
+  if osfamily == 'windows'
+    env_windows_installdir = Facter.value(:env_windows_installdir) || 'C:\Program Files\Puppet Labs\Puppet'
+    puppet_command = %("#{env_windows_installdir}\bin\puppet")
+  else
+    puppet_command = '/opt/puppetlabs/puppet/bin/puppet'
+  end
   results = {}
   results['error_count'] = 0
 
