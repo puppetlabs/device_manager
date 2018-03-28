@@ -15,7 +15,7 @@ class puppet_device::conf {
   # Use a fact to identify the deviceconfig file on this agent.
   # Default: $confdir/device.conf
 
-  $device_conf = $::puppet_deviceconfig
+  $device_conf = $::puppet_settings_deviceconfig
 
   concat { $device_conf:
     backup    => false,

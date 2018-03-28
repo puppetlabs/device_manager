@@ -6,10 +6,10 @@ class puppet_device::fact {
 
   # Use a fact to identify the confdir on this agent.
 
-  ensure_resource('file', "${::puppetlabs_confdir}/facter", {'ensure' => 'directory'})
-  ensure_resource('file', "${::puppetlabs_confdir}/facter/facts.d", {'ensure' => 'directory'})
+  ensure_resource('file', "${::puppet_settings_confdir}/facter", {'ensure' => 'directory'})
+  ensure_resource('file', "${::puppet_settings_confdir}/facter/facts.d", {'ensure' => 'directory'})
 
-  $puppet_devices = "${::puppetlabs_confdir}/facter/facts.d/puppet_devices.yaml"
+  $puppet_devices = "${::puppet_settings_confdir}/facter/facts.d/puppet_devices.yaml"
 
   concat { $puppet_devices:
     backup         => false,
