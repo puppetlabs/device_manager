@@ -7,7 +7,7 @@ require 'puppet'
 require 'puppet/util/network_device/config'
 require 'timeout'
 
-####
+# Define defaults and read parameters.
 
 default_timeout = 64
 params = JSON.parse(STDIN.read)
@@ -15,13 +15,13 @@ noop = (params['_noop']) ? '--noop' : ''
 target = (params['target']) ? params['target'] : ''
 timeout = (params['timeout'].to_i > 0) ? params['timeout'].to_i : default_timeout
 
-####
+# Sanitize target parameter.
 
 # def safe_target(target)
 #  (target =~ %r{^[a-z0-9._-]+$}) == 0
 # end
 
-#
+# Read all devices, or just the target device.
 
 def read_device_configuration(target)
   Puppet.initialize_settings
@@ -32,7 +32,7 @@ def read_device_configuration(target)
   devices
 end
 
-#
+# Run 'puppet device' for each device, or just the target device.
 
 def run_puppet_device(devices, noop, timeout)
   os = Facter.value(:os) || {}
@@ -102,7 +102,7 @@ def run_puppet_device(devices, noop, timeout)
   results
 end
 
-#
+# Format a configuration error, and exit.
 
 def return_configuration_error(params)
   result = {}
@@ -122,7 +122,7 @@ def return_configuration_error(params)
   exit 1
 end
 
-#
+# Format results for all devices, or just the target device, and exit.
 
 def return_results(params, results)
   result = {}
@@ -151,7 +151,7 @@ def return_results(params, results)
   exit exit_code
 end
 
-####
+# Run this task.
 
 devices = read_device_configuration(target)
 if devices.count.zero?
