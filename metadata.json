@@ -1,6 +1,6 @@
 {
   "name": "tkishel-puppet_device",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "author": "Thomas Kishel",
   "summary": "Manage devices used by 'puppet device' on puppet agents.",
   "description": "Manage devices used by 'puppet device' on proxy puppet agents.",

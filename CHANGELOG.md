@@ -1,3 +1,7 @@
+## Release 2.4.2
+
+- Minor changes.
+
 ## Release 2.4.1
 
 - Namespace custom facts.
