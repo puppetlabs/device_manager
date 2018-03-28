@@ -35,8 +35,9 @@ Declare individual `puppet_device` resources in a manifest of a Puppet agent:
 node 'agent.example.com' {
   class {'f5': }
   puppet_device {'bigip.example.com':
-    type   => 'f5',
-    url    => 'https://admin:fffff55555@10.0.0.245/',
+    type         => 'f5',
+    url          => 'https://admin:fffff55555@10.0.0.245/',
+    run_interval => 30,
   }
 }
 ~~~
@@ -47,11 +48,13 @@ Or, declare multiple `puppet_device` resources in Hiera ...
 ---
 puppet_device::devices:
   bigip1.example.com:
-    type: 'f5'
-    url:  'https://admin:fffff55555@10.0.1.245/'
+    type:         'f5'
+    url:          'https://admin:fffff55555@10.0.1.245/'
+    run_interval: 30
   bigip2.example.com:
-    type: 'f5'
-    url:  'https://admin:fffff55555@10.0.2.245/'
+    type:         'f5'
+    url:          'https://admin:fffff55555@10.0.2.245/'
+    run_interval: 30
 ~~~
 
 ... and declare the `puppet_device::devices` class:
@@ -87,13 +90,13 @@ Setting to 'absent' deletes the device from `device.conf` and the `puppet_device
 
 Data type: String
 
-Specifies the type of the device.
+Specifies the type of the device to be specified in `device.conf`.
 
 ### url
 
 Data type: String
 
-Specifies the URL used to configure the device.
+Specifies the URL used to configure the device to be specified in `device.conf`.
 
 ### debug
 
@@ -101,7 +104,7 @@ Data type: Boolean
 
 This parameter is optional, with a default of false.
 
-Specifies transport-level debug output for the device, and is limited to telnet and ssh transports.
+Specifies transport-level debug output for the device to be specified in `device.conf`, and is limited to telnet and ssh transports.
 
 ### run_interval
 
