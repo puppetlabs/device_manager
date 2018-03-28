@@ -1,3 +1,8 @@
+## Release 2.4.1
+
+- Namespace custom facts.
+- Prefer os.family fact over legacy osfamily fact.
+
 ## Release 2.4.0
 
 - Specify '--verbose' by default.
