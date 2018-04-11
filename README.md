@@ -204,6 +204,6 @@ puppet job run --query 'inventory { facts.puppet_devices."bigip.example.com" = t
 
 For more information, see:
 
-* [Man Page: puppet device](https://docs.puppet.com/puppet/latest/man/device.html)
-* [Config Files: device.conf](https://docs.puppet.com/puppet/latest/config_file_device.html)
+* [Man Page: puppet device](https://puppet.com/docs/puppet/latest/man/device.html)
+* [Config Files: device.conf](https://puppet.com/docs/puppet/latest/config_file_device.html)
 * [Running Tasks](https://puppet.com/docs/pe/latest/orchestrator/running_tasks.html)
