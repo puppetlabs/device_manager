@@ -1,3 +1,8 @@
+## Release 2.4.3
+
+- Add LICENSE to accommodate users who need it in a top-level file.
+- Update Puppet documentation URLs.
+
 ## Release 2.4.2
 
 - Minor changes.
