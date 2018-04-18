@@ -9,6 +9,12 @@ define puppet_device (
   Enum[present, absent]  $ensure       = present,
 ) {
 
+  # Validate node.
+
+  unless has_key($facts, 'aio_agent_version') {
+    fail("Classification Error: ${module_name} declared on the device instead of the agent.")
+  }
+
   # Validate parameters.
 
   if ($run_interval > 0 and $run_via_exec) {
