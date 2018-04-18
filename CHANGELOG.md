@@ -1,3 +1,7 @@
+## Release 2.4.4
+
+- Add classification guard.
+
 ## Release 2.4.3
 
 - Add LICENSE to accommodate users who need it in a top-level file.
