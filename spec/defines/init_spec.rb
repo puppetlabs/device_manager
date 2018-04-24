@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'puppet_device' do
-
   context 'declared on a device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
@@ -63,7 +62,7 @@ describe 'puppet_device' do
         :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
         :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
         :os                           => { :family => 'windows' },
-        :env_windows_installdir       => "C:\\Program Files\\Puppet Labs\\Puppet"
+        :env_windows_installdir       => 'C:\\Program Files\\Puppet Labs\\Puppet'
       }
     }
 
@@ -131,7 +130,7 @@ describe 'puppet_device' do
       is_expected.to contain_cron('run puppet_device target bigip.example.com').with(
         'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose --target=bigip.example.com',
         'hour'    => '*',
-        'minute'  => ["11", "41"],
+        'minute'  => %w[11 41],
       )
     }
   end
@@ -153,7 +152,7 @@ describe 'puppet_device' do
         :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
         :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
         :os                           => { :family => 'windows' },
-        :env_windows_installdir       => "C:\\Program Files\\Puppet Labs\\Puppet"
+        :env_windows_installdir       => 'C:\\Program Files\\Puppet Labs\\Puppet'
       }
     }
 
@@ -161,9 +160,9 @@ describe 'puppet_device' do
     it { is_expected.to contain_class('puppet_device::conf') }
     it { is_expected.to contain_class('puppet_device::fact') }
     it { is_expected.to contain_puppet_device__run__via_scheduled_task__device('bigip.example.com') }
-    it { 
+    it {
       is_expected.to contain_scheduled_task('run puppet_device target bigip.example.com').with(
-        'command'   => "C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet",
+        'command' => 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet',
       )
     }
   end
@@ -222,5 +221,4 @@ describe 'puppet_device' do
 
     it { is_expected.to raise_error(%r{are mutually-exclusive}) }
   end
-
 end
