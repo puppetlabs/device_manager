@@ -15,12 +15,6 @@ noop = (params['_noop']) ? '--noop' : ''
 target = (params['target']) ? params['target'] : ''
 timeout = (params['timeout'].to_i > 0) ? params['timeout'].to_i : default_timeout
 
-# Sanitize target parameter.
-
-# def safe_target(target)
-#  (target =~ %r{^[a-z0-9._-]+$}) == 0
-# end
-
 # Read all devices, or just the target device.
 
 def read_device_configuration(target)
