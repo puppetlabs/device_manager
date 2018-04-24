@@ -55,6 +55,8 @@ Style/TrailingCommaInArguments:
 Style/TrailingCommaInLiteral:
   Description: Prefer always trailing comma on multiline literals. This makes diffs, and re-ordering nicer.
   EnforcedStyleForMultiline: comma
+  Exclude:
+  - tasks/*.rb
 Style/SymbolArray:
   Description: Using percent style obscures symbolic intent of array's contents.
   EnforcedStyle: brackets

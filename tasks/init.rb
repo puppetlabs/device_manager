@@ -46,7 +46,7 @@ def run_puppet_device(devices, noop, timeout)
   results = {}
   results['error_count'] = 0
 
-  devices.collect do |device_name, _device|
+  devices.map do |device_name, _device|
     target = "--target=#{device_name}"
     line = ''
     error_message = ''
