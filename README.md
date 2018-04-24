@@ -25,13 +25,13 @@ Devices require a proxy Puppet agent to request certificates, collect facts, ret
 
 Install the `puppet_device` module:
 
-~~~
+```bash
 puppet module install tkishel-puppet_device
-~~~
+```
 
 Declare individual `puppet_device` resources in a manifest applied to the proxy Puppet agent:
 
-~~~
+```puppet
 node 'agent.example.com' {
   class {'f5': }
   puppet_device {'bigip.example.com':
@@ -40,11 +40,11 @@ node 'agent.example.com' {
     run_interval => 30,
   }
 }
-~~~
+```
 
 Or, declare multiple `puppet_device` resources in Hiera ...
 
-~~~
+```yaml
 ---
 puppet_device::devices:
   bigip1.example.com:
@@ -55,20 +55,20 @@ puppet_device::devices:
     type:         'f5'
     url:          'https://admin:fffff55555@10.0.2.245/'
     run_interval: 30
-~~~
+```
 
 ... and declare the `puppet_device::devices` class in a manifest applied to the proxy Puppet agent:
 
-~~~
+```puppet
 node 'agent.example.com'  {
   class {'f5': }
   include puppet_device::devices
 }
-~~~
+```
 
 Declaring either will configure `device.conf` on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
 
-```
+```bash
 puppet device --user=root --verbose --target bigip.example.com
 ```
 
@@ -124,7 +124,7 @@ Setting `run_interval` to a value between 1 and 1440 will create a Cron (or on W
 
 [comment]: # (Doing so avoids impractical cron mathematics.)
 
-```
+```puppet
 puppet_device {'bigip.example.com':
   type                => 'f5',
   url                 => 'https://admin:fffff55555@10.0.0.245/',
@@ -142,7 +142,7 @@ This parameter is optional, with a default of false.
 
 Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` during each `puppet agent` on the proxy Puppet agent. This parameter is deprecated in favor of `run_interval`, as `run_via_exec` will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
 
-```
+```puppet
 puppet_device {'bigip.example.com':
   type         => 'f5',
   url          => 'https://admin:fffff55555@10.0.0.245/',
@@ -162,21 +162,21 @@ On versions of Puppet Enterprise (2017.3.x or higher) that support Puppet Tasks,
 
 To run `puppet device` for all devices in `device.conf` on the specified proxy Puppet agent:
 
-~~~
+```bash
 puppet task run puppet_device --nodes 'agent.example.com'
-~~~
+```
 
 To run `puppet device` for all devices in `device.conf` on the proxy Puppet agent identified by a PuppetDB query:
 
-~~~
+```bash
 puppet task run puppet_device --query 'inventory { facts.puppet_devices."bigip.example.com" = true }'
-~~~
+```
 
 To run `puppet device --target` for a specific device in `device.conf` on the proxy Puppet agent identified by a PuppetDB query:
 
-~~~
+```bash
 puppet task run puppet_device --query 'inventory { facts.puppet_devices."bigip.example.com" = true }' target=bigip.example.com
-~~~
+```
 
 [comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "device_bigip.example.com"}')
 
@@ -188,15 +188,15 @@ On versions of Puppet Enterprise (2017.2.x or lower) that do not support Puppet 
 
 To run `puppet device` for each device with `run_via_exec` set to true on the specified proxy Puppet agent:
 
-~~~
+```
 puppet job run --nodes 'agent.example.com'
-~~~
+```
 
 To run `puppet device` for each device with `run_via_exec` set to true on the proxy Puppet agent identified by a PuppetDB query:
 
-~~~
+```bash
 puppet job run --query 'inventory { facts.puppet_devices."bigip.example.com" = true }'
-~~~
+```
 
 [comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "run_puppet_device_bigip.example.com"}')
 
