@@ -1,6 +1,12 @@
-# Configure multiple puppet_devices in Hiera.
+# Configure multiple devices in Hiera.
 
 class puppet_device::devices {
+
+  # Validate node.
+
+  unless has_key($facts, 'aio_agent_version') {
+    fail("Classification Error: 'puppet_device::devices' declared on a device instead of an agent.")
+  }
 
   # Avoid the Hiera 5 'hiera_hash is deprecated' warning.
 

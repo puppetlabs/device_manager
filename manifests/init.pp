@@ -1,4 +1,4 @@
-# Manage this device.
+# Configure this device.
 
 define puppet_device (
   String[1]              $type,
@@ -12,7 +12,7 @@ define puppet_device (
   # Validate node.
 
   unless has_key($facts, 'aio_agent_version') {
-    fail("Classification Error: ${module_name} declared on the device instead of the agent.")
+    fail("Classification Error: 'puppet_device' declared on a device instead of an agent.")
   }
 
   # Validate parameters.

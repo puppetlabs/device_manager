@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'puppet_device' do
 
-  context 'on Linux, running Puppet 5.0, with values for all device.conf parameters' do
+  context 'declared on a device' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
@@ -14,6 +14,26 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
+        :os => { :family => 'cisco-ios-xe' },
+      }
+    }
+
+    it { is_expected.to raise_error(%r{declared on a device}) }
+  end
+
+  context 'declared on Linux, running Puppet 5.0, with values for all device.conf parameters' do
+    let(:title)  { 'bigip.example.com' }
+    let(:params) {
+      {
+        :ensure       => :present,
+        :type         => 'f5',
+        :url          => 'https://admin:fffff55555@10.0.0.245/',
+        :debug        => true,
+      }
+    }
+    let(:facts) {
+      {
+        :aio_agent_version            => '5.0.0',
         :puppetversion                => '5.0.0',
         :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
         :puppet_settings_confdir      => '/etc/puppetlabs',
@@ -26,7 +46,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_class('puppet_device::fact') }
   end
 
-  context 'on Windows, running Puppet 5.0, with values for all device.conf parameters' do
+  context 'declared on Windows, running Puppet 5.0, with values for all device.conf parameters' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
@@ -38,6 +58,7 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
+        :aio_agent_version            => '5.0.0',
         :puppetversion                => '5.0.0',
         :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
         :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
@@ -51,7 +72,7 @@ describe 'puppet_device' do
     it { is_expected.to contain_class('puppet_device::fact') }
   end
 
-  context 'on Linux, running Puppet 4.10, with run_interval' do
+  context 'declared on Linux, running Puppet 4.10, with run_interval' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
@@ -63,6 +84,7 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
+        :aio_agent_version            => '4.10.0',
         :puppetversion                => '4.10.0',
         :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
         :puppet_settings_confdir      => '/etc/puppetlabs',
@@ -81,7 +103,7 @@ describe 'puppet_device' do
     }
   end
 
-  context 'on Linux, running Puppet 5.0, with run_interval' do
+  context 'declared on Linux, running Puppet 5.0, with run_interval' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
@@ -93,6 +115,7 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
+        :aio_agent_version            => '5.0.0',
         :puppetversion                => '5.0.0',
         :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
         :puppet_settings_confdir      => '/etc/puppetlabs',
@@ -113,7 +136,7 @@ describe 'puppet_device' do
     }
   end
 
-  context 'on Windows, running Puppet 5.0, with run_interval' do
+  context 'declared on Windows, running Puppet 5.0, with run_interval' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
@@ -125,6 +148,7 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
+        :aio_agent_version            => '5.0.0',
         :puppetversion                => '5.0.0',
         :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
         :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
@@ -144,7 +168,7 @@ describe 'puppet_device' do
     }
   end
 
-  context 'on Linux, running Puppet 5.0, with run_via_exec' do
+  context 'declared on Linux, running Puppet 5.0, with run_via_exec' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
@@ -156,6 +180,7 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
+        :aio_agent_version            => '5.0.0',
         :puppetversion                => '5.0.0',
         :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
         :puppet_settings_confdir      => '/etc/puppetlabs',
@@ -174,7 +199,7 @@ describe 'puppet_device' do
     }
   end
 
-  context 'on Linux, running Puppet 5.0, with run_interval and run_via_exec parameters' do
+  context 'declared on Linux, running Puppet 5.0, with run_interval and run_via_exec parameters' do
     let(:title)  { 'bigip.example.com' }
     let(:params) {
       {
@@ -187,6 +212,7 @@ describe 'puppet_device' do
     }
     let(:facts) {
       {
+        :aio_agent_version            => '5.0.0',
         :puppetversion                => '5.0.0',
         :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
         :puppet_settings_confdir      => '/etc/puppetlabs',
