@@ -1,3 +1,7 @@
+## Release 2.4.5
+
+- PDK 1.5
+
 ## Release 2.4.4
 
 - Add classification guard.
