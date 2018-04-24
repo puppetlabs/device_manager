@@ -1,6 +1,8 @@
 # Perform a 'puppet device' run with every 'puppet agent' run.
 # @api private
 
+# The puppet command is quoted in this Exec to support spaces in the path on Windows.
+
 define puppet_device::run::via_exec::device {
 
   include puppet_device::run
