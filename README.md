@@ -42,7 +42,27 @@ node 'agent.example.com' {
 }
 ```
 
-Or, declare multiple `puppet_device` resources in Hiera ...
+Or, declare multiple `puppet_device` resources ...
+
+You can either use the `$devices` parameter to pass in data through the Classifier:
+
+```
+devices => {
+  'bigip1.example.com' => {
+    type => 'f5',
+    url  => 'https://admin:fffff55555@10.0.1.245/',
+    run_interval => 30,
+  },
+  'bigip2.example.com' => {
+    type => 'f5',
+    url  => 'https://admin:fffff55555@10.0.1.245/',
+    run_interval => 30,
+  },
+}
+
+```
+
+Or set the `puppet_device::devices` key in Hiera:
 
 ```yaml
 ---
@@ -66,13 +86,13 @@ node 'agent.example.com'  {
 }
 ```
 
-Declaring either will configure `device.conf` on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
+Declaring will configure `device.conf` on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
 
 ```bash
 puppet device --user=root --verbose --target bigip.example.com
 ```
 
-Note: While f5 devices are used in these examples, this module is not limited to F5 devices.
+Note: If configuration for the same device (by name) is declared in both the Classifier and Hiera, the Classifier will take precedence.
 
 ## Parameters
 
@@ -103,6 +123,40 @@ Specifies the type of the device in `device.conf` on the proxy Puppet agent.
 Data type: String
 
 Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
+
+### credentials
+
+Data type: Hash
+
+This parameter is specific to devices that use the Puppet Resource API.
+
+Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the URL of the device in `device.conf`, on the proxy Puppet agent.
+
+```puppet
+puppet_device {'cisco2600.example.com':
+  type        => 'cisco_ios',
+  credentials => { address         => '10.0.1.245',
+                   port            => 22,
+                   username        => 'admin',
+                   password        => 'cisco2600',
+                   enable_password => 'cisco2600',
+                 },
+}
+```
+
+Resulting in:
+
+```hocon
+default: {
+  node: {
+    address: "110.0.1.245"
+    port: 22
+    username: "admin"
+    password: "cisco2600"
+    enable_password: "cisco2600"
+  }
+}
+```
 
 ### debug
 

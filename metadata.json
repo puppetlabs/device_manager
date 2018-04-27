@@ -1,6 +1,6 @@
 {
   "name": "tkishel-puppet_device",
-  "version": "2.4.5",
+  "version": "2.4.6",
   "author": "Thomas Kishel",
   "summary": "Manage devices used by 'puppet device' on puppet agents.",
   "license": "Apache-2.0",
@@ -11,6 +11,10 @@
     {
       "name": "puppetlabs/concat",
       "version_requirement": ">= 3.0.0 < 5.0.0"
+    },
+    {
+      "name": "puppetlabs/hocon",
+      "version_requirement": ">= 1.0.0 < 5.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
