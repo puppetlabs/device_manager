@@ -1,6 +1,38 @@
-# Configure multiple devices in Hiera.
-
-class puppet_device::devices {
+# puppet_device::devices
+#
+# Configure multiple devices through data. You can either use the `$devices` parameter to pass in data through a classifier, or set the
+# `puppet_device::devices` key in hiera. If configuration for the same device is specified in both locations, the `$devices` parameter wins.
+#
+# @summary Configure multiple devices through data.
+#
+# @example in hiera:
+#   ---
+#   puppet_device::devices:
+#     bigip1.example.com:
+#       type:         'f5'
+#       url:          'https://admin:fffff55555@10.0.1.245/'
+#       run_interval: 30
+#     bigip2.example.com:
+#       type:         'f5'
+#       url:          'https://admin:fffff55555@10.0.2.245/'
+#       run_interval: 30
+#
+# @example The datastructure to pass through the classifier is exactly the same:
+#   class { 'puppet_device::devices':
+#     devices => {
+#       'bigip1.example.com' => {
+#         type => 'f5',
+#         url  => 'https://admin:fffff55555@10.0.1.245/',
+#         run_interval => 30,
+#       },
+#       'bigip2.example.com' => {
+#         type => 'f5',
+#         url  => 'https://admin:fffff55555@10.0.1.245/',
+#         run_interval => 30,
+#       },
+#     }
+#   }
+class puppet_device::devices(Hash $devices = {}) {
 
   # Validate node.
 
@@ -11,12 +43,12 @@ class puppet_device::devices {
   # Avoid the Hiera 5 'hiera_hash is deprecated' warning.
 
   if ( (versioncmp($::clientversion, '4.9.0') >= 0) and (! defined('$::serverversion') or versioncmp($::serverversion, '4.9.0') >= 0) ) {
-    $devices = lookup('puppet_device::devices', Hash, 'hash', {})
+    $hiera_devices = lookup('puppet_device::devices', Hash, 'hash', {})
   } else {
-    $devices = hiera_hash('puppet_device::devices', {})
+    $hiera_devices = hiera_hash('puppet_device::devices', {})
   }
 
-  $devices.each |$title, $device| {
+  ($hiera_devices + $devices).each |$title, $device| {
     puppet_device {$title:
       name         => $device['name'],
       type         => $device['type'],
