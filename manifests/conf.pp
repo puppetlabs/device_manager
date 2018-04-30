@@ -12,6 +12,13 @@ class puppet_device::conf {
     }
   }
 
+  # Use a fact to identify the confdir file on this agent.
+  $devices_directory = "${::puppet_settings_confdir}/puppet/devices"
+
+  file { $devices_directory:
+    ensure => directory,
+  }
+
   # Use a fact to identify the deviceconfig file on this agent.
   # Default: $confdir/device.conf
 

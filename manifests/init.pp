@@ -2,7 +2,8 @@
 
 define puppet_device (
   String[1]              $type,
-  String[5]              $url,
+  String                 $url          = '',
+  Hash                   $credentials  = {},
   Boolean                $debug        = false,
   Integer[0,1440]        $run_interval = 0,
   Boolean                $run_via_exec = false,
@@ -21,13 +22,22 @@ define puppet_device (
     fail('Parameter Error: run_interval and run_via_exec are mutually-exclusive')
   }
 
+  if (!empty($credentials) and $url != '') {
+    fail('Parameter Error: credentials and url are mutually-exclusive')
+  }
+
+  if (empty($credentials) and $url == '') {
+    fail('Parameter Error: either credentials or url must be specified')
+  }
+
   # Add, update, or remove this device in the deviceconfig file.
 
   puppet_device::conf::device { $name:
-    ensure => $ensure,
-    type   => $type,
-    url    => $url,
-    debug  => $debug,
+    ensure      => $ensure,
+    type        => $type,
+    url         => $url,
+    credentials => $credentials,
+    debug       => $debug,
   }
 
   # Add, update, or remove this device in the puppet_devices structured fact.

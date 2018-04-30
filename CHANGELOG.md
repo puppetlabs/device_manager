@@ -1,3 +1,7 @@
+## Release 2.4.6
+
+- Support the Puppet Resource API and its credential files.
+
 ## Release 2.4.5
 
 - PDK 1.5
