@@ -86,13 +86,13 @@ node 'agent.example.com'  {
 }
 ```
 
-Declaring will configure `device.conf` on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
+Declaring these resources will configure `device.conf` on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
 
 ```bash
 puppet device --user=root --verbose --target bigip.example.com
 ```
 
-Note: If configuration for the same device (by name) is declared in both the Classifier and Hiera, the Classifier will take precedence.
+Note: If the same device (by name) is declared in both the Classifier and Hiera, the Classifier will take precedence.
 
 ## Parameters
 

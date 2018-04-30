@@ -1,5 +1,6 @@
 ## Release 2.4.6
 
+- Allow specifying devices via a classifier and/or Hiera.
 - Support the Puppet Resource API and its credential files.
 
 ## Release 2.4.5
