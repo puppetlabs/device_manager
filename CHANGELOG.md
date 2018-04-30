@@ -1,3 +1,7 @@
+## Release 2.4.7
+
+- Clarify documentation.
+
 ## Release 2.4.6
 
 - Allow specifying devices via a classifier and/or Hiera.
