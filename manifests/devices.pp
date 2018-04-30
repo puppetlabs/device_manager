@@ -1,11 +1,14 @@
 # puppet_device::devices
 #
-# Configure multiple devices through data. You can either use the `$devices` parameter to pass in data through a classifier, or set the
-# `puppet_device::devices` key in hiera. If configuration for the same device is specified in both locations, the `$devices` parameter wins.
+# Configure multiple devices through data.
+# Use either the `$devices` parameter to pass in data through the Classifier,
+# or set the `puppet_device::devices` key in Hiera.
+# If configuration for the same device is specified in both,
+# the `$devices` parameter wins.
 #
 # @summary Configure multiple devices through data.
 #
-# @example in hiera:
+# @example in Hiera:
 #   ---
 #   puppet_device::devices:
 #     bigip1.example.com:
@@ -17,7 +20,7 @@
 #       url:          'https://admin:fffff55555@10.0.2.245/'
 #       run_interval: 30
 #
-# @example The datastructure to pass through the classifier is exactly the same:
+# @example The datastructure to pass through the Classifier is exactly the same:
 #   class { 'puppet_device::devices':
 #     devices => {
 #       'bigip1.example.com' => {

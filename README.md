@@ -15,7 +15,7 @@ Devices require a proxy Puppet agent to request certificates, collect facts, ret
 
 ## What does this module provide?
 
-* Allows for the configuration of `device.conf` in a manifest or in Hiera.
+* Allows for the configuration devices in `device.conf` via a manifest, the Classifier, and/or Hiera.
 * Provides an option for scheduling of `puppet device` runs on proxy Puppet agents.
 * Provides an optional task for direct orchestration of `puppet device` runs on newer proxy Puppet agents.
 * Provides an option for indirect orchestration of `puppet device` runs on older proxy Puppet agents.
@@ -23,13 +23,29 @@ Devices require a proxy Puppet agent to request certificates, collect facts, ret
 
 ## Usage
 
-Install the `puppet_device` module:
+### Install
+
+On the master(s), install the `puppet_device` module:
 
 ```bash
 puppet module install tkishel-puppet_device
 ```
 
-Declare individual `puppet_device` resources in a manifest applied to the proxy Puppet agent:
+Also, install the device-specific module on the master(s):
+
+```bash
+puppet module install f5-f5
+```
+
+### Configure
+
+Devices can be declared either individually via a manifest, or multiple devices can be declared via the Classifier and/or Hiera.
+
+Note: If the same device (identified by name) is declared via the Classifier and Hiera, the Classifier will take precedence.
+
+#### Declare Individual Resources via a Manifest:
+
+Declare individual `puppet_device` resources via a manifest applied to the proxy Puppet agent:
 
 ```puppet
 node 'agent.example.com' {
@@ -42,27 +58,30 @@ node 'agent.example.com' {
 }
 ```
 
-Or, declare multiple `puppet_device` resources ...
+#### Declare Multiple Resources via the Classifier:
 
-You can either use the `$devices` parameter to pass in data through the Classifier:
+Declare multiple `puppet_device` resources via the `devices` parameter to the `puppet_device::devices` class applied to the proxy Puppet agent via the Classifier:
 
-```
-devices => {
+```puppet
+{
   'bigip1.example.com' => {
-    type => 'f5',
-    url  => 'https://admin:fffff55555@10.0.1.245/',
+    type         => 'f5',
+    url          => 'https://admin:fffff55555@10.0.1.245/',
     run_interval => 30,
   },
   'bigip2.example.com' => {
-    type => 'f5',
-    url  => 'https://admin:fffff55555@10.0.1.245/',
+    type         => 'f5',
+    url          => 'https://admin:fffff55555@10.0.1.245/',
     run_interval => 30,
   },
 }
-
 ```
 
-Or set the `puppet_device::devices` key in Hiera:
+Also, apply the class of the device-specific module to the proxy Puppet agent via the Classifier.
+
+#### Declare Multiple Resources via Hiera:
+
+Declare multiple `puppet_device` resources via the `puppet_device::devices` key applied to the proxy Puppet agent via Hiera:
 
 ```yaml
 ---
@@ -86,13 +105,13 @@ node 'agent.example.com'  {
 }
 ```
 
+### Run `puppet device`
+
 Declaring these resources will configure `device.conf` on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
 
 ```bash
 puppet device --user=root --verbose --target bigip.example.com
 ```
-
-Note: If the same device (by name) is declared in both the Classifier and Hiera, the Classifier will take precedence.
 
 ## Parameters
 
@@ -141,20 +160,6 @@ puppet_device {'cisco2600.example.com':
                    password        => 'cisco2600',
                    enable_password => 'cisco2600',
                  },
-}
-```
-
-Resulting in:
-
-```hocon
-default: {
-  node: {
-    address: "110.0.1.245"
-    port: 22
-    username: "admin"
-    password: "cisco2600"
-    enable_password: "cisco2600"
-  }
 }
 ```
 
