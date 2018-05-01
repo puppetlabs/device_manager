@@ -1,3 +1,8 @@
+## Release 2.5.0
+
+- Add include_module parameter and functionality.
+- Prepare for adoption.
+
 ## Release 2.4.7
 
 - Clarify documentation.
