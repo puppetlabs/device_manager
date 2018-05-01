@@ -6,12 +6,12 @@ describe 'puppet_device' do
     let(:params) do
       {
         :ensure       => :present,
-        :type         => 'cisco-ios',
+        :type         => 'cisco_ios',
       }
     end
     let(:facts) do
       {
-        :os => { :family => 'cisco-ios' },
+        :os => { :family => 'cisco_ios' },
       }
     end
 
@@ -226,7 +226,7 @@ describe 'puppet_device' do
     let(:params) do
       {
         :ensure       => :present,
-        :type         => 'cisco-ios',
+        :type         => 'cisco_ios',
         :credentials  => { 'address' => '10.0.0.245', 'port' => 22, 'username' => 'admin', 'password' => 'cisco', 'enable_password' => 'cisco' },
       }
     end
@@ -293,7 +293,7 @@ describe 'puppet_device' do
     let(:params) do
       {
         :ensure       => :present,
-        :type         => 'cisco-ios',
+        :type         => 'cisco_ios',
         :credentials  => { 'address' => '10.0.0.245', 'port' => 22, 'username' => 'admin', 'password' => 'cisco', 'enable_password' => 'cisco' },
         :url          => 'https://admin:cisco@10.0.0.245/',
       }
