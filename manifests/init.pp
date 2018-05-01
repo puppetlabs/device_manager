@@ -2,12 +2,13 @@
 
 define puppet_device (
   String[1]              $type,
-  String                 $url          = '',
-  Hash                   $credentials  = {},
-  Boolean                $debug        = false,
-  Integer[0,1440]        $run_interval = 0,
-  Boolean                $run_via_exec = false,
-  Enum[present, absent]  $ensure       = present,
+  String                 $url            = '',
+  Hash                   $credentials    = {},
+  Boolean                $debug          = false,
+  Integer[0,1440]        $run_interval   = 0,
+  Boolean                $run_via_exec   = false,
+  Boolean                $include_module = true,
+  Enum[present, absent]  $ensure         = present,
 ) {
 
   # Validate node.
@@ -70,4 +71,12 @@ define puppet_device (
     puppet_device::run::via_exec::device { $name: }
   }
 
+  # Device modules often implement a base class that implements an install class.
+  # Automatically include that base class to install any requirements of the module.
+
+  # TODO: Consider including the ("${type}::install") class instead.
+
+  if ($ensure == present) and ($include_module == true) and defined($type) {
+    include $type
+  }
 }

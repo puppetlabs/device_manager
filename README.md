@@ -11,7 +11,7 @@
 
 ## Description
 
-Devices require a proxy Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command and provides additional resources for scheduling and orchestrating `puppet device` runs on those proxy Puppet agents.
+Devices require a proxy Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command, applies the base class of associated device modules, and provides additional resources for scheduling and orchestrating `puppet device` runs on those proxy Puppet agents.
 
 ## What does this module provide?
 
@@ -20,6 +20,7 @@ Devices require a proxy Puppet agent to request certificates, collect facts, ret
 * Provides an optional task for direct orchestration of `puppet device` runs on newer proxy Puppet agents.
 * Provides an option for indirect orchestration of `puppet device` runs on older proxy Puppet agents.
 * Defines a structured fact that can be used to query PuppetDB to identify the Puppet agent proxying for a device.
+* Applies the base class of associated device modules to the proxy Puppet agent.
 
 ## Usage
 
@@ -49,7 +50,6 @@ Declare individual `puppet_device` resources via a manifest applied to the proxy
 
 ```puppet
 node 'agent.example.com' {
-  class {'f5': }
   puppet_device {'bigip.example.com':
     type         => 'f5',
     url          => 'https://admin:fffff55555@10.0.0.245/',
@@ -100,14 +100,13 @@ puppet_device::devices:
 
 ```puppet
 node 'agent.example.com'  {
-  class {'f5': }
   include puppet_device::devices
 }
 ```
 
 ### Run `puppet device`
 
-Declaring these resources will configure `device.conf` on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
+Declaring these resources will configure `device.conf` and apply the base class of device modules on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
 
 ```bash
 puppet device --user=root --verbose --target bigip.example.com
@@ -154,12 +153,13 @@ Specifies the credentials of the device in a HOCON file in `confdir/devices`, an
 ```puppet
 puppet_device {'cisco2600.example.com':
   type        => 'cisco_ios',
-  credentials => { address         => '10.0.1.245',
-                   port            => 22,
-                   username        => 'admin',
-                   password        => 'cisco2600',
-                   enable_password => 'cisco2600',
-                 },
+  credentials => {
+                  address         => '10.0.1.245',
+                  port            => 22,
+                  username        => 'admin',
+                  password        => 'cisco2600',
+                  enable_password => 'cisco2600',
+  },
 }
 ```
 
@@ -173,6 +173,14 @@ Specifies transport-level debugging of the device in `device.conf` on the proxy 
 
 Note: This parameter specifies the `debug` property defined in: [Config Files: device.conf](https://puppet.com/docs/puppet/latest/config_file_device.html) rather than the `--debug` option defined in: [Man Page: puppet device](https://puppet.com/docs/puppet/latest/man/device.html).
 
+### include_module
+
+Data type: Boolean, with a default of true.
+
+Specifies automatically including the base class (if one is defined) of the associated device module specified by the `type` parameter, on the proxy Puppet agent.
+
+Device modules often implement a base class that applies an `install` class. Automatically including that class will automatically install any requirements of the device module.
+
 ### run_interval
 
 Data type: Integer
@@ -185,9 +193,9 @@ Setting `run_interval` to a value between 1 and 1440 will create a Cron (or on W
 
 ```puppet
 puppet_device {'bigip.example.com':
-  type                => 'f5',
-  url                 => 'https://admin:fffff55555@10.0.0.245/',
-  run_interval        => 30,
+  type         => 'f5',
+  url          => 'https://admin:fffff55555@10.0.0.245/',
+  run_interval => 30,
 }
 ```
 

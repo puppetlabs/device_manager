@@ -53,12 +53,13 @@ class puppet_device::devices(Hash $devices = {}) {
 
   ($hiera_devices + $devices).each |$title, $device| {
     puppet_device {$title:
-      name         => $device['name'],
-      type         => $device['type'],
-      url          => $device['url'],
-      debug        => $device['debug'],
-      run_interval => $device['run_interval'],
-      run_via_exec => $device['run_via_exec'],
+      name           => $device['name'],
+      type           => $device['type'],
+      url            => $device['url'],
+      debug          => $device['debug'],
+      run_interval   => $device['run_interval'],
+      run_via_exec   => $device['run_via_exec'],
+      include_module => $device['include_module'],
     }
   }
 
