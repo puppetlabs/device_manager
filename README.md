@@ -106,7 +106,7 @@ node 'agent.example.com'  {
 
 ### Run `puppet device`
 
-Declaring these resources will configure `device.conf` and apply the base class of device modules on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
+Declaring these resources will configure `device.conf` and apply the base class of associated device modules on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
 
 ```bash
 puppet device --user=root --verbose --target bigip.example.com
@@ -151,7 +151,7 @@ This parameter is specific to devices that use the Puppet Resource API.
 Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the URL of the device in `device.conf`, on the proxy Puppet agent.
 
 ```puppet
-puppet_device {'cisco2600.example.com':
+puppet_device {'cisco.example.com':
   type        => 'cisco_ios',
   credentials => {
                   address         => '10.0.1.245',
@@ -177,9 +177,9 @@ Note: This parameter specifies the `debug` property defined in: [Config Files: d
 
 Data type: Boolean, with a default of true.
 
-Specifies automatically including the base class (if one is defined) of the associated device module specified by the `type` parameter, on the proxy Puppet agent.
+Specifies automatically including the base class (if one is defined) of the associated device module (specified by the `type` parameter) on the proxy Puppet agent.
 
-Device modules often implement a base class that applies an `install` class. Automatically including that class will automatically install any requirements of the device module.
+Device modules may implement a base class that applies an `install` class. Automatically including that class will automatically install any requirements of the device module.
 
 ### run_interval
 
