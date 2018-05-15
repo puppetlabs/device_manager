@@ -1,0 +1,70 @@
+{
+  "name": "puppetlabs-device_manager",
+  "version": "2.5.0",
+  "author": "Thomas Kishel",
+  "summary": "Manage devices used by 'puppet device' on puppet agents.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/puppetlabs/device_manager.git",
+  "project_page": "https://github.com/puppetlabs/device_manager",
+  "issues_url": "https://github.com/puppetlabs/device_manager/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 3.0.0 < 5.0.0"
+    },
+    {
+      "name": "puppetlabs/hocon",
+      "version_requirement": ">= 1.0.0 < 5.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.10.0 < 5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04",
+        "16.04"
+      ]
+    },
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2008",
+        "Server 2008 R2",
+        "Server 2012",
+        "Server 2012 R2",
+        "Server 2016"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": "> 4.7.0 < 6.0.0"
+    }
+  ],
+  "description": "Manage devices used by 'puppet device' on proxy puppet agents.",
+  "pdk-version": "1.5.0.pre (ga170dad)",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "heads/master-0-g033771c"
+}
