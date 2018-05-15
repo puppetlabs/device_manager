@@ -11,7 +11,7 @@ define device_manager::run::via_exec::device {
 
     exec {"run device_manager target ${name}":
       command => "\"${device_manager::run::command}\" ${device_manager::run::arguments} --target=${name}",
-      require => device_manager::Conf::Device[$name],
+      require => Device_manager::Conf::Device[$name],
       tag     => "run_device_manager_${name}",
     }
 
