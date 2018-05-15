@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby -S rspec
 require 'spec_helper'
 
-describe 'puppet_device::interval_to_cron_time' do
+describe 'device_manager::interval_to_cron_time' do
   context 'when interval is equal to 0' do
     it {
       is_expected.to run.with_params(0, 0).and_return(

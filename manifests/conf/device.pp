@@ -2,7 +2,7 @@
 # Using concat instead of inifile, because purgable.
 # @api private
 
-define puppet_device::conf::device (
+define device_manager::conf::device (
   String                    $type,
   String                    $url,
   Hash                      $credentials,
@@ -10,9 +10,9 @@ define puppet_device::conf::device (
   Enum['present', 'absent'] $ensure = 'present',
 ) {
 
-  include puppet_device::conf
+  include device_manager::conf
 
-  $credentials_file = "${puppet_device::conf::devices_directory}/${name}.yaml"
+  $credentials_file = "${device_manager::conf::devices_directory}/${name}.yaml"
 
   if ($ensure == 'present') {
 
@@ -38,8 +38,8 @@ define puppet_device::conf::device (
 
     $debug_transport = $debug ? { true => "debug\n", default => '' }
 
-    concat::fragment{ "puppet_device_conf [${name}]":
-      target  => $puppet_device::conf::device_conf,
+    concat::fragment{ "device_manager_conf [${name}]":
+      target  => $device_manager::conf::device_conf,
       content => "[${name}]\ntype ${type}\nurl ${url_url}\n${debug_transport}\n",
       order   => '99',
       tag     => "device_${name}",

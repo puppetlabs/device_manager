@@ -1,5 +1,5 @@
 ---
-puppet_device::devices:
+device_manager::devices:
   bigip1.example.com:
     type:         'f5'
     url:          'https://admin:fffff55555@10.0.1.245/'

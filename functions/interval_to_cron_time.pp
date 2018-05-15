@@ -1,4 +1,4 @@
-function puppet_device::interval_to_cron_time (
+function device_manager::interval_to_cron_time (
   Integer[0,1440] $interval,
   Integer[0,59]   $offset,
 ) >> Hash {

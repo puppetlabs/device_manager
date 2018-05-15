@@ -3,22 +3,22 @@
 
 # The puppet command is quoted in this Exec to support spaces in the path on Windows.
 
-define puppet_device::run::via_exec::device {
+define device_manager::run::via_exec::device {
 
-  include puppet_device::run
+  include device_manager::run
 
-  if $puppet_device::run::targetable {
+  if $device_manager::run::targetable {
 
-    exec {"run puppet_device target ${name}":
-      command => "\"${puppet_device::run::command}\" ${puppet_device::run::arguments} --target=${name}",
-      require => Puppet_device::Conf::Device[$name],
-      tag     => "run_puppet_device_${name}",
+    exec {"run device_manager target ${name}":
+      command => "\"${device_manager::run::command}\" ${device_manager::run::arguments} --target=${name}",
+      require => device_manager::Conf::Device[$name],
+      tag     => "run_device_manager_${name}",
     }
 
   } else {
 
     # The following is included to create just one Exec resource for all devices.
-    include puppet_device::run::via_exec::untargeted
+    include device_manager::run::via_exec::untargeted
 
   }
 

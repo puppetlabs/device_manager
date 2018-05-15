@@ -2,7 +2,7 @@
 # Using concat instead of inifile, because purgable.
 # @api private
 
-class puppet_device::conf {
+class device_manager::conf {
 
   if ($facts['os']['family'] != 'windows') {
     File {
@@ -29,9 +29,9 @@ class puppet_device::conf {
     show_diff => false,
   }
 
-  concat::fragment{ 'puppet_device_conf_comment':
+  concat::fragment{ 'device_manager_conf_comment':
     target  => $device_conf,
-    content => "# This file is managed by the puppet_device module.\n\n",
+    content => "# This file is managed by the device_manager module.\n\n",
     order   => '01',
   }
 

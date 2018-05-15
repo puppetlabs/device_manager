@@ -1,12 +1,12 @@
 # Perform a 'puppet device' run via cron.
 # @api private
 
-define puppet_device::run::via_cron::device (
+define device_manager::run::via_cron::device (
   String  $ensure,
   Integer $run_interval,
 ){
 
-  include puppet_device::run
+  include device_manager::run
 
   if (($ensure == present) and $run_interval > 0) {
     $cron_ensure = present
@@ -14,7 +14,7 @@ define puppet_device::run::via_cron::device (
     $cron_ensure = absent
   }
 
-  if $puppet_device::run::targetable {
+  if $device_manager::run::targetable {
 
     if ($run_interval == 0) {
       $hour   = absent
@@ -41,11 +41,11 @@ define puppet_device::run::via_cron::device (
       $minute = $offset
     }
 
-    # $cron_time = puppet_device::interval_to_cron_time($run_interval, fqdn_rand(max(1,min($run_interval, 59)), $name))
+    # $cron_time = device_manager::interval_to_cron_time($run_interval, fqdn_rand(max(1,min($run_interval, 59)), $name))
 
-    cron { "run puppet_device target ${name}":
+    cron { "run device_manager target ${name}":
       ensure  => $cron_ensure,
-      command => "${puppet_device::run::command} ${puppet_device::run::arguments} --target=${name}",
+      command => "${device_manager::run::command} ${device_manager::run::arguments} --target=${name}",
       user    => 'root',
       hour    => $hour,
       minute  => $minute,
@@ -57,7 +57,7 @@ define puppet_device::run::via_cron::device (
 
     if (($ensure == present) and $run_interval > 0) {
       # The following is included to create just one resource for all devices.
-      include puppet_device::run::via_cron::untargeted
+      include device_manager::run::via_cron::untargeted
     }
 
   }

@@ -28,7 +28,7 @@ end
 
 # Run 'puppet device' for each device, or just the target device.
 
-def run_puppet_device(devices, noop, timeout)
+def run_device_manager(devices, noop, timeout)
   os = Facter.value(:os) || {}
   osfamily = os['family']
   if osfamily == 'windows'
@@ -103,14 +103,14 @@ def return_configuration_error(params)
   device_s = (params['target']) ? "device named [#{params['target']}]" : 'devices'
   result[:_error] = {
     msg: "configuration error: no #{device_s} in #{Puppet[:deviceconfig]}",
-    kind: 'tkishel/puppet_device',
+    kind: 'tkishel/device_manager',
     details: {
       params: {
         noop: params['noop'],
         target: params['target'],
-        timeout: params['timeout']
-      }
-    }
+        timeout: params['timeout'],
+      },
+    },
   }
   puts result.to_json
   exit 1
@@ -125,15 +125,15 @@ def return_results(params, results)
     error_s = (results['error_count'] == 1) ? 'error' : 'errors'
     result[:_error] = {
       msg: "puppet device run #{error_s}: review task status via the Console",
-      kind: 'tkishel/puppet_device',
+      kind: 'tkishel/device_manager',
       details: {
         params: {
           noop: params['noop'],
           target: params['target'],
-          timeout: params['timeout']
+          timeout: params['timeout'],
         },
-        results: results
-      }
+        results: results,
+      },
     }
   else
     exit_code = 0
@@ -151,6 +151,6 @@ devices = read_device_configuration(target)
 if devices.count.zero?
   return_configuration_error(params)
 else
-  results = run_puppet_device(devices, noop, timeout)
+  results = run_device_manager(devices, noop, timeout)
   return_results(params, results)
 end

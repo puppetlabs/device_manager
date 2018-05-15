@@ -3,13 +3,13 @@
 
 # This class is declared via include to create just one Cron resource for all devices.
 
-class puppet_device::run::via_cron::untargeted {
+class device_manager::run::via_cron::untargeted {
 
-  $minute = $puppet_device::run::random_minute
+  $minute = $device_manager::run::random_minute
 
-  cron { 'run puppet_device':
+  cron { 'run device_manager':
     ensure  => present,
-    command => "${puppet_device::run::command} ${puppet_device::run::arguments}",
+    command => "${device_manager::run::command} ${device_manager::run::arguments}",
     user    => 'root',
     hour    => '*',
     minute  => $minute,

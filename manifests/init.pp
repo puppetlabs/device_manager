@@ -1,6 +1,6 @@
 # Configure this device.
 
-define puppet_device (
+define device_manager (
   String[1]              $type,
   String                 $url            = '',
   Hash                   $credentials    = {},
@@ -14,7 +14,7 @@ define puppet_device (
   # Validate node.
 
   unless has_key($facts, 'aio_agent_version') {
-    fail("Classification Error: 'puppet_device' declared on a device instead of an agent.")
+    fail("Classification Error: 'device_manager' declared on a device instead of an agent.")
   }
 
   # Validate parameters.
@@ -33,7 +33,7 @@ define puppet_device (
 
   # Add, update, or remove this device in the deviceconfig file.
 
-  puppet_device::conf::device { $name:
+  device_manager::conf::device { $name:
     ensure      => $ensure,
     type        => $type,
     url         => $url,
@@ -41,9 +41,9 @@ define puppet_device (
     debug       => $debug,
   }
 
-  # Add, update, or remove this device in the puppet_devices structured fact.
+  # Add, update, or remove this device in the device_managers structured fact.
 
-  puppet_device::fact::device { $name:
+  device_manager::fact::device { $name:
     ensure => $ensure,
   }
 
@@ -51,14 +51,14 @@ define puppet_device (
 
   if ($facts['os']['family'] == 'windows') {
 
-    puppet_device::run::via_scheduled_task::device { $name:
+    device_manager::run::via_scheduled_task::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
     }
 
   } else {
 
-    puppet_device::run::via_cron::device { $name:
+    device_manager::run::via_cron::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
     }
@@ -68,7 +68,7 @@ define puppet_device (
   # Optionally, declare a `puppet device` Exec for this device.
 
   if ($run_via_exec and ($ensure == present)) {
-    puppet_device::run::via_exec::device { $name: }
+    device_manager::run::via_exec::device { $name: }
   }
 
   # Device modules often implement a base class that implements an install class.

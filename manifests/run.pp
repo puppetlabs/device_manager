@@ -1,7 +1,7 @@
 # Define variables used by individual Cron and Exec resources.
 # @api private
 
-class puppet_device::run {
+class device_manager::run {
 
   if ($facts['os']['family'] == 'windows') {
     $command = "${::env_windows_installdir}\\bin\\puppet"
@@ -22,5 +22,5 @@ class puppet_device::run {
   # PUP-7412 Puppet 5.0.0 introduces '--target=root'.
   $targetable = (versioncmp($::puppetversion, '5.0.0') >= 0)
 
-  $random_minute = sprintf('%02d', fqdn_rand(59, 'puppet_device'))
+  $random_minute = sprintf('%02d', fqdn_rand(59, 'device_manager'))
 }

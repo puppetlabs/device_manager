@@ -11,7 +11,7 @@ Facter.add('puppet_settings_confdir') do
 end
 
 Facter.add('puppet_settings_confdir') do
-  confine :osfamily => :windows
+  confine osfamily: :windows
   setcode do
     File.dirname(File.dirname(Puppet.settings['confdir']))
   end

@@ -5,11 +5,11 @@
 
 # The puppet command is quoted in this Exec to support spaces in the path on Windows.
 
-class puppet_device::run::via_exec::untargeted {
+class device_manager::run::via_exec::untargeted {
 
-  exec {'run puppet_device':
-    command => "\"${puppet_device::run::command}\" ${puppet_device::run::arguments}",
-    tag     => 'run_puppet_device',
+  exec {'run device_manager':
+    command => "\"${device_manager::run::command}\" ${device_manager::run::arguments}",
+    tag     => 'run_device_manager',
   }
 
 }

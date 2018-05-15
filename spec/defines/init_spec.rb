@@ -1,6 +1,6 @@
 require 'spec_helper'
-
-describe 'puppet_device' do
+require 'pry'
+describe 'device_manager' do
   let(:pre_condition) do
     [
       'class cisco_ios {}',
@@ -12,13 +12,13 @@ describe 'puppet_device' do
     let(:title)  { 'cisco.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'cisco_ios',
+        ensure: :present,
+        type: 'cisco_ios',
       }
     end
     let(:facts) do
       {
-        :os => { :family => 'cisco_ios' },
+        os: { family: 'cisco_ios' },
       }
     end
 
@@ -29,25 +29,25 @@ describe 'puppet_device' do
     let(:title)  { 'f5.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'f5',
-        :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :debug        => true,
+        ensure: :present,
+        type: 'f5',
+        url: 'https://admin:fffff55555@10.0.0.245/',
+        debug: true,
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.0.0',
-        :puppetversion                => '5.0.0',
-        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
-        :puppet_settings_confdir      => '/etc/puppetlabs',
-        :os                           => { :family => 'redhat' },
+        aio_agent_version: '5.0.0',
+        puppetversion: '5.0.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
       }
     end
 
-    it { is_expected.to contain_puppet_device(title) }
-    it { is_expected.to contain_class('puppet_device::conf') }
-    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
     it { is_expected.to contain_class('F5') }
   end
 
@@ -55,26 +55,26 @@ describe 'puppet_device' do
     let(:title)  { 'f5.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'f5',
-        :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :debug        => true,
+        ensure: :present,
+        type: 'f5',
+        url: 'https://admin:fffff55555@10.0.0.245/',
+        debug: true,
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.0.0',
-        :puppetversion                => '5.0.0',
-        :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
-        :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
-        :os                           => { :family => 'windows' },
-        :env_windows_installdir       => 'C:\\Program Files\\Puppet Labs\\Puppet',
+        aio_agent_version: '5.0.0',
+        puppetversion: '5.0.0',
+        puppet_settings_deviceconfig: 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
+        puppet_settings_confdir: 'C:/ProgramData/PuppetLabs/puppet',
+        os: { family: 'windows' },
+        env_windows_installdir: 'C:\\Program Files\\Puppet Labs\\Puppet',
       }
     end
 
-    it { is_expected.to contain_puppet_device(title) }
-    it { is_expected.to contain_class('puppet_device::conf') }
-    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
     it { is_expected.to contain_class('F5') }
   end
 
@@ -82,29 +82,29 @@ describe 'puppet_device' do
     let(:title)  { 'f5.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'f5',
-        :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_interval => 30,
+        ensure: :present,
+        type: 'f5',
+        url: 'https://admin:fffff55555@10.0.0.245/',
+        run_interval: 30,
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '4.10.0',
-        :puppetversion                => '4.10.0',
-        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
-        :puppet_settings_confdir      => '/etc/puppetlabs',
-        :os                           => { :family => 'redhat' },
+        aio_agent_version: '4.10.0',
+        puppetversion: '4.10.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
       }
     end
 
-    it { is_expected.to contain_puppet_device(title) }
-    it { is_expected.to contain_class('puppet_device::conf') }
-    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
     it { is_expected.to contain_class('F5') }
-    it { is_expected.to contain_puppet_device__run__via_cron__device(title) }
+    it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
-      is_expected.to contain_cron('run puppet_device').with(
+      is_expected.to contain_cron('run device_manager').with(
         'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose',
       )
     }
@@ -114,29 +114,29 @@ describe 'puppet_device' do
     let(:title)  { 'f5.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'f5',
-        :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_interval => 30,
+        ensure: :present,
+        type: 'f5',
+        url: 'https://admin:fffff55555@10.0.0.245/',
+        run_interval: 30,
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.0.0',
-        :puppetversion                => '5.0.0',
-        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
-        :puppet_settings_confdir      => '/etc/puppetlabs',
-        :os                           => { :family => 'redhat' },
+        aio_agent_version: '5.0.0',
+        puppetversion: '5.0.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
       }
     end
 
-    it { is_expected.to contain_puppet_device(title) }
-    it { is_expected.to contain_class('puppet_device::conf') }
-    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
     it { is_expected.to contain_class('F5') }
-    it { is_expected.to contain_puppet_device__run__via_cron__device(title) }
+    it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
-      is_expected.to contain_cron("run puppet_device target #{title}").with(
+      is_expected.to contain_cron("run device_manager target #{title}").with(
         'command' => "/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose --target=#{title}",
         'hour'    => '*',
       )
@@ -147,30 +147,30 @@ describe 'puppet_device' do
     let(:title)  { 'f5.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'f5',
-        :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_interval => 30,
+        ensure: :present,
+        type: 'f5',
+        url: 'https://admin:fffff55555@10.0.0.245/',
+        run_interval: 30,
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.0.0',
-        :puppetversion                => '5.0.0',
-        :puppet_settings_deviceconfig => 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
-        :puppet_settings_confdir      => 'C:/ProgramData/PuppetLabs/puppet',
-        :os                           => { :family => 'windows' },
-        :env_windows_installdir       => 'C:\\Program Files\\Puppet Labs\\Puppet',
+        aio_agent_version: '5.0.0',
+        puppetversion: '5.0.0',
+        puppet_settings_deviceconfig: 'C:/ProgramData/PuppetLabs/puppet/etc/device.conf',
+        puppet_settings_confdir: 'C:/ProgramData/PuppetLabs/puppet',
+        os: { family: 'windows' },
+        env_windows_installdir: 'C:\\Program Files\\Puppet Labs\\Puppet',
       }
     end
 
-    it { is_expected.to contain_puppet_device(title) }
-    it { is_expected.to contain_class('puppet_device::conf') }
-    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
     it { is_expected.to contain_class('F5') }
-    it { is_expected.to contain_puppet_device__run__via_scheduled_task__device(title) }
+    it { is_expected.to contain_device_manager__run__via_scheduled_task__device(title) }
     it {
-      is_expected.to contain_scheduled_task("run puppet_device target #{title}").with(
+      is_expected.to contain_scheduled_task("run device_manager target #{title}").with(
         'command' => 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet',
       )
     }
@@ -182,30 +182,30 @@ describe 'puppet_device' do
     let(:title)  { 'f5.example.com' }
     let(:params) do
       {
-        :ensure       => 'present',
-        :type         => 'f5',
-        :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_via_exec => true,
+        ensure: 'present',
+        type: 'f5',
+        url: 'https://admin:fffff55555@10.0.0.245/',
+        run_via_exec: true,
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.0.0',
-        :puppetversion                => '5.0.0',
-        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
-        :puppet_settings_confdir      => '/etc/puppetlabs',
-        :os                           => { :family => 'redhat' },
+        aio_agent_version: '5.0.0',
+        puppetversion: '5.0.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
       }
     end
 
-    it { is_expected.to contain_puppet_device(title) }
-    it { is_expected.to contain_class('puppet_device::conf') }
-    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
     it { is_expected.to contain_class('F5') }
 
-    it { is_expected.to contain_puppet_device__run__via_exec__device(title) }
+    it { is_expected.to contain_device_manager__run__via_exec__device(title) }
     it {
-      is_expected.to contain_exec("run puppet_device target #{title}").with(
+      is_expected.to contain_exec("run device_manager target #{title}").with(
         'command' => %("/opt/puppetlabs/puppet/bin/puppet" device --waitforcert=0 --user=root --verbose --target=#{title}),
       )
     }
@@ -215,20 +215,20 @@ describe 'puppet_device' do
     let(:title)  { 'f5.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'f5',
-        :url          => 'https://admin:fffff55555@10.0.0.245/',
-        :run_interval => 30,
-        :run_via_exec => true,
+        ensure: :present,
+        type: 'f5',
+        url: 'https://admin:fffff55555@10.0.0.245/',
+        run_interval: 30,
+        run_via_exec: true,
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.0.0',
-        :puppetversion                => '5.0.0',
-        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
-        :puppet_settings_confdir      => '/etc/puppetlabs',
-        :os                           => { :family => 'redhat' },
+        aio_agent_version: '5.0.0',
+        puppetversion: '5.0.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
       }
     end
 
@@ -239,31 +239,31 @@ describe 'puppet_device' do
     let(:title)  { 'cisco.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'cisco_ios',
-        :credentials  => { 'address' => '10.0.0.245', 'port' => 22, 'username' => 'admin', 'password' => 'cisco', 'enable_password' => 'cisco' },
+        ensure: :present,
+        type: 'cisco_ios',
+        credentials: { 'address' => '10.0.0.245', 'port' => 22, 'username' => 'admin', 'password' => 'cisco', 'enable_password' => 'cisco' },
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.5.0',
-        :puppetversion                => '5.5.0',
-        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
-        :puppet_settings_confdir      => '/etc/puppetlabs',
-        :os                           => { :family => 'redhat' },
+        aio_agent_version: '5.5.0',
+        puppetversion: '5.5.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
       }
     end
     let(:device_yaml_file) { "/etc/puppetlabs/puppet/devices/#{title}.yaml" }
 
-    it { is_expected.to contain_puppet_device(title) }
-    it { is_expected.to contain_class('puppet_device::conf') }
-    it { is_expected.to contain_class('puppet_device::fact') }
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
     it { is_expected.to contain_class('Cisco_ios') }
 
     # TODO: Identify the rspec syntax for matching an attribute value containing newlines.
     # Or, Identify the rspec syntax for substring matching an attribute value.
     # it {
-    #   is_expected.to contain_concat_fragment("puppet_device_conf [#{title}]").with('content').including("url file://#{device_yaml_file}")
+    #   is_expected.to contain_concat_fragment("device_manager_conf [#{title}]").with('content').including("url file://#{device_yaml_file}")
     # }
 
     it {
@@ -307,19 +307,19 @@ describe 'puppet_device' do
     let(:title)  { 'cisco.example.com' }
     let(:params) do
       {
-        :ensure       => :present,
-        :type         => 'cisco_ios',
-        :credentials  => { 'address' => '10.0.0.245', 'port' => 22, 'username' => 'admin', 'password' => 'cisco', 'enable_password' => 'cisco' },
-        :url          => 'https://admin:cisco@10.0.0.245/',
+        ensure: :present,
+        type: 'cisco_ios',
+        credentials: { 'address' => '10.0.0.245', 'port' => 22, 'username' => 'admin', 'password' => 'cisco', 'enable_password' => 'cisco' },
+        url: 'https://admin:cisco@10.0.0.245/',
       }
     end
     let(:facts) do
       {
-        :aio_agent_version            => '5.5.0',
-        :puppetversion                => '5.5.0',
-        :puppet_settings_deviceconfig => '/etc/puppetlabs/puppet/device.conf',
-        :puppet_settings_confdir      => '/etc/puppetlabs',
-        :os                           => { :family => 'redhat' },
+        aio_agent_version: '5.5.0',
+        puppetversion: '5.5.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
       }
     end
 

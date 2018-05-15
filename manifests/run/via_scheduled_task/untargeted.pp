@@ -3,14 +3,14 @@
 
 # This class is declared via include to create just one Scheduled Task resource for all devices.
 
-class puppet_device::run::via_scheduled_task::untargeted {
+class device_manager::run::via_scheduled_task::untargeted {
 
-  $start_time = "00:${puppet_device::run::random_minute}"
+  $start_time = "00:${device_manager::run::random_minute}"
 
-  scheduled_task { 'run puppet_device':
+  scheduled_task { 'run device_manager':
     ensure    => present,
-    command   => $puppet_device::run::command,
-    arguments => $puppet_device::run::arguments,
+    command   => $device_manager::run::command,
+    arguments => $device_manager::run::arguments,
     trigger   => {
       schedule         => 'daily',
       start_time       => $start_time,

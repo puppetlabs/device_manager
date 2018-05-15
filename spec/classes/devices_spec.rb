@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'puppet_device::devices' do
+describe 'device_manager::devices' do
   let(:params) do
     { devices: {
       'param.example.com' => {
@@ -27,8 +27,8 @@ describe 'puppet_device::devices' do
       end
 
       it { is_expected.to compile }
-      it { is_expected.to contain_puppet_device('hiera.example.com') }
-      it { is_expected.to contain_puppet_device('param.example.com') }
+      it { is_expected.to contain_device_manager('hiera.example.com') }
+      it { is_expected.to contain_device_manager('param.example.com') }
     end
   end
 end

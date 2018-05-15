@@ -1,16 +1,16 @@
-# Manage this device in the puppet_devices fact.
+# Manage this device in the device_managers fact.
 # @api private
 
-define puppet_device::fact::device (
+define device_manager::fact::device (
   Enum['present', 'absent'] $ensure = 'present',
 ) {
 
-  include puppet_device::fact
+  include device_manager::fact
 
   if ($ensure == 'present') {
 
-    concat::fragment{ "puppet_devices_fact_value ${name}":
-      target  => $puppet_device::fact::puppet_devices,
+    concat::fragment{ "device_managers_fact_value ${name}":
+      target  => $device_manager::fact::device_managers,
       content => "  ${name}: true",
       order   => '99',
     }
