@@ -11,11 +11,11 @@
 
 ## Description
 
-Devices require a proxy Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration file used by the `puppet device` command, applies the base class of associated device modules, and provides additional resources for scheduling and orchestrating `puppet device` runs on those proxy Puppet agents.
+Devices require a proxy Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration files used by the `puppet device` command, applies the base class of associated device modules, and provides additional resources for scheduling and orchestrating `puppet device` runs on those proxy Puppet agents.
 
 ## What does this module provide?
 
-* Allows for the configuration devices in `device.conf` via a manifest, the Classifier, and/or Hiera.
+* Allows for the configuration of devices in `device.conf` via a manifest, the Classifier, and/or Hiera.
 * Provides an option for scheduling of `puppet device` runs on proxy Puppet agents.
 * Provides an optional task for direct orchestration of `puppet device` runs on newer proxy Puppet agents.
 * Provides an option for indirect orchestration of `puppet device` runs on older proxy Puppet agents.
@@ -29,13 +29,13 @@ Devices require a proxy Puppet agent to request certificates, collect facts, ret
 On the master(s), install the `device_manager` module:
 
 ```bash
-puppet module install puppetlabs-device_manager
+puppet module install puppetlabs-device_manager --version # See https://forge.puppet.com/puppetlabs/device_manager for the latest version
 ```
 
 Also, install the device-specific module on the master(s):
 
 ```bash
-puppet module install f5-f5
+puppet module install f5-f5 --version # See https://forge.puppet.com/f5/f5 for the latest version
 ```
 
 ### Configure
@@ -44,7 +44,7 @@ Devices can be declared either individually via a manifest, or multiple devices 
 
 Note: If the same device (identified by name) is declared via the Classifier and Hiera, the Classifier will take precedence.
 
-#### Declare Individual Resources via a Manifest:
+#### Manage Individual Devices via a Manifest:
 
 Declare individual `device_manager` resources via a manifest applied to the proxy Puppet agent:
 
@@ -58,7 +58,7 @@ node 'agent.example.com' {
 }
 ```
 
-#### Declare Multiple Resources via the Classifier:
+#### Manage Multiple Devices via the Classifier:
 
 Declare multiple `device_manager` resources via the `devices` parameter to the `device_manager::devices` class applied to the proxy Puppet agent via the Classifier:
 
@@ -71,7 +71,7 @@ Declare multiple `device_manager` resources via the `devices` parameter to the `
   },
   'bigip2.example.com' => {
     type         => 'f5',
-    url          => 'https://admin:fffff55555@10.0.1.245/',
+    url          => 'https://admin:fffff55555@10.0.2.245/',
     run_interval => 30,
   },
 }
@@ -79,7 +79,7 @@ Declare multiple `device_manager` resources via the `devices` parameter to the `
 
 Also, apply the class of the device-specific module to the proxy Puppet agent via the Classifier.
 
-#### Declare Multiple Resources via Hiera:
+#### Manage Multiple Devices via Hiera:
 
 Declare multiple `device_manager` resources via the `device_manager::devices` key applied to the proxy Puppet agent via Hiera:
 
@@ -109,7 +109,7 @@ node 'agent.example.com'  {
 Declaring these resources will configure `device.conf` and apply the base class of associated device modules on the proxy Puppet agent, allowing it to execute `puppet device` runs on behalf of its configured devices:
 
 ```bash
-puppet device --user=root --verbose --target bigip.example.com
+puppet device --verbose --target bigip.example.com
 ```
 
 ## Parameters
@@ -128,7 +128,7 @@ Data type: String
 
 This parameter is optional, with valid options of 'present' (the default) and 'absent'.
 
-Setting to 'absent' deletes the device from `device.conf` and the `device_managers` fact, and negates the effect of any other parameters.
+Setting to 'absent' deletes the device from `device.conf` and the `devices` fact, and negates the effect of any other parameters.
 
 ### type
 
@@ -154,11 +154,11 @@ Specifies the credentials of the device in a HOCON file in `confdir/devices`, an
 device_manager {'cisco.example.com':
   type        => 'cisco_ios',
   credentials => {
-                  address         => '10.0.1.245',
+                  address         => '10.0.0.246',
                   port            => 22,
                   username        => 'admin',
-                  password        => 'cisco2600',
-                  enable_password => 'cisco2600',
+                  password        => 'password',
+                  enable_password => 'password',
   },
 }
 ```
@@ -223,26 +223,26 @@ Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppe
 
 ### Puppet Tasks
 
-On versions of Puppet Enterprise (2017.3.x or higher) that support Puppet Tasks, this module provides a `device_manager` task which can be used by the `puppet task` command to orchestrate a `puppet device` run on the proxy Puppet agent. Help for this task is available via: `puppet task show device_manager` command.
+On versions of Puppet Enterprise (2017.3.x or higher) that support Puppet Tasks, this module provides a `device_manager::run_puppet_device` task which can be used by the `puppet task` command to orchestrate a `puppet device` run on the proxy Puppet agent. Help for this task is available via: `puppet task show device_manager::run_puppet_device` command.
 
 #### Examples:
 
 To run `puppet device` for all devices in `device.conf` on the specified proxy Puppet agent:
 
 ```bash
-puppet task run device_manager --nodes 'agent.example.com'
+puppet task run device_manager::run_puppet_device --nodes 'agent.example.com'
 ```
 
 To run `puppet device` for all devices in `device.conf` on the proxy Puppet agent identified by a PuppetDB query:
 
 ```bash
-puppet task run device_manager --query 'inventory { facts.device_managers."bigip.example.com" = true }'
+puppet task run device_manager::run_puppet_device --query 'inventory { facts.devices."bigip.example.com" = true }'
 ```
 
 To run `puppet device --target` for a specific device in `device.conf` on the proxy Puppet agent identified by a PuppetDB query:
 
 ```bash
-puppet task run device_manager --query 'inventory { facts.device_managers."bigip.example.com" = true }' target=bigip.example.com
+puppet task run device_manager::run_puppet_device --query 'inventory { facts.devices."bigip.example.com" = true }' target=bigip.example.com
 ```
 
 [comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "device_bigip.example.com"}')
@@ -262,10 +262,10 @@ puppet job run --nodes 'agent.example.com'
 To run `puppet device` for each device with `run_via_exec` set to true on the proxy Puppet agent identified by a PuppetDB query:
 
 ```bash
-puppet job run --query 'inventory { facts.device_managers."bigip.example.com" = true }'
+puppet job run --query 'inventory { facts.devices."bigip.example.com" = true }'
 ```
 
-[comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "run_device_manager_bigip.example.com"}')
+[comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "run_puppet_device_bigip.example.com"}')
 
 ## Reference
 

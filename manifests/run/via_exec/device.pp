@@ -9,10 +9,10 @@ define device_manager::run::via_exec::device {
 
   if $device_manager::run::targetable {
 
-    exec {"run device_manager target ${name}":
+    exec { "run puppet device target ${name}":
       command => "\"${device_manager::run::command}\" ${device_manager::run::arguments} --target=${name}",
       require => Device_manager::Conf::Device[$name],
-      tag     => "run_device_manager_${name}",
+      tag     => "run_puppet_device_${name}",
     }
 
   } else {

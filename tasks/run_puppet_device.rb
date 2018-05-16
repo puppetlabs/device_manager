@@ -103,7 +103,7 @@ def return_configuration_error(params)
   device_s = (params['target']) ? "device named [#{params['target']}]" : 'devices'
   result[:_error] = {
     msg: "configuration error: no #{device_s} in #{Puppet[:deviceconfig]}",
-    kind: 'tkishel/device_manager',
+    kind: 'puppetlabs/device_manager',
     details: {
       params: {
         noop: params['noop'],
@@ -125,7 +125,7 @@ def return_results(params, results)
     error_s = (results['error_count'] == 1) ? 'error' : 'errors'
     result[:_error] = {
       msg: "puppet device run #{error_s}: review task status via the Console",
-      kind: 'tkishel/device_manager',
+      kind: 'puppetlabs/device_manager',
       details: {
         params: {
           noop: params['noop'],

@@ -22,15 +22,15 @@ class device_manager::conf {
   # Use a fact to identify the deviceconfig file on this agent.
   # Default: $confdir/device.conf
 
-  $device_conf = $::puppet_settings_deviceconfig
+  $device_conf_file = $::puppet_settings_deviceconfig
 
-  concat { $device_conf:
+  concat { $device_conf_file:
     backup    => false,
     show_diff => false,
   }
 
-  concat::fragment{ 'device_manager_conf_comment':
-    target  => $device_conf,
+  concat::fragment{ 'device_conf_comment':
+    target  => $device_conf_file,
     content => "# This file is managed by the device_manager module.\n\n",
     order   => '01',
   }

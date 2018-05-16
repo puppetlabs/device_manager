@@ -7,9 +7,9 @@
 
 class device_manager::run::via_exec::untargeted {
 
-  exec {'run device_manager':
+  exec { 'run puppet device':
     command => "\"${device_manager::run::command}\" ${device_manager::run::arguments}",
-    tag     => 'run_device_manager',
+    tag     => 'run_puppet_device',
   }
 
 }

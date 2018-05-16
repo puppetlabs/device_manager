@@ -30,7 +30,7 @@
 #       },
 #       'bigip2.example.com' => {
 #         type => 'f5',
-#         url  => 'https://admin:fffff55555@10.0.1.245/',
+#         url  => 'https://admin:fffff55555@10.0.2.245/',
 #         run_interval => 30,
 #       },
 #     }

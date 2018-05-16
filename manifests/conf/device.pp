@@ -38,8 +38,8 @@ define device_manager::conf::device (
 
     $debug_transport = $debug ? { true => "debug\n", default => '' }
 
-    concat::fragment{ "device_manager_conf [${name}]":
-      target  => $device_manager::conf::device_conf,
+    concat::fragment{ "device_conf ${name}":
+      target  => $device_manager::conf::device_conf_file,
       content => "[${name}]\ntype ${type}\nurl ${url_url}\n${debug_transport}\n",
       order   => '99',
       tag     => "device_${name}",

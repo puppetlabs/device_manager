@@ -1,4 +1,4 @@
-# Manage the device_managers structured fact.
+# Manage the devices structured fact.
 # Structured as an array, but could be a hash.
 # @api private
 
@@ -9,28 +9,28 @@ class device_manager::fact {
   ensure_resource('file', "${::puppet_settings_confdir}/facter", {'ensure' => 'directory'})
   ensure_resource('file', "${::puppet_settings_confdir}/facter/facts.d", {'ensure' => 'directory'})
 
-  $device_managers = "${::puppet_settings_confdir}/facter/facts.d/device_managers.yaml"
+  $devices_fact_file = "${::puppet_settings_confdir}/facter/facts.d/devices.yaml"
 
-  concat { $device_managers:
+  concat { $devices_fact_file:
     backup         => false,
     ensure_newline => true,
   }
 
-  concat::fragment{ 'device_managers_fact_header':
-    target  => $device_managers,
+  concat::fragment{ 'devices_fact_header':
+    target  => $devices_fact_file,
     content => '---',
     order   => '01',
   }
 
-  concat::fragment{ 'device_managers_fact_comment':
-    target  => $device_managers,
+  concat::fragment{ 'devices_fact_comment':
+    target  => $devices_fact_file,
     content => '# This file is managed by the device_manager module.',
     order   => '02',
   }
 
-  concat::fragment{ 'device_managers_fact_name':
-    target  => $device_managers,
-    content => 'device_managers:',
+  concat::fragment{ 'devices_fact_name':
+    target  => $devices_fact_file,
+    content => 'devices:',
     order   => '03',
   }
 
