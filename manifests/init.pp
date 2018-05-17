@@ -41,7 +41,7 @@ define device_manager (
     debug       => $debug,
   }
 
-  # Add, update, or remove this device in the device_managers structured fact.
+  # Add, update, or remove this device in the devices structured fact.
 
   device_manager::fact::device { $name:
     ensure => $ensure,
@@ -50,19 +50,15 @@ define device_manager (
   # Add, update, or remove a `puppet device` Cron (or Scheduled Task) for this device.
 
   if ($facts['os']['family'] == 'windows') {
-
     device_manager::run::via_scheduled_task::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
     }
-
   } else {
-
     device_manager::run::via_cron::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
     }
-
   }
 
   # Optionally, declare a `puppet device` Exec for this device.

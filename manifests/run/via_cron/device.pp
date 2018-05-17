@@ -41,9 +41,10 @@ define device_manager::run::via_cron::device (
       $minute = $offset
     }
 
+    # The above, via the interval_to_cron_time function:
     # $cron_time = device_manager::interval_to_cron_time($run_interval, fqdn_rand(max(1,min($run_interval, 59)), $name))
 
-    cron { "run device_manager target ${name}":
+    cron { "run puppet device target ${name}":
       ensure  => $cron_ensure,
       command => "${device_manager::run::command} ${device_manager::run::arguments} --target=${name}",
       user    => 'root',

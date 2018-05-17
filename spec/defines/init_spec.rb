@@ -104,7 +104,7 @@ describe 'device_manager' do
     it { is_expected.to contain_class('F5') }
     it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
-      is_expected.to contain_cron('run device_manager').with(
+      is_expected.to contain_cron('run puppet device').with(
         'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose',
       )
     }
@@ -136,7 +136,7 @@ describe 'device_manager' do
     it { is_expected.to contain_class('F5') }
     it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
-      is_expected.to contain_cron("run device_manager target #{title}").with(
+      is_expected.to contain_cron("run puppet device target #{title}").with(
         'command' => "/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose --target=#{title}",
         'hour'    => '*',
       )
@@ -170,7 +170,7 @@ describe 'device_manager' do
     it { is_expected.to contain_class('F5') }
     it { is_expected.to contain_device_manager__run__via_scheduled_task__device(title) }
     it {
-      is_expected.to contain_scheduled_task("run device_manager target #{title}").with(
+      is_expected.to contain_scheduled_task("run puppet device target #{title}").with(
         'command' => 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet',
       )
     }
@@ -205,7 +205,7 @@ describe 'device_manager' do
 
     it { is_expected.to contain_device_manager__run__via_exec__device(title) }
     it {
-      is_expected.to contain_exec("run device_manager target #{title}").with(
+      is_expected.to contain_exec("run puppet device target #{title}").with(
         'command' => %("/opt/puppetlabs/puppet/bin/puppet" device --waitforcert=0 --user=root --verbose --target=#{title}),
       )
     }

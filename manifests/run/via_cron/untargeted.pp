@@ -7,7 +7,7 @@ class device_manager::run::via_cron::untargeted {
 
   $minute = $device_manager::run::random_minute
 
-  cron { 'run device_manager':
+  cron { 'run puppet device':
     ensure  => present,
     command => "${device_manager::run::command} ${device_manager::run::arguments}",
     user    => 'root',

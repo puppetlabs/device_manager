@@ -1,4 +1,4 @@
-# Manage this device in the device_managers fact.
+# Manage this device in the devices fact.
 # @api private
 
 define device_manager::fact::device (
@@ -9,8 +9,8 @@ define device_manager::fact::device (
 
   if ($ensure == 'present') {
 
-    concat::fragment{ "device_managers_fact_value ${name}":
-      target  => $device_manager::fact::device_managers,
+    concat::fragment{ "devices_fact ${name}":
+      target  => $device_manager::fact::devices_fact_file,
       content => "  ${name}: true",
       order   => '99',
     }
