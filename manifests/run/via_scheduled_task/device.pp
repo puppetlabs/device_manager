@@ -18,8 +18,9 @@ define device_manager::run::via_scheduled_task::device (
 
     $random_minute = sprintf('%02d', fqdn_rand(59, $name))
     $start_time = "00:${$random_minute}"
+    $task_name = regsubst($name, '\.', '_', 'G')
 
-    scheduled_task { "run puppet device target ${name}":
+    scheduled_task { "run puppet device target ${task_name}":
       ensure    => $scheduled_task_ensure,
       command   => $device_manager::run::command,
       arguments => "${device_manager::run::arguments} --target=${name}",

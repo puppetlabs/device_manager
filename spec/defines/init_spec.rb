@@ -145,6 +145,7 @@ describe 'device_manager' do
 
   context 'declared on Windows, running Puppet 5.0, with run_interval' do
     let(:title)  { 'f5.example.com' }
+    let(:task_name) { 'f5_example_com' }
     let(:params) do
       {
         ensure: :present,
@@ -170,7 +171,7 @@ describe 'device_manager' do
     it { is_expected.to contain_class('F5') }
     it { is_expected.to contain_device_manager__run__via_scheduled_task__device(title) }
     it {
-      is_expected.to contain_scheduled_task("run puppet device target #{title}").with(
+      is_expected.to contain_scheduled_task("run puppet device target #{task_name}").with(
         'command' => 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet',
       )
     }
