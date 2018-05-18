@@ -269,35 +269,35 @@ describe 'device_manager' do
     it {
       is_expected.to contain_hocon_setting("#{title}_address").with(
         'path'    => device_yaml_file,
-        'setting' => 'default.node.address',
+        'setting' => 'address',
         'value'   => '10.0.0.245',
       )
     }
     it {
       is_expected.to contain_hocon_setting("#{title}_port").with(
         'path'    => device_yaml_file,
-        'setting' => 'default.node.port',
+        'setting' => 'port',
         'value'   => '22',
       )
     }
     it {
       is_expected.to contain_hocon_setting("#{title}_username").with(
         'path'    => device_yaml_file,
-        'setting' => 'default.node.username',
+        'setting' => 'username',
         'value'   => 'admin',
       )
     }
     it {
       is_expected.to contain_hocon_setting("#{title}_password").with(
         'path'    => device_yaml_file,
-        'setting' => 'default.node.password',
+        'setting' => 'password',
         'value'   => 'cisco',
       )
     }
     it {
       is_expected.to contain_hocon_setting("#{title}_enable_password").with(
         'path'    => device_yaml_file,
-        'setting' => 'default.node.enable_password',
+        'setting' => 'enable_password',
         'value'   => 'cisco',
       )
     }
