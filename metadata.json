@@ -1,7 +1,7 @@
 {
   "name": "puppetlabs-device_manager",
   "version": "2.5.0",
-  "author": "Thomas Kishel",
+  "author": "Puppet",
   "summary": "Manage devices used by 'puppet device' on puppet agents.",
   "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/device_manager.git",
