@@ -112,6 +112,20 @@ Declaring these resources will configure `device.conf` and apply the base class 
 puppet device --verbose --target bigip.example.com
 ```
 
+#### Signing certificates on first run
+
+If this is the first time executing against this device and the certificate has not yet been signed, the following may be seen:
+```bash
+Notice: Did not receive certificate
+```
+
+Execute the following to sign the certificates for the device(s):
+```bash
+puppet cert sign 'bigip.example.com'
+```
+
+You should see output that the certificate for this device is being signed.
+
 ## Parameters
 
 ### name
@@ -134,11 +148,13 @@ Setting to 'absent' deletes the device from `device.conf` and the `devices` fact
 
 Data type: String
 
-Specifies the type of the device in `device.conf` on the proxy Puppet agent.
+Specifies the type of the device in `device.conf` on the proxy Puppet agent. This is the module type used to access the device.
 
 ### url
 
 Data type: String
+
+This parameter is optional - use either the credentials or URL.
 
 Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
@@ -146,7 +162,7 @@ Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
 Data type: Hash
 
-This parameter is specific to devices that use the Puppet Resource API.
+This parameter is optional and specific to devices that use the Puppet Resource API. Use either the credentials or URL.
 
 Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the URL of the device in `device.conf`, on the proxy Puppet agent.
 
@@ -175,7 +191,9 @@ Note: This parameter specifies the `debug` property defined in: [Config Files: d
 
 ### include_module
 
-Data type: Boolean, with a default of true.
+Data type: Boolean
+
+This parameter is optional, with a default of true.
 
 Specifies automatically including the base class (if one is defined) of the associated device module (specified by the `type` parameter) on the proxy Puppet agent.
 
@@ -200,24 +218,6 @@ device_manager {'bigip.example.com':
 ```
 
 Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this parameter will instead create one Cron (or Scheduled Task) resource that executes `puppet device` for all devices in `device.conf` every 60 minutes (at a randomized minute) on the proxy Puppet agent.
-
-### run_via_exec (deprecated)
-
-Data type: Boolean
-
-This parameter is optional, with a default of false.
-
-Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` during each `puppet agent` on the proxy Puppet agent. This parameter is deprecated in favor of `run_interval`, as `run_via_exec` will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
-
-```puppet
-device_manager {'bigip.example.com':
-  type         => 'f5',
-  url          => 'https://admin:fffff55555@10.0.0.245/',
-  run_via_exec => true,
-}
-```
-
-Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this parameter will instead create one Exec resource that executes `puppet device` for all devices in `device.conf`.
 
 ## Orchestration
 
@@ -246,26 +246,6 @@ puppet task run device_manager::run_puppet_device --query 'inventory { facts.dev
 ```
 
 [comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "device_bigip.example.com"}')
-
-### Puppet Job (deprecated)
-
-On versions of Puppet Enterprise (2017.2.x or lower) that do not support Puppet Tasks, this module provides an `run_via_exec` parameter which can be used by the `puppet job` command to indirectly orchestrate a `puppet device` run via an orchestrated `puppet agent` run on the proxy Puppet agent.
-
-#### Examples:
-
-To run `puppet device` for each device with `run_via_exec` set to true on the specified proxy Puppet agent:
-
-```
-puppet job run --nodes 'agent.example.com'
-```
-
-To run `puppet device` for each device with `run_via_exec` set to true on the proxy Puppet agent identified by a PuppetDB query:
-
-```bash
-puppet job run --query 'inventory { facts.devices."bigip.example.com" = true }'
-```
-
-[comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "run_puppet_device_bigip.example.com"}')
 
 ## Reference
 
