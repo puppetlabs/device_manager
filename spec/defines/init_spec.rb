@@ -9,7 +9,7 @@ describe 'device_manager' do
   end
 
   context 'declared on a device' do
-    let(:title)  { 'cisco.example.com' }
+    let(:title) { 'cisco.example.com' }
     let(:params) do
       {
         ensure: :present,
@@ -26,7 +26,7 @@ describe 'device_manager' do
   end
 
   context 'declared on Linux, running Puppet 5.0, with values for all device.conf parameters' do
-    let(:title)  { 'f5.example.com' }
+    let(:title) { 'f5.example.com' }
     let(:params) do
       {
         ensure: :present,
@@ -52,7 +52,7 @@ describe 'device_manager' do
   end
 
   context 'declared on Windows, running Puppet 5.0, with values for all device.conf parameters' do
-    let(:title)  { 'f5.example.com' }
+    let(:title) { 'f5.example.com' }
     let(:params) do
       {
         ensure: :present,
@@ -79,7 +79,7 @@ describe 'device_manager' do
   end
 
   context 'declared on Linux, running Puppet 4.10, with run_interval' do
-    let(:title)  { 'f5.example.com' }
+    let(:title) { 'f5.example.com' }
     let(:params) do
       {
         ensure: :present,
@@ -111,7 +111,7 @@ describe 'device_manager' do
   end
 
   context 'declared on Linux, running Puppet 5.0, with run_interval' do
-    let(:title)  { 'f5.example.com' }
+    let(:title) { 'f5.example.com' }
     let(:params) do
       {
         ensure: :present,
@@ -144,7 +144,8 @@ describe 'device_manager' do
   end
 
   context 'declared on Windows, running Puppet 5.0, with run_interval' do
-    let(:title)  { 'f5.example.com' }
+    let(:title) { 'f5.example.com' }
+    let(:task_name) { 'f5_example_com' }
     let(:params) do
       {
         ensure: :present,
@@ -170,7 +171,7 @@ describe 'device_manager' do
     it { is_expected.to contain_class('F5') }
     it { is_expected.to contain_device_manager__run__via_scheduled_task__device(title) }
     it {
-      is_expected.to contain_scheduled_task("run puppet device target #{title}").with(
+      is_expected.to contain_scheduled_task("run puppet device target #{task_name}").with(
         'command' => 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet',
       )
     }
@@ -179,7 +180,7 @@ describe 'device_manager' do
   # The puppet command is quoted in this Exec to support spaces in the path on Windows.
 
   context 'declared on Linux, running Puppet 5.0, with run_via_exec' do
-    let(:title)  { 'f5.example.com' }
+    let(:title) { 'f5.example.com' }
     let(:params) do
       {
         ensure: 'present',
@@ -212,7 +213,7 @@ describe 'device_manager' do
   end
 
   context 'declared on Linux, running Puppet 5.0, with run_interval and run_via_exec parameters' do
-    let(:title)  { 'f5.example.com' }
+    let(:title) { 'f5.example.com' }
     let(:params) do
       {
         ensure: :present,
@@ -236,7 +237,7 @@ describe 'device_manager' do
   end
 
   context 'declared on Linux, running Puppet 5.5, with credentials' do
-    let(:title)  { 'cisco.example.com' }
+    let(:title) { 'cisco.example.com' }
     let(:params) do
       {
         ensure: :present,
@@ -304,7 +305,7 @@ describe 'device_manager' do
   end
 
   context 'declared on Linux, running Puppet 5.5, with credentials and url parameters' do
-    let(:title)  { 'cisco.example.com' }
+    let(:title) { 'cisco.example.com' }
     let(:params) do
       {
         ensure: :present,
