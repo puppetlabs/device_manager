@@ -30,7 +30,7 @@ define device_manager::conf::device (
         hocon_setting { "${name}_${key}":
           ensure  => present,
           path    => $credentials_file,
-          setting => "default.node.${key}",
+          setting => $key,
           value   => $value,
         }
       }
