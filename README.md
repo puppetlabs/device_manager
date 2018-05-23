@@ -29,13 +29,13 @@ Devices require a proxy Puppet agent to request certificates, collect facts, ret
 On the master(s), install the `device_manager` module:
 
 ```bash
-puppet module install puppetlabs-device_manager --version # See https://forge.puppet.com/puppetlabs/device_manager for the latest version
+puppet module install puppetlabs-device_manager
 ```
 
 Also, install the device-specific module on the master(s):
 
 ```bash
-puppet module install f5-f5 --version # See https://forge.puppet.com/f5/f5 for the latest version
+puppet module install f5-f5
 ```
 
 ### Configure
@@ -77,8 +77,6 @@ Declare multiple `device_manager` resources via the `devices` parameter to the `
 }
 ```
 
-Also, apply the class of the device-specific module to the proxy Puppet agent via the Classifier.
-
 #### Manage Multiple Devices via Hiera:
 
 Declare multiple `device_manager` resources via the `device_manager::devices` key applied to the proxy Puppet agent via Hiera:
@@ -112,19 +110,48 @@ Declaring these resources will configure `device.conf` and apply the base class 
 puppet device --verbose --target bigip.example.com
 ```
 
-#### Signing certificates on first run
+#### Signing Certificates
 
-If this is the first time executing against this device and the certificate has not yet been signed, the following may be seen:
+The first run of `puppet device` for a device will generate a certificate request for the device:
+
+```bash
+Info: Creating a new SSL key for bigip.example.com
+Info: Caching certificate for ca
+Info: csr_attributes file loading from /opt/puppetlabs/puppet/cache/devices/bigip.example.com/csr_attributes.yaml
+Info: Creating a new SSL certificate request for bigip.example.com
+Info: Certificate Request fingerprint (SHA256): ...
+Info: Caching certificate for ca
+```
+
+Unless [autosign](https://puppet.com/docs/puppet/latest/ssl_autosign.html) is enabled, the following (depending upon `waitforcert`) will be output:
+
 ```bash
 Notice: Did not receive certificate
+Notice: Did not receive certificate
+Notice: Did not receive certificate
+...
 ```
 
-Execute the following to sign the certificates for the device(s):
+Or:
+
 ```bash
-puppet cert sign 'bigip.example.com'
+Exiting; no certificate found and waitforcert is disabled
 ```
 
-You should see output that the certificate for this device is being signed.
+On the master, execute the following to sign the certificate for the device:
+
+```bash
+puppet cert sign bigip.example.com
+```
+
+This will output that the certificate for the device has been signed:
+
+```bash
+Signing Certificate Request for:
+  "bigip.example.com" (SHA256) ...
+Notice: Signed certificate request for cisco.example.com
+Notice: Removing file Puppet::SSL::CertificateRequest bigip.example.com at '/etc/puppetlabs/puppet/ssl/ca/requests/bigip.example.com.pem'
+```
 
 ## Parameters
 
@@ -148,13 +175,13 @@ Setting to 'absent' deletes the device from `device.conf` and the `devices` fact
 
 Data type: String
 
-Specifies the type of the device in `device.conf` on the proxy Puppet agent. This is the module type used to access the device.
+Specifies the type of the device in `device.conf` on the proxy Puppet agent. This identifies the module used to access the device.
 
 ### url
 
 Data type: String
 
-This parameter is optional - use either the credentials or URL.
+This parameter is required for devices that do not use the Puppet Resource API: refer to the associated device module documentation for details. The `url` and `credentials` parameters are mutually exclusive.
 
 Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
@@ -162,9 +189,9 @@ Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
 Data type: Hash
 
-This parameter is optional and specific to devices that use the Puppet Resource API. Use either the credentials or URL.
+This parameter is required for devices that use the Puppet Resource API: refer to the associated device module documentation for details. The `credentials` and `url` parameters are mutually exclusive.
 
-Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the URL of the device in `device.conf`, on the proxy Puppet agent.
+Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the `url` of the device in `device.conf`, on the proxy Puppet agent.
 
 ```puppet
 device_manager {'cisco.example.com':
