@@ -23,16 +23,10 @@ define device_manager::conf::device (
       $url_url = $url
     } else {
       $url_url = "file://${credentials_file}"
+      $credentials_json = to_json_pretty($credentials)
       file { $credentials_file:
-        ensure => file,
-      }
-      $credentials.each |$key, $value| {
-        hocon_setting { "${name}_${key}":
-          ensure  => present,
-          path    => $credentials_file,
-          setting => $key,
-          value   => $value,
-        }
+        ensure  => file,
+        content => $credentials_json,
       }
     }
 
