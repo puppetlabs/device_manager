@@ -20,27 +20,23 @@ define device_manager::conf::device (
     # or define the credentials in a HOCON file and set the url to that file.
 
     if (empty($credentials)) {
-      $url_url = $url
+      $url_value = $url
     } else {
-      $url_url = "file://${credentials_file}"
+      $url_value = "file://${credentials_file}"
+      $credentials_json = to_json_pretty($credentials)
+
       file { $credentials_file:
-        ensure => file,
+        ensure  => file,
+        content => $credentials_json,
       }
-      $credentials.each |$key, $value| {
-        hocon_setting { "${name}_${key}":
-          ensure  => present,
-          path    => $credentials_file,
-          setting => $key,
-          value   => $value,
-        }
-      }
+
     }
 
-    $debug_transport = $debug ? { true => "debug\n", default => '' }
+    $debug_value = $debug ? { true => "debug\n", default => '' }
 
     concat::fragment{ "device_conf ${name}":
       target  => $device_manager::conf::device_conf_file,
-      content => "[${name}]\ntype ${type}\nurl ${url_url}\n${debug_transport}\n",
+      content => "[${name}]\ntype ${type}\nurl ${url_value}\n${debug_value}\n",
       order   => '99',
       tag     => "device_${name}",
     }

@@ -266,42 +266,6 @@ describe 'device_manager' do
     # it {
     #   is_expected.to contain_concat_fragment("device_manager_conf [#{title}]").with('content').including("url file://#{device_yaml_file}")
     # }
-
-    it {
-      is_expected.to contain_hocon_setting("#{title}_address").with(
-        'path'    => device_yaml_file,
-        'setting' => 'address',
-        'value'   => '10.0.0.245',
-      )
-    }
-    it {
-      is_expected.to contain_hocon_setting("#{title}_port").with(
-        'path'    => device_yaml_file,
-        'setting' => 'port',
-        'value'   => '22',
-      )
-    }
-    it {
-      is_expected.to contain_hocon_setting("#{title}_username").with(
-        'path'    => device_yaml_file,
-        'setting' => 'username',
-        'value'   => 'admin',
-      )
-    }
-    it {
-      is_expected.to contain_hocon_setting("#{title}_password").with(
-        'path'    => device_yaml_file,
-        'setting' => 'password',
-        'value'   => 'cisco',
-      )
-    }
-    it {
-      is_expected.to contain_hocon_setting("#{title}_enable_password").with(
-        'path'    => device_yaml_file,
-        'setting' => 'enable_password',
-        'value'   => 'cisco',
-      )
-    }
   end
 
   context 'declared on Linux, running Puppet 5.5, with credentials and url parameters' do
