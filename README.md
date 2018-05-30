@@ -29,13 +29,13 @@ Devices require a proxy Puppet agent to request certificates, collect facts, ret
 On the master(s), install the `device_manager` module:
 
 ```bash
-puppet module install puppetlabs-device_manager --version # See https://forge.puppet.com/puppetlabs/device_manager for the latest version
+puppet module install puppetlabs-device_manager
 ```
 
 Also, install the device-specific module on the master(s):
 
 ```bash
-puppet module install f5-f5 --version # See https://forge.puppet.com/f5/f5 for the latest version
+puppet module install f5-f5
 ```
 
 ### Configure
@@ -77,8 +77,6 @@ Declare multiple `device_manager` resources via the `devices` parameter to the `
 }
 ```
 
-Also, apply the class of the device-specific module to the proxy Puppet agent via the Classifier.
-
 #### Manage Multiple Devices via Hiera:
 
 Declare multiple `device_manager` resources via the `device_manager::devices` key applied to the proxy Puppet agent via Hiera:
@@ -112,6 +110,49 @@ Declaring these resources will configure `device.conf` and apply the base class 
 puppet device --verbose --target bigip.example.com
 ```
 
+#### Signing Certificates
+
+The first run of `puppet device` for a device will generate a certificate request for the device:
+
+```bash
+Info: Creating a new SSL key for bigip.example.com
+Info: Caching certificate for ca
+Info: csr_attributes file loading from /opt/puppetlabs/puppet/cache/devices/bigip.example.com/csr_attributes.yaml
+Info: Creating a new SSL certificate request for bigip.example.com
+Info: Certificate Request fingerprint (SHA256): ...
+Info: Caching certificate for ca
+```
+
+Unless [autosign](https://puppet.com/docs/puppet/latest/ssl_autosign.html) is enabled, the following (depending upon `waitforcert`) will be output:
+
+```bash
+Notice: Did not receive certificate
+Notice: Did not receive certificate
+Notice: Did not receive certificate
+...
+```
+
+Or:
+
+```bash
+Exiting; no certificate found and waitforcert is disabled
+```
+
+On the master, execute the following to sign the certificate for the device:
+
+```bash
+puppet cert sign bigip.example.com
+```
+
+This will output that the certificate for the device has been signed:
+
+```bash
+Signing Certificate Request for:
+  "bigip.example.com" (SHA256) ...
+Notice: Signed certificate request for cisco.example.com
+Notice: Removing file Puppet::SSL::CertificateRequest bigip.example.com at '/etc/puppetlabs/puppet/ssl/ca/requests/bigip.example.com.pem'
+```
+
 ## Parameters
 
 ### name
@@ -134,11 +175,13 @@ Setting to 'absent' deletes the device from `device.conf` and the `devices` fact
 
 Data type: String
 
-Specifies the type of the device in `device.conf` on the proxy Puppet agent.
+Specifies the type of the device in `device.conf` on the proxy Puppet agent. This identifies the module used to access the device.
 
 ### url
 
 Data type: String
+
+This parameter is required for devices that do not use the Puppet Resource API: refer to the associated device module documentation for details. The `url` and `credentials` parameters are mutually exclusive.
 
 Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
@@ -146,9 +189,9 @@ Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
 Data type: Hash
 
-This parameter is specific to devices that use the Puppet Resource API.
+This parameter is required for devices that use the Puppet Resource API: refer to the associated device module documentation for details. The `credentials` and `url` parameters are mutually exclusive.
 
-Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the URL of the device in `device.conf`, on the proxy Puppet agent.
+Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the `url` of the device in `device.conf`, on the proxy Puppet agent.
 
 ```puppet
 device_manager {'cisco.example.com':
@@ -175,7 +218,9 @@ Note: This parameter specifies the `debug` property defined in: [Config Files: d
 
 ### include_module
 
-Data type: Boolean, with a default of true.
+Data type: Boolean
+
+This parameter is optional, with a default of true.
 
 Specifies automatically including the base class (if one is defined) of the associated device module (specified by the `type` parameter) on the proxy Puppet agent.
 
@@ -200,24 +245,6 @@ device_manager {'bigip.example.com':
 ```
 
 Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this parameter will instead create one Cron (or Scheduled Task) resource that executes `puppet device` for all devices in `device.conf` every 60 minutes (at a randomized minute) on the proxy Puppet agent.
-
-### run_via_exec (deprecated)
-
-Data type: Boolean
-
-This parameter is optional, with a default of false.
-
-Setting `run_via_exec` to true will create an Exec resource for the device that executes `puppet device --target` during each `puppet agent` on the proxy Puppet agent. This parameter is deprecated in favor of `run_interval`, as `run_via_exec` will increase the execution time of a `puppet agent` run by the execution time of each `puppet device` run.
-
-```puppet
-device_manager {'bigip.example.com':
-  type         => 'f5',
-  url          => 'https://admin:fffff55555@10.0.0.245/',
-  run_via_exec => true,
-}
-```
-
-Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this parameter will instead create one Exec resource that executes `puppet device` for all devices in `device.conf`.
 
 ## Orchestration
 
@@ -246,26 +273,6 @@ puppet task run device_manager::run_puppet_device --query 'inventory { facts.dev
 ```
 
 [comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "device_bigip.example.com"}')
-
-### Puppet Job (deprecated)
-
-On versions of Puppet Enterprise (2017.2.x or lower) that do not support Puppet Tasks, this module provides an `run_via_exec` parameter which can be used by the `puppet job` command to indirectly orchestrate a `puppet device` run via an orchestrated `puppet agent` run on the proxy Puppet agent.
-
-#### Examples:
-
-To run `puppet device` for each device with `run_via_exec` set to true on the specified proxy Puppet agent:
-
-```
-puppet job run --nodes 'agent.example.com'
-```
-
-To run `puppet device` for each device with `run_via_exec` set to true on the proxy Puppet agent identified by a PuppetDB query:
-
-```bash
-puppet job run --query 'inventory { facts.devices."bigip.example.com" = true }'
-```
-
-[comment]: # (Alternate tag-query: --query 'resources[certname] { tag = "run_puppet_device_bigip.example.com"}')
 
 ## Reference
 
