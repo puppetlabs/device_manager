@@ -34,6 +34,7 @@ group :development do
   gem "puppet-module-win-default-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-module-win-dev-r#{minor_version}",       require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-blacksmith", '~> 3.4',                   require: false, platforms: [:ruby]
+  gem 'github_changelog_generator', git: 'https://github.com/skywinder/github-changelog-generator', ref: 'master' if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
 end
 
 group :system_tests do
