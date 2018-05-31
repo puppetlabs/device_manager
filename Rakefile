@@ -1,8 +1,8 @@
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet_blacksmith/rake_tasks' if Bundler.rubygems.find_name('puppet-blacksmith').any?
-require 'github_changelog_generator/task' if Bundler.rubygems.find_name('puppet-changelog-generator').any?
-if Bundler.rubygems.find_name('puppet-changelog-generator').any?
+require 'github_changelog_generator/task' if Bundler.rubygems.find_name('github_changelog_generator').any?
+if Bundler.rubygems.find_name('github_changelog_generator').any?
 
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
     config.user = 'puppetlabs'
