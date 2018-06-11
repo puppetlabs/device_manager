@@ -149,7 +149,7 @@ This will output that the certificate for the device has been signed:
 ```bash
 Signing Certificate Request for:
   "bigip.example.com" (SHA256) ...
-Notice: Signed certificate request for cisco.example.com
+Notice: Signed certificate request for bigip.example.com
 Notice: Removing file Puppet::SSL::CertificateRequest bigip.example.com at '/etc/puppetlabs/puppet/ssl/ca/requests/bigip.example.com.pem'
 ```
 
