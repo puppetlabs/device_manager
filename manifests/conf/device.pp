@@ -12,7 +12,7 @@ define device_manager::conf::device (
 
   include device_manager::conf
 
-  $credentials_file = "${device_manager::conf::devices_directory}/${name}.yaml"
+  $credentials_file = "${device_manager::conf::devices_directory}/${name}.conf"
 
   if ($ensure == 'present') {
 

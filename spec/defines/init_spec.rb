@@ -254,7 +254,7 @@ describe 'device_manager' do
         os: { family: 'redhat' },
       }
     end
-    let(:device_yaml_file) { "/etc/puppetlabs/puppet/devices/#{title}.yaml" }
+    let(:device_credentials_file) { "/etc/puppetlabs/puppet/devices/#{title}.conf" }
 
     it { is_expected.to contain_device_manager(title) }
     it { is_expected.to contain_class('device_manager::conf') }
@@ -264,7 +264,7 @@ describe 'device_manager' do
     # TODO: Identify the rspec syntax for matching an attribute value containing newlines.
     # Or, Identify the rspec syntax for substring matching an attribute value.
     # it {
-    #   is_expected.to contain_concat_fragment("device_manager_conf [#{title}]").with('content').including("url file://#{device_yaml_file}")
+    #   is_expected.to contain_concat_fragment("device_manager_conf [#{title}]").with('content').including("url file://#{device_credentials_file}")
     # }
   end
 
