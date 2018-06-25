@@ -50,7 +50,7 @@ end
 
 # Run 'puppet device' for each device, or just the target device.
 
-def run_device_manager(devices, noop, timeout)
+def run_puppet_device(devices, noop, timeout)
   os = Facter.value(:os) || {}
   osfamily = os['family']
   if osfamily == 'windows'
@@ -179,6 +179,6 @@ devices = read_device_configuration(target)
 if devices.count.zero?
   return_configuration_error(params)
 else
-  results = run_device_manager(devices, noop, timeout)
+  results = run_puppet_device(devices, noop, timeout)
   return_results(params, results)
 end
