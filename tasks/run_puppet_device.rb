@@ -4,6 +4,7 @@ require 'facter'
 require 'json'
 require 'open3'
 require 'puppet'
+require 'puppet/ssl/certificate'
 require 'puppet/util/network_device/config'
 require 'timeout'
 
@@ -24,6 +25,27 @@ def read_device_configuration(target)
     devices.select! { |key, _value| key == target }
   end
   devices
+end
+
+# Read a device certificate and return its fingerprints.
+
+def read_device_certificate_fingerprints(cert_name)
+  cert_file = File.join(Puppet[:devicedir], cert_name, 'ssl', 'certs', "#{cert_name}.pem")
+  if File.file?(cert_file)
+    begin
+      certificate = Puppet::SSL::Certificate.from_s(Puppet::FileSystem.read(cert_file))
+    rescue OpenSSL::X509::CertificateError
+      certificate = nil
+    end
+  end
+  return nil unless certificate
+  fingerprints = {}
+  fingerprints['default'] = certificate.fingerprint
+  mdas = [:SHA1, :SHA224, :SHA256, :SHA384, :SHA512]
+  mdas.each do |mda|
+    fingerprints[mda.to_s] = certificate.fingerprint(mda)
+  end
+  fingerprints
 end
 
 # Run 'puppet device' for each device, or just the target device.
@@ -91,6 +113,12 @@ def run_device_manager(devices, noop, timeout)
       status: status,
       result: result,
     }
+
+    fingerprints = read_device_certificate_fingerprints(device_name)
+    if fingerprints
+      results[device_name]['fingerprint'] = fingerprints['default']
+      results[device_name]['fingerprints'] = fingerprints
+    end
   end
 
   results
