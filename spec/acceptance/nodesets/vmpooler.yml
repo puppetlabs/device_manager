@@ -7,7 +7,7 @@ HOSTS:
     pe_upgrade_ver:
     hypervisor: vmpooler
 #    hypervisor: none
-#    ip: m80hs0ndpo6lki0.delivery.puppetlabs.net
+#    ip: yxmxcyvku5wpcnc.delivery.puppetlabs.net
     platform: el-7-x86_64
     template: centos-7-x86_64
     roles:
@@ -19,3 +19,5 @@ CONFIG:
   nfs_server: none
   consoleport: 443
   pooling_api: http://vmpooler.delivery.puppetlabs.net/
+  ssh:
+    keys: "~/.ssh/id_rsa-acceptance"
