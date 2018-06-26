@@ -23,7 +23,7 @@ end
 
 def run_agent(options = { allow_changes: true })
   acceptable_exit_codes = (options[:allow_changes] == false) ? 0 : [0, 2]
-  on(default, puppet('agent', '-t'),  acceptable_exit_codes: acceptable_exit_codes)
+  on(default, puppet('agent', '-t'), acceptable_exit_codes: acceptable_exit_codes)
 end
 
 def run_device_generate_csr(cert_name)
@@ -61,7 +61,6 @@ end
 def run_and_expect(proxy_cert_name, device_cert_name, regexes)
   expect_multiple_regexes(result: run_task(task_name: 'device_manager::run_puppet_device', host: proxy_cert_name, params: "target=#{device_cert_name}"), regexes: regexes)
 end
-
 
 def run_resource(cert_name, resource_type, resource_title = nil)
   if resource_title

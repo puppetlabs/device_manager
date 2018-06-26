@@ -5,24 +5,24 @@ describe 'configure' do
     it 'edit site.pp and run the agent' do
       fqdn = fact('fqdn')
       pp = <<-EOS
-node '#{fqdn}' {
-  device_manager {'cisco.example.com':
-    type        => 'cisco_ios',
-    credentials => {
-	  address         => '10.64.21.10',
-	  port            => 22,
-	  username        => 'root',
-	  password        => 'eq3e2jM6m8AVvT9',
-	  enable_password => 'eq3e2jM6m8AVvT9',
-    },
+  node '#{fqdn}' {
+    device_manager {'cisco.example.com':
+      type        => 'cisco_ios',
+      credentials => {
+        address         => '10.64.21.10',
+        port            => 22,
+        username        => 'root',
+        password        => 'eq3e2jM6m8AVvT9',
+        enable_password => 'eq3e2jM6m8AVvT9',
+      },
+    }
+    device_manager {'bigip.example.com':
+      type         => 'f5',
+      url          => 'https://admin:fffff55555@10.0.0.245/',
+      run_interval => 30,
+    }
   }
-  device_manager {'bigip.example.com':
-    type         => 'f5',
-    url          => 'https://admin:fffff55555@10.0.0.245/',
-    run_interval => 30,
-  }
-}
-node default {}
+  node default {}
       EOS
       make_site_pp(pp)
       run_agent(allow_changes: true)
@@ -38,9 +38,7 @@ node default {}
       it { is_expected.to contain %r{type f5} }
     end
   end
-end
 
-describe 'run' do
   context 'puppet device' do
     it 'generate and sign a certificate request' do
       run_cert_reset('cisco.example.com')
@@ -60,12 +58,7 @@ describe 'run' do
       proxy_cert_name = fact('fqdn')
       device_cert_name = 'cisco.example.com'
       # TODO: Read the default certificate fingerprint and add to regex below.
-      run_and_expect(proxy_cert_name, device_cert_name,
-        [
-          %r{status : success},
-          %r{fingerprint :},
-        ]
-      )
+      run_and_expect(proxy_cert_name, device_cert_name, [%r{status : success}, %r{fingerprint :}])
     end
   end
 end
