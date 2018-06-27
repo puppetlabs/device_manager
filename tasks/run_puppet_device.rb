@@ -109,16 +109,15 @@ def run_puppet_device(devices, noop, timeout)
       results['error_count'] = results['error_count'] + 1
     end
 
-    results[device_name] = {
-      status: status,
-      result: result,
-    }
-
+    results[device_name] = {}
     fingerprints = read_device_certificate_fingerprints(device_name)
     if fingerprints
       results[device_name]['fingerprint'] = fingerprints['default']
-      results[device_name]['fingerprints'] = fingerprints
+      # Returning all fingerprints obscures other results.
+      # results[device_name]['fingerprints'] = fingerprints
     end
+    results[device_name]['status'] = status
+    results[device_name]['result'] = result
   end
 
   results

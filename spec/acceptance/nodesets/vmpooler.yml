@@ -7,7 +7,7 @@ HOSTS:
     pe_upgrade_ver:
     hypervisor: vmpooler
 #    hypervisor: none
-#    ip: yxmxcyvku5wpcnc.delivery.puppetlabs.net
+#    ip: xxxxxxxxxxxxxxx.delivery.puppetlabs.net
     platform: el-7-x86_64
     template: centos-7-x86_64
     roles:
