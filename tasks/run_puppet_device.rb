@@ -59,6 +59,12 @@ def run_puppet_device(devices, noop, timeout)
   else
     puppet_command = '/opt/puppetlabs/puppet/bin/puppet'
   end
+  # PUP-1391 Puppet 5.4.0 does not require '--user=root'.
+  if Gem::Version.new(Puppet.version) > Gem::Version.new('5.4.0')
+    user = ''
+  else
+    user = '--user=root'
+  end
   results = {}
   results['error_count'] = 0
 
@@ -72,7 +78,7 @@ def run_puppet_device(devices, noop, timeout)
     result = ''
 
     begin
-      Open3.popen2e(puppet_command, 'device', '--waitforcert=0', '--user=root', '--verbose', target, noop) do |_, oe, w|
+      Open3.popen2e(puppet_command, 'device', user, '--waitforcert=0', '--verbose', target, noop) do |_, oe, w|
         begin
           Timeout.timeout(timeout) do
             until oe.eof?

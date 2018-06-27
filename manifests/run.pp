@@ -16,10 +16,9 @@ class device_manager::run {
     $user = '--user=root'
   }
 
-  # TODO: Consider removing multiple spaces using join(), delete(), rstrip().
-  $arguments = "device --waitforcert=0 ${user} --verbose"
+  $arguments = "device ${user} --waitforcert=0 --verbose"
 
-  # PUP-7412 Puppet 5.0.0 introduces '--target=root'.
+  # PUP-7412 Puppet 5.0.0 introduces '--target=<device>'.
   $targetable = (versioncmp($::puppetversion, '5.0.0') >= 0)
 
   $random_minute = sprintf('%02d', fqdn_rand(59, 'device_manager'))
