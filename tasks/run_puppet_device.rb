@@ -4,6 +4,8 @@ require 'facter'
 require 'json'
 require 'open3'
 require 'puppet'
+require 'puppet/ssl/certificate'
+require 'puppet/ssl/host'
 require 'puppet/util/network_device/config'
 require 'timeout'
 
@@ -26,9 +28,31 @@ def read_device_configuration(target)
   devices
 end
 
+# Read a device certificate and return its fingerprints.
+
+def read_device_certificate_fingerprints(cert_name)
+  cert_file = File.join(Puppet[:devicedir], cert_name, 'ssl', 'certs', "#{cert_name}.pem")
+  if File.file?(cert_file)
+    begin
+      certificate = Puppet::SSL::Certificate.from_s(Puppet::FileSystem.read(cert_file))
+    rescue OpenSSL::X509::CertificateError
+      certificate = nil
+    end
+  end
+  return nil unless certificate
+  fingerprints = {}
+  fingerprints['default'] = certificate.fingerprint
+  ssl_host = Puppet::SSL::Host.new
+  mdas = ssl_host.suitable_message_digest_algorithms
+  mdas.each do |mda|
+    fingerprints[mda.to_s] = certificate.fingerprint(mda)
+  end
+  fingerprints
+end
+
 # Run 'puppet device' for each device, or just the target device.
 
-def run_device_manager(devices, noop, timeout)
+def run_puppet_device(devices, noop, timeout)
   os = Facter.value(:os) || {}
   osfamily = os['family']
   if osfamily == 'windows'
@@ -37,6 +61,8 @@ def run_device_manager(devices, noop, timeout)
   else
     puppet_command = '/opt/puppetlabs/puppet/bin/puppet'
   end
+  # PUP-1391 Puppet 5.4.0 does not require '--user=root'.
+  user = (Gem::Version.new(Puppet.version) > Gem::Version.new('5.4.0')) ? '' : '--user=root'
   results = {}
   results['error_count'] = 0
 
@@ -50,7 +76,7 @@ def run_device_manager(devices, noop, timeout)
     result = ''
 
     begin
-      Open3.popen2e(puppet_command, 'device', '--waitforcert=0', '--user=root', '--verbose', target, noop) do |_, oe, w|
+      Open3.popen2e(puppet_command, 'device', user, '--waitforcert=0', '--verbose', target, noop) do |_, oe, w|
         begin
           Timeout.timeout(timeout) do
             until oe.eof?
@@ -87,10 +113,15 @@ def run_device_manager(devices, noop, timeout)
       results['error_count'] = results['error_count'] + 1
     end
 
-    results[device_name] = {
-      status: status,
-      result: result,
-    }
+    results[device_name] = {}
+    fingerprints = read_device_certificate_fingerprints(device_name)
+    if fingerprints
+      results[device_name]['fingerprint'] = fingerprints['default']
+      # Returning all fingerprints obscures other results.
+      # results[device_name]['fingerprints'] = fingerprints
+    end
+    results[device_name]['status'] = status
+    results[device_name]['result'] = result
   end
 
   results
@@ -151,6 +182,6 @@ devices = read_device_configuration(target)
 if devices.count.zero?
   return_configuration_error(params)
 else
-  results = run_device_manager(devices, noop, timeout)
+  results = run_puppet_device(devices, noop, timeout)
   return_results(params, results)
 end

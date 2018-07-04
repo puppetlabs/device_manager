@@ -43,6 +43,7 @@ group :system_tests do
   gem "beaker", *location_for(ENV['BEAKER_VERSION'] || '>= 3')
   gem "beaker-pe",                                                               require: false
   gem "beaker-rspec"
+  gem "beaker-task_helper"
   gem "beaker-hostgenerator"
   gem "beaker-abs", *location_for(ENV['BEAKER_ABS_VERSION'] || '~> 0.1')
   gem "puppet-blacksmith", '~> 3.4',                                             require: false

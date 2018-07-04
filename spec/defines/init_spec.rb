@@ -105,7 +105,7 @@ describe 'device_manager' do
     it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
       is_expected.to contain_cron('run puppet device').with(
-        'command' => '/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose',
+        'command' => '/opt/puppetlabs/puppet/bin/puppet device --user=root --waitforcert=0 --verbose',
       )
     }
   end
@@ -137,7 +137,7 @@ describe 'device_manager' do
     it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
       is_expected.to contain_cron("run puppet device target #{title}").with(
-        'command' => "/opt/puppetlabs/puppet/bin/puppet device --waitforcert=0 --user=root --verbose --target=#{title}",
+        'command' => "/opt/puppetlabs/puppet/bin/puppet device --user=root --waitforcert=0 --verbose --target=#{title}",
         'hour'    => '*',
       )
     }
@@ -207,7 +207,7 @@ describe 'device_manager' do
     it { is_expected.to contain_device_manager__run__via_exec__device(title) }
     it {
       is_expected.to contain_exec("run puppet device target #{title}").with(
-        'command' => %("/opt/puppetlabs/puppet/bin/puppet" device --waitforcert=0 --user=root --verbose --target=#{title}),
+        'command' => %("/opt/puppetlabs/puppet/bin/puppet" device --user=root --waitforcert=0 --verbose --target=#{title}),
       )
     }
   end
