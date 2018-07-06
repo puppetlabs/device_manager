@@ -5,8 +5,10 @@ class device_manager::run {
 
   if ($facts['os']['family'] == 'windows') {
     $command = "${::env_windows_installdir}\\bin\\puppet"
+    $logdest = 'eventlog'
   } else {
     $command = '/opt/puppetlabs/puppet/bin/puppet'
+    $logdest = 'syslog'
   }
 
   # PUP-1391 Puppet 5.4.0 does not require '--user=root'.
@@ -16,7 +18,7 @@ class device_manager::run {
     $user = '--user=root'
   }
 
-  $arguments = "device ${user} --waitforcert=0 --verbose"
+  $arguments = "device ${user} --waitforcert=0 --verbose --logdest ${logdest}"
 
   # PUP-7412 Puppet 5.0.0 introduces '--target=<device>'.
   $targetable = (versioncmp($::puppetversion, '5.0.0') >= 0)
