@@ -56,6 +56,7 @@ class device_manager::devices(Hash $devices = {}) {
       name           => $device['name'],
       type           => $device['type'],
       url            => $device['url'],
+      credentials    => $device['credentials'],
       debug          => $device['debug'],
       run_interval   => $device['run_interval'],
       run_via_exec   => $device['run_via_exec'],
