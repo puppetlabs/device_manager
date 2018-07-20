@@ -8,6 +8,11 @@ describe 'device_manager::devices' do
         'url'  => 'https://admin:fffff55555@10.0.1.245/',
         'run_interval' => 30,
       },
+      'creds.example.com' => {
+        'type' => 'cisco_ios',
+        'credentials'  => { 'user' => 'admin', 'password' => 's3cr3t' },
+        'run_interval' => 30,
+      },
     } }
   end
 
@@ -28,7 +33,16 @@ describe 'device_manager::devices' do
 
       it { is_expected.to compile }
       it { is_expected.to contain_device_manager('hiera.example.com') }
-      it { is_expected.to contain_device_manager('param.example.com') }
+      it {
+        is_expected.to contain_device_manager('param.example.com').with('type' => 'f5',
+                                                                        'url' => 'https://admin:fffff55555@10.0.1.245/',
+                                                                        'run_interval' => 30)
+      }
+      it {
+        is_expected.to contain_device_manager('creds.example.com').with('type' => 'cisco_ios',
+                                                                        'credentials'  => { 'user' => 'admin', 'password' => 's3cr3t' },
+                                                                        'run_interval' => 30)
+      }
     end
   end
 end
