@@ -47,6 +47,7 @@ class device_manager::devices(Hash $devices = {}) {
 
   if ( (versioncmp($::clientversion, '4.9.0') >= 0) and (! defined('$::serverversion') or versioncmp($::serverversion, '4.9.0') >= 0) ) {
     $hiera_devices = lookup('device_manager::devices', Hash, 'hash', {})
+    $hiera_defaults = lookup('device_manager::defaults', Hash, 'hash', {})
   } else {
     $hiera_devices = hiera_hash('device_manager::devices', {})
   }
@@ -54,13 +55,13 @@ class device_manager::devices(Hash $devices = {}) {
   ($hiera_devices + $devices).each |$title, $device| {
     device_manager {$title:
       name           => $device['name'],
-      type           => $device['type'],
+      type           => device_manager::value_or_default('type', $device, $hiera_defaults),
       url            => $device['url'],
-      credentials    => $device['credentials'],
-      debug          => $device['debug'],
-      run_interval   => $device['run_interval'],
-      run_via_exec   => $device['run_via_exec'],
-      include_module => $device['include_module'],
+      credentials    => device_manager::merge_default('credentials', $device, $hiera_defaults),
+      debug          => device_manager::value_or_default('debug', $device, $hiera_defaults),
+      run_interval   => device_manager::value_or_default('run_interval', $device, $hiera_defaults),
+      run_via_exec   => device_manager::value_or_default('run_via_exec', $device, $hiera_defaults),
+      include_module => device_manager::value_or_default('include_module', $device, $hiera_defaults),
     }
   }
 
