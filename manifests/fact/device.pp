@@ -2,12 +2,12 @@
 # @api private
 
 define device_manager::fact::device (
-  Enum['present', 'absent'] $ensure = 'present',
+  Enum[present, absent] $ensure = present,
 ) {
 
   include device_manager::fact
 
-  if ($ensure == 'present') {
+  if ($ensure == present) {
 
     concat::fragment{ "devices_fact ${name}":
       target  => $device_manager::fact::devices_fact_file,

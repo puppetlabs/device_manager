@@ -7,14 +7,14 @@ define device_manager::conf::device (
   String                    $url,
   Hash                      $credentials,
   Boolean                   $debug = false,
-  Enum['present', 'absent'] $ensure = 'present',
+  Enum[present, absent]     $ensure = present,
 ) {
 
   include device_manager::conf
 
   $credentials_file = "${device_manager::conf::devices_directory}/${name}.conf"
 
-  if ($ensure == 'present') {
+  if ($ensure == present) {
 
     # Either the credentials are in the url,
     # or define the credentials in a HOCON file and set the url to that file.

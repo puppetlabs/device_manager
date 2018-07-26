@@ -1,4 +1,10 @@
-# Configure this device.
+# AKA: device_manager::device
+#
+# Configure a single device.
+#
+# When modifying the parameter list, also modify device_manager::devices in devices.pp.
+#
+# @summary Configure a single device.
 
 define device_manager (
   String[1]              $type,
@@ -19,15 +25,15 @@ define device_manager (
 
   # Validate parameters.
 
-  if ($run_interval > 0 and $run_via_exec) {
+  if (($run_interval > 0) and ($run_via_exec == true)) {
     fail('Parameter Error: run_interval and run_via_exec are mutually-exclusive')
   }
 
-  if (!empty($credentials) and $url != '') {
+  if (!empty($credentials) and ($url != '')) {
     fail('Parameter Error: credentials and url are mutually-exclusive')
   }
 
-  if (empty($credentials) and $url == '') {
+  if (($ensure == present) and empty($credentials) and ($url == '')) {
     fail('Parameter Error: either credentials or url must be specified')
   }
 
@@ -63,16 +69,14 @@ define device_manager (
 
   # Optionally, declare a `puppet device` Exec for this device.
 
-  if ($run_via_exec and ($ensure == present)) {
+  if (($ensure == present) and ($run_via_exec == true)) {
     device_manager::run::via_exec::device { $name: }
   }
 
-  # Device modules often implement a base class that implements an install class.
-  # Automatically include that base class to install any requirements of the module.
+  # Some device modules implement a base class that implements an install class.
+  # Optionally, include that base class to install any requirements of the device module.
 
-  # TODO: Consider including the ("${type}::install") class instead.
-
-  if ($ensure == present) and ($include_module == true) and defined($type) {
+  if (($ensure == present) and ($include_module == true) and defined($type)) {
     include $type
   }
 }
