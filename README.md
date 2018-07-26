@@ -51,7 +51,7 @@ Declare individual `device_manager` resources via a manifest applied to the prox
 node 'agent.example.com' {
   device_manager {'bigip.example.com':
     type         => 'f5',
-    url          => 'https://admin:fffff55555@10.0.0.245/',
+    url          => 'https://admin:password@10.0.0.245/',
     run_interval => 30,
   }
 }
@@ -66,11 +66,11 @@ Declare multiple `device_manager` resources via the `device_manager::devices` ke
 device_manager::devices:
   bigip1.example.com:
     type:         'f5'
-    url:          'https://admin:fffff55555@10.0.1.245/'
+    url:          'https://admin:password@10.0.1.245/'
     run_interval: 30
   bigip2.example.com:
     type:         'f5'
-    url:          'https://admin:fffff55555@10.0.2.245/'
+    url:          'https://admin:password@10.0.2.245/'
     run_interval: 30
 ```
 
@@ -90,12 +90,12 @@ Declare multiple `device_manager` resources via the `devices` parameter to the `
 {
   'bigip1.example.com' => {
     type         => 'f5',
-    url          => 'https://admin:fffff55555@10.0.1.245/',
+    url          => 'https://admin:password@10.0.1.245/',
     run_interval => 30,
   },
   'bigip2.example.com' => {
     type         => 'f5',
-    url          => 'https://admin:fffff55555@10.0.2.245/',
+    url          => 'https://admin:password@10.0.2.245/',
     run_interval => 30,
   },
 }
@@ -236,7 +236,7 @@ Setting `run_interval` to a value between 1 and 1440 will create a Cron (or on W
 ```puppet
 device_manager {'bigip.example.com':
   type         => 'f5',
-  url          => 'https://admin:fffff55555@10.0.0.245/',
+  url          => 'https://admin:password@10.0.0.245/',
   run_interval => 30,
 }
 ```

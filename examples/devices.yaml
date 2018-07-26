@@ -1,23 +1,24 @@
 ---
 device_manager::defaults:
-  run_interval:   66
+  run_interval:   60
   cisco_ios:
-    run_interval: 99
-    credentials:
-      port:       22
+    run_interval: 90
+  f5:
+    run_interval: 90
 
 device_manager::devices:
-  hiera.example.com:
+  bigip1.example.com:
     type:         'f5'
     url:          'https://admin:password@10.0.1.245/'
-    run_interval: 33
-  hiera_with_global_default.example.com:
+    run_interval: 30
+  bigip2.example.com:
     type:         'f5'
     url:          'https://admin:password@10.0.2.245/'
-  hiera_with_type_defaults.example.com:
-    type:         'cisco_ios'
+  cisco.example.com:
+    type:        'cisco_ios'
     credentials:
       address:         '10.0.0.246'
+      port:            22
       username:        'admin'
       password:        'password'
       enable_password: 'password'
