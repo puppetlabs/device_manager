@@ -31,10 +31,14 @@ On the master, install the `device_manager` module:
 puppet module install puppetlabs-device_manager
 ```
 
-On the master, install the device-specific module associated with the device. For example:
+On the master, install the device-specific module associated with each device. For example:
 
 ```bash
 puppet module install f5-f5
+```
+
+```bash
+puppet module install puppetlabs-cisco_ios
 ```
 
 ### Configure
@@ -49,11 +53,24 @@ Declare individual `device_manager` resources via a manifest applied to the prox
 
 ```puppet
 node 'agent.example.com' {
-  device_manager {'bigip.example.com':
+  device_manager { 'bigip.example.com':
     type         => 'f5',
     url          => 'https://admin:password@10.0.0.245/',
     run_interval => 30,
   }
+}
+```
+
+```puppet
+device_manager { 'cisco.example.com':
+  type        => 'cisco_ios',
+  credentials => {
+    address         => '10.0.0.246',
+    port            => 22,
+    username        => 'admin',
+    password        => 'password',
+    enable_password => 'password',
+  },
 }
 ```
 
@@ -72,6 +89,24 @@ device_manager::devices:
     type:         'f5'
     url:          'https://admin:password@10.0.2.245/'
     run_interval: 30
+  cisco1.example.com:
+    type:         'cisco_ios'
+    credentials:
+      address:    '10.0.1.246'
+      port:            22
+      username:        'admin'
+      password:        'password'
+      enable_password: 'password'
+    run_interval: 60
+  cisco2.example.com:
+    type:         'cisco_ios'
+    credentials:
+      address:    '10.0.2.246'
+      port:            22
+      username:        'admin'
+      password:        'password'
+      enable_password: 'password'
+    run_interval: 60
 ```
 
 ... and declare the `device_manager::devices` class in a manifest applied to the proxy Puppet agent:
@@ -98,8 +133,77 @@ Declare multiple `device_manager` resources via the `devices` parameter to the `
     url          => 'https://admin:password@10.0.2.245/',
     run_interval => 30,
   },
+  'cisco1.example.com' => {
+    type         => 'cisco_ios'
+    credentials  => {
+      address         => '10.0.1.246',
+      port            => 22,
+      username        => 'admin',
+      password        => 'password',
+      enable_password => 'password',
+    },
+    run_interval => 60,
+  }
+  'cisco2.example.com' => {
+    type        => 'cisco_ios',
+    credentials => {
+      address         => '10.0.2.246',
+      port            => 22,
+      username        => 'admin',
+      password        => 'password',
+      enable_password => 'password',
+    },
+    run_interval => 60,
+  }
 }
 ```
+
+#### Defaults When Manage Multiple Devices via Hiera or the Classifier:
+
+When using the `device_manager::devices` class, defaults (for all devices, and/or for each device type) for device parameters can be declared via the `device_manager::defaults` key applied to the proxy Puppet agent via Hiera:
+
+```yaml
+device_manager::defaults:
+  run_interval:   90
+  f5:
+    run_interval: 30
+  cisco_ios:
+    run_interval: 60
+    credentials:
+      port:            22
+      username:        'admin'
+      password:        'password'
+      enable_password: 'password'
+```
+
+This allows for deduplication of common parameters:
+
+```yaml
+---
+device_manager::devices:
+  bigip1.example.com:
+    type:         'f5'
+    url:          'https://admin:password@10.0.1.245/'
+  bigip2.example.com:
+    type:         'f5'
+    url:          'https://admin:password@10.0.2.245/'
+  cisco1.example.com:
+    type:         'cisco_ios'
+    credentials:
+      address:    '10.0.1.246'
+  cisco2.example.com:
+    type:         'cisco_ios'
+    credentials:
+      address:    '10.0.2.246'
+```
+
+The order of precedence for parameters and defaults is:
+
+1. The parameter in the resource declaration
+1. Defaults in `device_manager::defaults::<DEVICE TYPE>`
+1. Defaults in `device_manager::defaults`
+
+Hash parameters (such as `credentials`) are merged using the same precedence.
 
 ### Run `puppet device`
 
@@ -180,7 +284,11 @@ Specifies the type of the device in `device.conf` on the proxy Puppet agent. Thi
 
 Data type: String
 
-This parameter is required for devices that do not use the Puppet Resource API: refer to the associated device module documentation for details. The `url` and `credentials` parameters are mutually exclusive.
+This parameter is required for devices that do not use the Puppet Resource API: refer to the associated device module documentation for details regarding its format. The `url` and `credentials` parameters are mutually exclusive.
+
+```puppet
+url => 'https://admin:password@10.0.0.245/'
+```
 
 Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
@@ -188,22 +296,19 @@ Specifies the URL of the device in `device.conf` on the proxy Puppet agent.
 
 Data type: Hash
 
-This parameter is required for devices that use the Puppet Resource API: refer to the associated device module documentation for details. The `credentials` and `url` parameters are mutually exclusive.
-
-Specifies the credentials of the device in a HOCON file in `confdir/devices`, and sets that file as the `url` of the device in `device.conf`, on the proxy Puppet agent.
+This parameter is required for devices that use the Puppet Resource API: refer to the associated device module documentation for details regarding its format. The `credentials` and `url` parameters are mutually exclusive.
 
 ```puppet
-device_manager {'cisco.example.com':
-  type        => 'cisco_ios',
-  credentials => {
-                  address         => '10.0.0.246',
-                  port            => 22,
-                  username        => 'admin',
-                  password        => 'password',
-                  enable_password => 'password',
-  },
+credentials => {
+  address         => '10.0.0.246',
+  port            => 22,
+  username        => 'admin',
+  password        => 'password',
+  enable_password => 'password',
 }
 ```
+
+This saves the credentials of the device in a HOCON file in `confdir/devices` and specifies that file as the `url` of the device in `device.conf` on the proxy Puppet agent.
 
 ### debug
 
@@ -232,14 +337,6 @@ This parameter is optional, with a default of 0.
 Setting `run_interval` to a value between 1 and 1440 will create a Cron (or on Windows, a Scheduled Task) resource for the device that executes `puppet device --target` every `run_interval` minutes (with a randomized offset) on the proxy Puppet agent. When creating a Cron resource, values greater than thirty minutes will be rounded up to the nearest hour.
 
 [comment]: # (Doing so avoids impractical cron mathematics.)
-
-```puppet
-device_manager {'bigip.example.com':
-  type         => 'f5',
-  url          => 'https://admin:password@10.0.0.245/',
-  run_interval => 30,
-}
-```
 
 Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this parameter will instead create one Cron (or Scheduled Task) resource that executes `puppet device` for all devices in `device.conf` every 60 minutes (at a randomized minute) on the proxy Puppet agent.
 
