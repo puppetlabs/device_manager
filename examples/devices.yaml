@@ -1,0 +1,27 @@
+---
+device_manager::devices:
+  bigip1.example.com:
+    type:         'f5'
+    url:          'https://admin:password@10.0.1.245/'
+  bigip2.example.com:
+    type:         'f5'
+    url:          'https://admin:password@10.0.2.245/'
+  cisco1.example.com:
+    credentials:
+      address:    '10.0.1.246'
+  cisco2.example.com:
+    credentials:
+      address:    '10.0.2.246'
+
+device_manager::defaults:
+  type:           'cisco_ios'
+  run_interval:   45
+  f5:
+    run_interval: 30
+  cisco_ios:
+    run_interval: 60
+    credentials:
+      port:            22
+      username:        'admin'
+      password:        'password'
+      enable_password: 'password'

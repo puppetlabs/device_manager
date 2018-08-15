@@ -2,5 +2,23 @@
 device_manager::devices:
   hiera.example.com:
     type:         'f5'
-    url:          'https://admin:fffff55555@10.0.1.245/'
-    run_interval: 30
+    url:          'https://admin:password@10.0.1.245/'
+    run_interval: 33
+  hiera_with_global_default.example.com:
+    type:         'f5'
+    url:          'https://admin:password@10.0.2.245/'
+  hiera_with_type_defaults.example.com:
+    type:         'cisco_ios'
+    credentials:
+      address:         '10.0.0.246'
+      username:        'admin'
+      password:        'password'
+      enable_password: 'password'
+
+device_manager::defaults:
+  type:           'cisco_ios'
+  run_interval:   66
+  cisco_ios:
+    run_interval: 99
+    credentials:
+      port:       22
