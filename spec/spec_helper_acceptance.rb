@@ -25,15 +25,34 @@ RSpec.configure do |c|
   end
 end
 
+def define_common_yaml(yaml)
+  path = '/etc/puppetlabs/code/environments/production/data'
+  on master, "mkdir -p #{path}"
+  create_remote_file(master, File.join(path, 'common.yaml'), yaml)
+  if ENV['PUPPET_INSTALL_TYPE'] == 'foss'
+    on master, "chown -R puppet:puppet #{path}"
+  else
+    on master, "chown -R pe-puppet:pe-puppet #{path}"
+  end
+  on master, "chmod -R 0755 #{path}"
+end
+
 def define_site_pp(manifest)
   path = '/etc/puppetlabs/code/environments/production/manifests'
   on master, "mkdir -p #{path}"
   create_remote_file(master, File.join(path, 'site.pp'), manifest)
-  return unless ENV['PUPPET_INSTALL_TYPE'] == 'foss'
-  on master, "chown -R #{master['user']}:#{master['group']} #{path}"
+  if ENV['PUPPET_INSTALL_TYPE'] == 'foss'
+    on master, "chown -R puppet:puppet #{path}"
+    on master, "service #{master['puppetservice']} restart"
+    wait_for_master(3)
+  else
+    on master, "chown -R pe-puppet:pe-puppet #{path}"
+  end
   on master, "chmod -R 0755 #{path}"
-  on master, "service #{master['puppetservice']} restart"
-  wait_for_master(3)
+end
+
+def reset_agent_device_cache(cert_name)
+  on default, "rm -rf /opt/puppetlabs/puppet/cache/devices/#{cert_name}"
 end
 
 def run_puppet_node_purge(cert_name)
@@ -55,10 +74,6 @@ def run_puppet_cert_fingerprint(cert_name)
     fingerprint = matched[:fingerprint]
   end
   fingerprint
-end
-
-def reset_agent_device_cache(cert_name)
-  on default, "rm -rf /opt/puppetlabs/puppet/cache/devices/#{cert_name}"
 end
 
 def run_puppet_agent(options = { allow_changes: true })
