@@ -1,7 +1,7 @@
 {
   "name": "puppetlabs-device_manager",
   "version": "2.6.0",
-  "author": "Puppet",
+  "author": "puppetlabs",
   "summary": "Manage devices used by 'puppet device' on puppet agents.",
   "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/device_manager.git",
@@ -64,7 +64,7 @@
     }
   ],
   "description": "Manage devices used by 'puppet device' on proxy puppet agents.",
-  "pdk-version": "1.5.0",
+  "pdk-version": "1.8.0.pre (2)",
   "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
-  "template-ref": "1.5.0-0-gd1b3eca"
+  "template-ref": "1.7.0-0-g57412ed"
 }
