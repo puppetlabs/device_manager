@@ -60,20 +60,31 @@ def run_puppet_node_purge(cert_name)
 end
 
 def run_puppet_cert_sign(cert_name = nil)
-  if cert_name
-    on(master, puppet('cert', 'sign', cert_name), acceptable_exit_codes: [0, 1]).stdout
+  puppet_version = on master, puppet('--version')
+  cert = cert_name ? cert_name : '--all'
+
+  if version_is_less(puppet_version.output, '5.99')
+    on(master, puppet('cert', 'sign', cert), acceptable_exit_codes: [0, 1]).stdout
   else
-    on(master, puppet('cert', 'sign', '--all'), acceptable_exit_codes: [0, 1]).stdout
+    on(master, "puppetserver ca sign --certname #{cert}", acceptable_exit_codes: [0, 1]).stdout
   end
 end
 
 def run_puppet_cert_fingerprint(cert_name)
   fingerprint = nil
-  result = on(master, puppet('cert', 'fingerprint', cert_name), acceptable_exit_codes: 0).stdout
-  if (matched = result.chomp.match(%r{\(\w+\) (?<fingerprint>.*)$}))
-    fingerprint = matched[:fingerprint]
+  puppet_version = on master, puppet('--version')
+  if version_is_less(puppet_version.output, '5.99')
+    result = on(master, puppet('cert', 'fingerprint', cert_name), acceptable_exit_codes: 0).stdout
+    if (matched = result.chomp.match(%r{\(\w+\) (?<fingerprint>.*)$}))
+      fingerprint = matched[:fingerprint]
+    end
+  else
+    result = on(master, "puppetserver ca list --all | grep #{cert_name}", acceptable_exit_codes: 0).stdout
+    if (matched = result.chomp.match(%r{\(\w+\) (?<fingerprint>.*[^\W])(?<alt> alt names:.*[^$])?$}))
+      fingerprint = matched[:fingerprint]
+    end
   end
-  fingerprint
+  fingerprint.strip
 end
 
 def run_puppet_agent(options = { allow_changes: true })
