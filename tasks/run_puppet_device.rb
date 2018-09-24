@@ -42,7 +42,11 @@ def read_device_certificate_fingerprints(cert_name)
   return nil unless certificate
   fingerprints = {}
   fingerprints['default'] = certificate.fingerprint
-  mdas = [:SHA1, :SHA224, :SHA256, :SHA384, :SHA512] # ssl_host.suitable_message_digest_algorithms was removed in Puppet 6, specifying the array directly
+  mdas = if Puppet.respond_to? :valid_digest_algorithms
+           Puppet.valid_digest_algorithms
+         else
+           Puppet::SSL::Host.new.suitable_message_digest_algorithms
+         end
   mdas.each do |mda|
     fingerprints[mda.to_s] = certificate.fingerprint(mda)
   end
