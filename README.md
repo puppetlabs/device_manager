@@ -43,13 +43,13 @@ puppet module install puppetlabs-cisco_ios
 
 ### Configure
 
-Devices can be declared either individually via a manifest, or multiple devices can be declared via Hiera or the Classifier. Using Hiera allows for the option of encrypting sensitive information (such as passwords) at rest on the master, using the hiera-eyaml backend.
+You can declare individual devices via a manifest, or multiple devices via Hiera or the Classifier. Using Hiera allows you to encrypt sensitive information, such as passwords, at rest on the master, using the hiera-eyaml backend.
 
-Note: If the same device (identified by name) is declared via Hiera and the Classifier, the declaration in the Classifier will take precedence.
+Note: If you declare the same device (identified by name) via Hiera and the Classifier, the declaration in the Classifier takes precedence.
 
-#### Manage Individual Devices via a Manifest:
+#### Manage individual devices via a manifest:
 
-Declare individual `device_manager` resources via a manifest applied to the proxy Puppet agent:
+Declare individual `device_manager` resources via a manifest and apply to the proxy Puppet agent:
 
 ```puppet
 node 'agent.example.com' {
@@ -74,9 +74,9 @@ node 'agent.example.com' {
 }
 ```
 
-#### Manage Multiple Devices via Hiera:
+#### Manage multiple devices via Hiera:
 
-Declare multiple `device_manager` resources via the `device_manager::devices` key applied to the proxy Puppet agent via Hiera:
+Declare multiple `device_manager` resources via the `device_manager::devices` key and apply to the proxy Puppet agent via Hiera:
 
 ```yaml
 ---
@@ -109,7 +109,7 @@ device_manager::devices:
     run_interval: 60
 ```
 
-... and declare the `device_manager::devices` class in a manifest applied to the proxy Puppet agent:
+Declare the `device_manager::devices` class in a manifest and apply to the proxy Puppet agent:
 
 ```puppet
 node 'agent.example.com'  {
@@ -117,9 +117,9 @@ node 'agent.example.com'  {
 }
 ```
 
-#### Manage Multiple Devices via the Classifier:
+#### Manage multiple devices via the Classifier:
 
-Declare multiple `device_manager` resources via the `devices` parameter to the `device_manager::devices` class applied to the proxy Puppet agent via the Classifier:
+Declare multiple `device_manager` resources, via the `devices` parameter, to the `device_manager::devices` class and apply to the proxy Puppet agent via the Classifier:
 
 ```puppet
 {
@@ -158,9 +158,9 @@ Declare multiple `device_manager` resources via the `devices` parameter to the `
 }
 ```
 
-#### Defaults When Managing Multiple Devices via Hiera or the Classifier:
+#### Defaults when managing multiple devices via Hiera or the Classifier:
 
-When using the `device_manager::devices` class, defaults (for all devices, and/or for each device type) for device parameters can be declared via the `device_manager::devices::defaults` key applied to the proxy Puppet agent via Hiera:
+When using the `device_manager::devices` class, you can declare defaults (for all devices and for each device type) for device parameters via the `device_manager::devices::defaults` key and apply to the proxy Puppet agent via Hiera:
 
 ```yaml
 device_manager::devices::defaults:
@@ -212,7 +212,7 @@ Declaring these resources will configure `device.conf` and apply the base class 
 puppet device --verbose --target bigip.example.com
 ```
 
-#### Signing Certificates
+#### Signing certificates
 
 The first run of `puppet device` for a device will generate a certificate request for the device:
 
