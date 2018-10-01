@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [2.7.0](https://github.com/puppetlabs/device_manager/tree/2.7.0) (2018-10-02)
+
+[Full Changelog](https://github.com/puppetlabs/device_manager/compare/2.6.0...2.7.0)
+
+### Added
+
+- \(FM-7281\) Update pdk templates to 1.7.0-0-g57412ed [\#26](https://github.com/puppetlabs/device_manager/pull/26) ([DavidS](https://github.com/DavidS))
+- \(FM-7230\) Specify defaults for multiple devices when using Hiera or Classifier [\#24](https://github.com/puppetlabs/device_manager/pull/24) ([tkishel](https://github.com/tkishel))
+- \(FM-7148\) logdest scheduled runs to system log [\#16](https://github.com/puppetlabs/device_manager/pull/16) ([tkishel](https://github.com/tkishel))
+- \(FM 7115\) return device certificates with task results [\#15](https://github.com/puppetlabs/device_manager/pull/15) ([tkishel](https://github.com/tkishel))
+
+### Fixed
+
+- CVE-2018-11748 \(FM-7258\) Update device config file permissions [\#32](https://github.com/puppetlabs/device_manager/pull/32) ([willmeek](https://github.com/willmeek))
+- \(FM-7383\) allow device manager to work with Puppet 6 [\#27](https://github.com/puppetlabs/device_manager/pull/27) ([Thomas-Franklin](https://github.com/Thomas-Franklin))
+- Pass through credentials from device\_manager::devices [\#21](https://github.com/puppetlabs/device_manager/pull/21) ([DavidS](https://github.com/DavidS))
+- \(FM-7114\) purge conf devices directory [\#18](https://github.com/puppetlabs/device_manager/pull/18) ([tkishel](https://github.com/tkishel))
+
 ## [2.6.0](https://github.com/puppetlabs/device_manager/tree/2.6.0) (2018-05-31)
 
 [Full Changelog](https://github.com/puppetlabs/device_manager/compare/2.5.0...2.6.0)
