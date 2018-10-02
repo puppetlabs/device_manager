@@ -8,7 +8,7 @@ class device_manager::conf {
     File {
       owner => 'root',
       group => 'root',
-      mode  => '0644',
+      mode  => '0640',
     }
   }
 
@@ -29,6 +29,9 @@ class device_manager::conf {
   concat { $device_conf_file:
     backup    => false,
     show_diff => false,
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0640',
   }
 
   concat::fragment{ 'device_conf_comment':
