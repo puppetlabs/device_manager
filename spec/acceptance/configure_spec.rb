@@ -6,6 +6,7 @@ describe 'configure' do
   manifest = <<-EOS
 File { backup => false }
 node '#{fqdn}' {
+  include cisco_ios::proxy
   device_manager {'bigip.example.com':
     type         => 'f5',
     url          => 'https://admin:password@10.0.0.245/',
@@ -28,6 +29,7 @@ EOS
   manifest_with_include_devices = <<-EOS
 File { backup => false }
 node '#{fqdn}' {
+  include cisco_ios::proxy
   device_manager {'bigip.example.com':
     type         => 'f5',
     url          => 'https://admin:password@10.0.0.245/',
