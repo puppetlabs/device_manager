@@ -64,7 +64,7 @@
     }
   ],
   "description": "Manage devices used by 'puppet device' on proxy puppet agents.",
-  "pdk-version": "1.8.0.pre (2)",
+  "pdk-version": "1.5.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates.git",
-  "template-ref": "heads/master-0-gb4e2f83"
+  "template-ref": "heads/master-0-g20af4c6"
 }
