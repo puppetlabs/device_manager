@@ -1,3 +1,5 @@
+require 'beaker-pe'
+require 'beaker-puppet'
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'beaker-task_helper'
@@ -7,6 +9,7 @@ require 'pry'
 
 if ENV['BEAKER_provision'] != 'no'
   run_puppet_install_helper
+  configure_type_defaults_on(hosts)
   install_module_on(hosts)
   install_module_dependencies_on(hosts)
 end
