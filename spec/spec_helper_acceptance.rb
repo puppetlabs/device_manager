@@ -20,7 +20,7 @@ RSpec.configure do |c|
     unless ENV['BEAKER_TESTMODE'] == 'local'
       unless ENV['BEAKER_provision'] == 'no'
         install_module_from_forge('puppetlabs-cisco_ios', '0.2.0')
-        install_module_from_forge('f5-f5', '1.8.0')
+        install_module_from_forge('f5-f5', '1.9.0')
       end
       hosts.each do |host|
       end
