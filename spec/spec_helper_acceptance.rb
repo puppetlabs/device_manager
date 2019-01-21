@@ -1,3 +1,5 @@
+require 'beaker-pe'
+require 'beaker-puppet'
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'beaker-task_helper'
@@ -7,6 +9,7 @@ require 'pry'
 
 if ENV['BEAKER_provision'] != 'no'
   run_puppet_install_helper
+  configure_type_defaults_on(hosts)
   install_module_on(hosts)
   install_module_dependencies_on(hosts)
 end
@@ -17,7 +20,7 @@ RSpec.configure do |c|
     unless ENV['BEAKER_TESTMODE'] == 'local'
       unless ENV['BEAKER_provision'] == 'no'
         install_module_from_forge('puppetlabs-cisco_ios', '0.2.0')
-        install_module_from_forge('f5-f5', '1.8.0')
+        install_module_from_forge('f5-f5', '1.9.0')
       end
       hosts.each do |host|
       end
