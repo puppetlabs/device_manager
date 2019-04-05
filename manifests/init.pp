@@ -1,6 +1,6 @@
 # AKA: device_manager::device
 #
-# Configure a single device.
+# Configure a single device on a proxy.
 #
 # When modifying the parameter list, also modify device_manager::devices in devices.pp.
 #
@@ -16,12 +16,6 @@ define device_manager (
   Boolean                $include_module = true,
   Enum[present, absent]  $ensure         = present,
 ) {
-
-  # Validate node.
-
-  unless has_key($facts, 'aio_agent_version') {
-    fail("Classification Error: 'device_manager' declared on a device instead of an agent.")
-  }
 
   # Validate parameters.
 

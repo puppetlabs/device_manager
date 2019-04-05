@@ -8,23 +8,6 @@ describe 'device_manager' do
     ]
   end
 
-  context 'declared on a device' do
-    let(:title) { 'cisco.example.com' }
-    let(:params) do
-      {
-        ensure: :present,
-        type: 'cisco_ios',
-      }
-    end
-    let(:facts) do
-      {
-        os: { family: 'cisco_ios' },
-      }
-    end
-
-    it { is_expected.to raise_error(%r{declared on a device}) }
-  end
-
   context 'declared on Linux, running Puppet 5.0, with values for all device.conf parameters' do
     let(:title) { 'f5.example.com' }
     let(:params) do
