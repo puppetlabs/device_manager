@@ -98,7 +98,7 @@ end
 def run_puppet_device_generate_csr(cert_name)
   acceptable_exit_codes = 1
   on(default, puppet('device', '--verbose', '--waitforcert=0', '--target', cert_name), acceptable_exit_codes: acceptable_exit_codes) do |result|
-    expect(result.stdout).to match(%r{Exiting; no certificate found and waitforcert is disabled})
+    expect(result.stdout).to match(%r{Exiting; no certificate found and waitforcert is disabled}) | match(%r{Exiting now because the waitforcert setting is set to 0})
   end
 end
 
