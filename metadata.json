@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-device_manager",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "author": "puppetlabs",
   "summary": "Manage devices used by 'puppet device' on puppet agents.",
   "license": "Apache-2.0",
