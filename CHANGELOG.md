@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [2.7.1](https://github.com/puppetlabs/device_manager/tree/2.7.1) (2019-04-09)
+
+[Full Changelog](https://github.com/puppetlabs/device_manager/compare/2.7.0...2.7.1)
+
+### Fixed
+
+- \(maint\) removing the aio\_agent\_version fact check [\#41](https://github.com/puppetlabs/device_manager/pull/41) ([Thomas-Franklin](https://github.com/Thomas-Franklin))
+- Tighter version bounding on puppetlabs/hocon [\#40](https://github.com/puppetlabs/device_manager/pull/40) ([rnelson0](https://github.com/rnelson0))
+- Fix build issues on Jenkins [\#39](https://github.com/puppetlabs/device_manager/pull/39) ([da-ar](https://github.com/da-ar))
+
 ## [2.7.0](https://github.com/puppetlabs/device_manager/tree/2.7.0) (2018-10-02)
 
 [Full Changelog](https://github.com/puppetlabs/device_manager/compare/2.6.0...2.7.0)
