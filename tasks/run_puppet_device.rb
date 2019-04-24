@@ -16,6 +16,19 @@ params = JSON.parse(STDIN.read)
 noop = (params['_noop']) ? '--noop' : ''
 target = (params['target']) ? params['target'] : ''
 timeout = (params['timeout'].to_i > 0) ? params['timeout'].to_i : default_timeout
+apply = (params['apply']) ? "--apply=#{params['apply']}" : ''
+
+# Validation for apply
+if params['apply']
+  # Puppet device --apply was released in Puppet 5.5
+  if Gem::Version.new(Facter.value(:puppetversion)) < Gem::Version.new('5.5')
+    raise("puppet device --apply does not exist in Puppet version: #{Facter.value(:puppetversion)}. --apply was added in Puppet 5.5.")
+  end
+
+  unless File.file?(params['apply'])
+    raise("Invalid value for parameter 'apply'. #{params['apply']} does not exist.'")
+  end
+end
 
 # Read all devices, or just the target device.
 
@@ -55,7 +68,7 @@ end
 
 # Run 'puppet device' for each device, or just the target device.
 
-def run_puppet_device(devices, noop, timeout)
+def run_puppet_device(devices, noop, timeout, apply)
   os = Facter.value(:os) || {}
   osfamily = os['family']
   if osfamily == 'windows'
@@ -79,7 +92,7 @@ def run_puppet_device(devices, noop, timeout)
     result = ''
 
     begin
-      Open3.popen2e(puppet_command, 'device', user, '--waitforcert=0', '--verbose', target, noop) do |_, oe, w|
+      Open3.popen2e(puppet_command, 'device', user, '--waitforcert=0', '--verbose', target, noop, apply) do |_, oe, w|
         begin
           Timeout.timeout(timeout) do
             until oe.eof?
@@ -185,6 +198,6 @@ devices = read_device_configuration(target)
 if devices.count.zero?
   return_configuration_error(params)
 else
-  results = run_puppet_device(devices, noop, timeout)
+  results = run_puppet_device(devices, noop, timeout, apply)
   return_results(params, results)
 end

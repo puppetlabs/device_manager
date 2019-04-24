@@ -10,6 +10,10 @@
     "timeout": {
       "description": "The timeout in seconds for the puppet device command(s), defaults to 64",
       "type": "Optional[Variant[Integer, Pattern[/^[0-9]+$/]]]"
+    },
+    "apply": {
+      "description": "The path to the Puppet manifest to apply which is located on the (proxy) Puppet agent",
+      "type": "Optional[Stdlib::Absolutepath]"
     }
   }
 }
