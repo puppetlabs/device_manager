@@ -83,7 +83,7 @@ def run_puppet_device(devices, noop, timeout, apply)
   devices.map do |device_name, _device|
     target = "--target=#{device_name}"
     line = ''
-    error_message = ''
+    error_message = []
     configuration_version = ''
     catalog_seconds = ''
     status = ''
@@ -96,10 +96,10 @@ def run_puppet_device(devices, noop, timeout, apply)
             until oe.eof?
               line = oe.readline
               if (matched = line.match(%r{Error: (?<error>.*)}))
-                error_message = matched[:error]
+                error_message << matched[:error]
               end
               if (matched = line.match(%r{Exiting; (?<certificate>no certificate found and waitforcert is disabled)}))
-                error_message = matched[:certificate]
+                error_message << matched[:certificate]
               end
               if (matched = line.match(%r{Applying configuration version '(?<version>.*?)'}))
                 configuration_version = matched[:version]
@@ -111,11 +111,11 @@ def run_puppet_device(devices, noop, timeout, apply)
           end
         rescue Timeout::Error
           Process.kill('KILL', w.pid)
-          error_message = 'timeout error'
+          error_message << 'timeout error'
         end
       end
     rescue => e
-      error_message = e.message
+      error_message << e.message
     end
 
     if error_message.empty?
@@ -123,8 +123,8 @@ def run_puppet_device(devices, noop, timeout, apply)
       result = "applied configuration version '#{configuration_version}' in #{catalog_seconds} seconds"
     else
       status = 'error'
-      result = error_message.gsub(%r{\e\[(\d+)m}, '')
       results['error_count'] = results['error_count'] + 1
+      results['error_message'] = error_message
     end
 
     results[device_name] = {}
@@ -169,7 +169,7 @@ def return_results(params, results)
     exit_code = 1
     error_s = (results['error_count'] == 1) ? 'error' : 'errors'
     result[:_error] = {
-      msg: "puppet device run #{error_s}: review task status via the Console",
+      msg: "puppet device run #{error_s}: review task status via the Console\n#{results['error_message']}",
       kind: 'puppetlabs/device_manager',
       details: {
         params: {
