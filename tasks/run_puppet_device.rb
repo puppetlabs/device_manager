@@ -21,12 +21,12 @@ apply = (params['apply']) ? "--apply=#{params['apply']}" : ''
 # Validation for apply
 if params['apply']
   # Puppet device --apply was released in Puppet 5.5
-  if Gem::Version.new(Facter.value(:puppetversion)) < Gem::Version.new('5.5')
-    raise("puppet device --apply does not exist in Puppet version: #{Facter.value(:puppetversion)}. --apply was added in Puppet 5.5.")
+  if Gem::Version.new(Puppet.version) < Gem::Version.new('5.5')
+    raise "puppet device --apply does not exist in Puppet version: #{Puppet.version}. --apply was added in Puppet 5.5."
   end
 
   unless File.file?(params['apply'])
-    raise("Invalid value for parameter 'apply'. #{params['apply']} does not exist.'")
+    raise "Invalid value for parameter 'apply'. #{params['apply']} does not exist.'"
   end
 end
 
@@ -69,9 +69,7 @@ end
 # Run 'puppet device' for each device, or just the target device.
 
 def run_puppet_device(devices, noop, timeout, apply)
-  os = Facter.value(:os) || {}
-  osfamily = os['family']
-  if osfamily == 'windows'
+  if Gem.win_platform?
     env_windows_installdir = Facter.value(:env_windows_installdir) || 'C:\Program Files\Puppet Labs\Puppet'
     puppet_command = %("#{env_windows_installdir}\bin\puppet")
   else
