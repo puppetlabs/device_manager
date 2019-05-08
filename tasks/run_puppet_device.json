@@ -13,7 +13,7 @@
     },
     "apply": {
       "description": "The path to the Puppet manifest to apply which is located on the (proxy) Puppet agent",
-      "type": "Optional[Variant[Pattern[/^\\/([^\\/\0]+\\/*)*$/], Pattern[/^(([a-zA-Z]:[\\\/])|([\\\/][\\\/][^\\\/]+[\\\/][^\\\/]+)|([\\\/][\\\/]\?[\\\/][^\\\/]+))/]]]"
+      "type": "Optional[Pattern[/.+\.pp$/]]"
     }
   }
 }
