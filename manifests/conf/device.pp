@@ -27,8 +27,8 @@ define device_manager::conf::device (
 
       file { $credentials_file:
         ensure  => file,
-        owner   => 'root',
-        group   => 'root',
+        owner   => $::identity['user'],
+        group   => $::identity['group'],
         mode    => '0640',
         content => $credentials_json,
       }

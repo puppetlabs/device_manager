@@ -6,8 +6,8 @@ class device_manager::conf {
 
   if ($facts['os']['family'] != 'windows') {
     File {
-      owner => 'root',
-      group => 'root',
+      owner => $::identity['user'],
+      group => $::identity['group'],
       mode  => '0640',
     }
   }
@@ -29,8 +29,8 @@ class device_manager::conf {
   concat { $device_conf_file:
     backup    => false,
     show_diff => false,
-    owner     => 'root',
-    group     => 'root',
+    owner     => $::identity['user'],
+    group     => $::identity['group'],
     mode      => '0640',
   }
 
