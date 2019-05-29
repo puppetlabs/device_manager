@@ -60,11 +60,11 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": "> 4.7.0 < 7.0.0"
+      "version_requirement": ">= 5.5.10 < 7.0.0"
     }
   ],
   "description": "Manage devices used by 'puppet device' on proxy puppet agents.",
-  "pdk-version": "1.8.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates.git",
-  "template-ref": "heads/master-0-g20af4c6"
+  "pdk-version": "1.10.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates.git#master",
+  "template-ref": "heads/master-0-gb1f9d3a"
 }
