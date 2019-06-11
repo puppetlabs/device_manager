@@ -18,7 +18,7 @@
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.10.0 < 6.0.0"
+      "version_requirement": ">= 4.10.0 < 7.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -66,5 +66,5 @@
   "description": "Manage devices used by 'puppet device' on proxy puppet agents.",
   "pdk-version": "1.10.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates.git#master",
-  "template-ref": "heads/master-0-gb1f9d3a"
+  "template-ref": "heads/master-0-g7827fc2"
 }
