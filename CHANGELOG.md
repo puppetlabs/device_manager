@@ -2,9 +2,22 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [2.7.1](https://github.com/puppetlabs/device_manager/tree/2.7.1) (2019-04-09)
+## [v3.0.0](https://github.com/puppetlabs/device_manager/tree/v3.0.0) (2019-06-11)
 
-[Full Changelog](https://github.com/puppetlabs/device_manager/compare/2.7.0...2.7.1)
+[Full Changelog](https://github.com/puppetlabs/device_manager/compare/v2.7.1...v3.0.0)
+
+### Added
+
+- \(maint\) pdk update for the removal of Puppet 4 support [\#47](https://github.com/puppetlabs/device_manager/pull/47) ([Thomas-Franklin](https://github.com/Thomas-Franklin))
+
+### Fixed
+
+- \(maint\) Relax version requirement for concat [\#49](https://github.com/puppetlabs/device_manager/pull/49) ([DavidS](https://github.com/DavidS))
+- \(FM-8238, FM-8137\) Dependency fixes [\#48](https://github.com/puppetlabs/device_manager/pull/48) ([DavidS](https://github.com/DavidS))
+
+## [v2.7.1](https://github.com/puppetlabs/device_manager/tree/v2.7.1) (2019-04-10)
+
+[Full Changelog](https://github.com/puppetlabs/device_manager/compare/2.7.0...v2.7.1)
 
 ### Fixed
 
