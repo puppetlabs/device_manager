@@ -63,6 +63,9 @@
       "version_requirement": ">= 5.5.10 < 7.0.0"
     }
   ],
+  "tags": [
+    "network"
+  ],
   "description": "Manage devices used by 'puppet device' on proxy puppet agents.",
   "pdk-version": "1.10.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates.git#master",
