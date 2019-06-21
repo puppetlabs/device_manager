@@ -47,7 +47,7 @@ define device_manager::run::via_cron::device (
     cron { "run puppet device target ${name}":
       ensure  => $cron_ensure,
       command => "${device_manager::run::command} ${device_manager::run::arguments} --target=${name}",
-      user    => 'root',
+      user    => $::identity['user'],
       hour    => $hour,
       minute  => $minute,
       # hour     => $cron_time['hour'],
