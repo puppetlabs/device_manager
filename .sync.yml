@@ -21,3 +21,9 @@ Gemfile:
 
 Rakefile:
   changelog_project: device_manager
+
+spec/default_facts.yml:
+  extra_facts:
+    identity:
+      user: "root"
+      group: "root"
