@@ -3,20 +3,20 @@ require 'spec_helper_acceptance'
 describe 'run' do
   context 'puppet device' do
     it 'generate certificate request for device on the proxy agent' do
-      run_puppet_device_generate_csr('cisco.example.com')
+      run_puppet_device_generate_csr('spinner.example.com')
     end
     it 'sign certificate request on the master' do
-      run_puppet_cert_sign('cisco.example.com')
+      run_puppet_cert_sign('spinner.example.com')
     end
     it 'run puppet device on the proxy agent' do
-      run_puppet_device('cisco.example.com', allow_changes: false)
+      run_puppet_device('spinner.example.com', allow_changes: false)
     end
   end
 
   context 'puppet task' do
     it 'run device_manager::run_puppet_device task on the master' do
       host_cert_name = fact('fqdn')
-      device_cert_name = 'cisco.example.com'
+      device_cert_name = 'spinner.example.com'
       params = "target=#{device_cert_name}"
       device_cert_fingerprint = run_puppet_cert_fingerprint(device_cert_name)
       # Note: run_puppet_task from beaker-task_helper executes "puppet task" "on(master".

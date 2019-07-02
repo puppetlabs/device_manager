@@ -8,7 +8,7 @@ device_manager::devices:
     type:         'f5'
     url:          'https://admin:password@10.0.2.245/'
   hiera_with_type_defaults.example.com:
-    type:         'cisco_ios'
+    type:         'spinner'
     credentials:
       address:         '10.0.0.246'
       username:        'admin'
@@ -16,9 +16,9 @@ device_manager::devices:
       enable_password: 'password'
 
 device_manager::devices::defaults:
-  type:           'cisco_ios'
+  type:           'spinner'
   run_interval:   66
-  cisco_ios:
+  spinner:
     run_interval: 99
     credentials:
       port:       22

@@ -19,7 +19,8 @@ RSpec.configure do |c|
     run_puppet_access_login(user: 'admin')
     unless ENV['BEAKER_TESTMODE'] == 'local'
       unless ENV['BEAKER_provision'] == 'no'
-        install_module_from_forge('puppetlabs-cisco_ios', '0.2.0')
+        install_module_from_forge('puppetlabs-resource_api', '1.1.0')
+        install_module_from_forge('puppetlabs-test_device', '1.0.0')
         install_module_from_forge('f5-f5', '1.9.0')
       end
       hosts.each do |host|
@@ -92,12 +93,12 @@ end
 
 def run_puppet_agent(options = { allow_changes: true })
   acceptable_exit_codes = (options[:allow_changes] == false) ? 0 : [0, 2]
-  on(default, puppet('agent', '-t'), acceptable_exit_codes: acceptable_exit_codes)
+  on(default, puppet('agent', '--trace', '-t'), acceptable_exit_codes: acceptable_exit_codes)
 end
 
 def run_puppet_device_generate_csr(cert_name)
   acceptable_exit_codes = 1
-  on(default, puppet('device', '--verbose', '--waitforcert=0', '--target', cert_name), acceptable_exit_codes: acceptable_exit_codes) do |result|
+  on(default, puppet('device', '--verbose', '--waitforcert=0', '--trace', '--target', cert_name), acceptable_exit_codes: acceptable_exit_codes) do |result|
     expect(result.stdout).to match(%r{Exiting; no certificate found and waitforcert is disabled}) | match(%r{Exiting now because the waitforcert setting is set to 0})
   end
 end
@@ -106,7 +107,7 @@ end
 
 def run_puppet_device(cert_name, options = { allow_changes: true })
   acceptable_exit_codes = (options[:allow_changes] == false) ? 0 : [0, 2]
-  on(default, puppet('device', '--verbose', '--waitforcert=0', '--target', cert_name), acceptable_exit_codes: acceptable_exit_codes) do |result|
+  on(default, puppet('device', '--verbose', '--waitforcert=0', '--trace', '--target', cert_name), acceptable_exit_codes: acceptable_exit_codes) do |result|
     if options[:allow_changes] == false
       expect(result.stdout).not_to match(%r{^Notice: /Stage\[main\]})
     end

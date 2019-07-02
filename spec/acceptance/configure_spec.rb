@@ -1,85 +1,93 @@
 require 'spec_helper_acceptance'
 
 describe 'configure' do
-  fqdn = fact('fqdn')
+  let(:fqdn) { fact('fqdn') }
 
-  manifest = <<-EOS
+  let(:manifest) do
+    <<-EOS
 File { backup => false }
 node '#{fqdn}' {
-  include cisco_ios
+  include resource_api::install
   device_manager {'bigip.example.com':
     type         => 'f5',
     url          => 'https://admin:password@10.0.0.245/',
     run_interval => 30,
   }
-  device_manager {'cisco.example.com':
-    type        => 'cisco_ios',
+  device_manager {'spinner.example.com':
+    type        => 'spinner',
     credentials => {
-      address         => '10.64.21.10',
-      port            => 22,
-      username        => 'root',
-      password        => 'eq3e2jM6m8AVvT9',
-      enable_password => 'eq3e2jM6m8AVvT9',
+      facts_cpu_time  => 0,
+      facts_wait_time => 0,
+      get_cpu_time    => 0,
+      get_wait_time   => 0,
     },
+    include_module => false,
   }
 }
 node default {}
 EOS
+  end
 
-  manifest_with_include_devices = <<-EOS
+  let(:manifest_with_include_devices) do
+    <<-EOS
 File { backup => false }
 node '#{fqdn}' {
-  include cisco_ios
+  include resource_api::install
   device_manager {'bigip.example.com':
     type         => 'f5',
     url          => 'https://admin:password@10.0.0.245/',
     run_interval => 30,
   }
-  device_manager {'cisco.example.com':
-    type        => 'cisco_ios',
+  device_manager {'spinner.example.com':
+    type        => 'spinner',
     credentials => {
-      address         => '10.64.21.10',
-      port            => 22,
-      username        => 'root',
-      password        => 'eq3e2jM6m8AVvT9',
-      enable_password => 'eq3e2jM6m8AVvT9',
+      facts_cpu_time  => 0,
+      facts_wait_time => 0,
+      get_cpu_time    => 0,
+      get_wait_time   => 0,
     },
+    include_module => false,
   }
   include device_manager::devices
 }
 node default {}
 EOS
+  end
 
-  yaml_with_devices = <<-EOS
+  let(:yaml_with_devices) do
+    <<-EOS
 ---
 device_manager::devices:
-  cisco_via_hiera.example.com:
-    type:         'cisco_ios'
+  spinner_via_hiera.example.com:
+    type: 'spinner'
     credentials:
-      address:         '10.64.21.10'
-      port:            22
-      username:        'admin'
-      password:        'eq3e2jM6m8AVvT9'
-      enable_password: 'eq3e2jM6m8AVvT9'
+      facts_cpu_time: 0
+      facts_wait_time: 0
+      get_cpu_time: 0
+      get_wait_time: 0
+    include_module: false
 device_manager::devices::defaults:
   run_interval: 60
 EOS
+  end
 
-  yaml_with_devices_with_ensure_absent = <<-EOS
+  let(:yaml_with_devices_with_ensure_absent) do
+    <<-EOS
 ---
 device_manager::devices:
-  cisco_via_hiera.example.com:
-    type:         'cisco_ios'
+  spinner_via_hiera.example.com:
+    type: 'spinner'
     credentials:
-      address:         '10.64.21.10'
-      port:            22
-      username:        'admin'
-      password:        'eq3e2jM6m8AVvT9'
-      enable_password: 'eq3e2jM6m8AVvT9'
+      facts_cpu_time: 0
+      facts_wait_time: 0
+      get_cpu_time: 0
+      get_wait_time: 0
+    include_module: false
 device_manager::devices::defaults:
   ensure:       'absent'
   run_interval: 60
 EOS
+  end
 
   context 'device management via device_manager' do
     it 'define device management in site.pp on the master' do
@@ -92,16 +100,16 @@ EOS
     describe file('/etc/puppetlabs/puppet/device.conf') do
       it { is_expected.to be_file }
       it { is_expected.to contain %r{bigip.example.com} }
-      it { is_expected.to contain %r{cisco.example.com} }
+      it { is_expected.to contain %r{spinner.example.com} }
     end
-    describe file('/etc/puppetlabs/puppet/devices/cisco.example.com.conf') do
+    describe file('/etc/puppetlabs/puppet/devices/spinner.example.com.conf') do
       it { is_expected.to be_file }
-      it { is_expected.to contain %r{address} }
+      it { is_expected.to contain %r{facts_cpu_time} }
     end
     it 'cron for device with run_interval on the proxy agent' do
       result = on(default, 'crontab -l').stdout
       expect(result).to match(%r{bigip.example.com})
-      expect(result).not_to match(%r{cisco.example.com})
+      expect(result).not_to match(%r{spinner.example.com})
     end
   end
 
@@ -116,15 +124,15 @@ EOS
     end
     describe file('/etc/puppetlabs/puppet/device.conf') do
       it { is_expected.to be_file }
-      it { is_expected.to contain %r{cisco_via_hiera.example.com} }
+      it { is_expected.to contain %r{spinner_via_hiera.example.com} }
     end
-    describe file('/etc/puppetlabs/puppet/devices/cisco_via_hiera.example.com.conf') do
+    describe file('/etc/puppetlabs/puppet/devices/spinner_via_hiera.example.com.conf') do
       it { is_expected.to be_file }
-      it { is_expected.to contain %r{address} }
+      it { is_expected.to contain %r{facts_cpu_time} }
     end
     it 'cron for device with run_interval on the proxy agent' do
       result = on(default, 'crontab -l').stdout
-      expect(result).to match(%r{cisco_via_hiera.example.com})
+      expect(result).to match(%r{spinner_via_hiera.example.com})
     end
   end
 
@@ -139,21 +147,21 @@ EOS
     end
     describe file('/etc/puppetlabs/puppet/device.conf') do
       it { is_expected.to be_file }
-      it { is_expected.not_to contain %r{cisco_via_hiera.example.com} }
+      it { is_expected.not_to contain %r{spinner_via_hiera.example.com} }
     end
-    describe file('/etc/puppetlabs/puppet/devices/cisco_via_hiera.example.com.conf') do
+    describe file('/etc/puppetlabs/puppet/devices/spinner_via_hiera.example.com.conf') do
       it { is_expected.not_to be_file }
     end
     it 'undefine cron for device with run_interval on the proxy agent' do
       result = on(default, 'crontab -l').stdout
-      expect(result).not_to match(%r{cisco_via_hiera.example.com})
+      expect(result).not_to match(%r{spinner_via_hiera.example.com})
     end
   end
 
   context 'device certificate' do
     it 'purge device on the master and the proxy agent' do
-      run_puppet_node_purge('cisco.example.com')
-      reset_agent_device_cache('cisco.example.com')
+      run_puppet_node_purge('spinner.example.com')
+      reset_agent_device_cache('spinner.example.com')
     end
   end
 end
