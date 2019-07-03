@@ -9,7 +9,7 @@ describe 'device_manager::devices' do
         'run_interval' => 33,
       },
       'params_credentials.example.com' => {
-        'type' => 'cisco_ios',
+        'type' => 'spinner',
         'credentials'  => { 'user' => 'admin', 'password' => 'password', 'port' => 44 },
         'run_interval' => 33,
       },
@@ -47,7 +47,7 @@ describe 'device_manager::devices' do
       }
       it {
         is_expected.to contain_device_manager('hiera_with_type_defaults.example.com')
-          .with('type'         => 'cisco_ios',
+          .with('type'         => 'spinner',
                 'credentials'  => { 'port' => 22, 'address' => '10.0.0.246', 'username' => 'admin', 'password' => 'password', 'enable_password' => 'password' },
                 'run_interval' => 99)
       }
@@ -60,7 +60,7 @@ describe 'device_manager::devices' do
       }
       it {
         is_expected.to contain_device_manager('params_credentials.example.com')
-          .with('type' => 'cisco_ios',
+          .with('type' => 'spinner',
                 'credentials'  => { 'user' => 'admin', 'password' => 'password', 'port' => 44 },
                 'run_interval' => 33)
       }

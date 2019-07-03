@@ -3,6 +3,7 @@ require 'pry'
 describe 'device_manager' do
   let(:pre_condition) do
     [
+      'class spinner {}',
       'class cisco_ios {}',
       'class f5 {}',
     ]
