@@ -24,13 +24,13 @@ define device_manager::run::via_scheduled_task::device (
     if ($run_user == '') {
       $optional_user = ''
     } else {
-      $optional_user = "--user=${run_user}"
+      $optional_user = " --user=${run_user}"
     }
 
     scheduled_task { "run puppet device target ${task_name}":
       ensure    => $scheduled_task_ensure,
       command   => $device_manager::run::command,
-      arguments => "${device_manager::run::arguments} --target=${name} ${optional_user}",
+      arguments => "${device_manager::run::arguments} --target=${name}${optional_user}",
       trigger   => {
         schedule         => 'daily',
         start_time       => $start_time,

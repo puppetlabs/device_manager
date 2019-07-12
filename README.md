@@ -345,7 +345,7 @@ Data type: String
 
 This parameter is optional.
 
-Specifies the `--user=` parameter when running `puppet device --user=` on the proxy Puppet agent.
+Specifies the `--user=` parameter for scheduled `puppet device` runs on the proxy Puppet agent.
 
 Requires Puppet 5.4.0 or newer.
 

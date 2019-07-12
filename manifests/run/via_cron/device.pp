@@ -48,12 +48,12 @@ define device_manager::run::via_cron::device (
     if ($run_user == '') {
       $optional_user = ''
     } else {
-      $optional_user = "--user=${run_user}"
+      $optional_user = " --user=${run_user}"
     }
 
     cron { "run puppet device target ${name}":
       ensure  => $cron_ensure,
-      command => "${device_manager::run::command} ${device_manager::run::arguments} --target=${name} ${optional_user}",
+      command => "${device_manager::run::command} ${device_manager::run::arguments} --target=${name}${optional_user}",
       user    => $::identity['user'],
       hour    => $hour,
       minute  => $minute,

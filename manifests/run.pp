@@ -13,12 +13,12 @@ class device_manager::run {
 
   # PUP-1391 Puppet 5.4.0 eliminates the need for '--user=root'.
   if (versioncmp($::puppetversion, '5.4.0') < 0) {
-    $default_user = '--user=root'
+    $optional_user = ' --user=root'
   } else {
-    $default_user = ''
+    $optional_user = ''
   }
 
-  $arguments = "device ${default_user} --waitforcert=0 --verbose --logdest ${logdest}"
+  $arguments = "device --verbose --waitforcert=0 --logdest=${logdest}${optional_user}"
 
   # PUP-7412 Puppet 5.0.0 introduces '--target=<device>'.
   $targetable = (versioncmp($::puppetversion, '5.0.0') >= 0)

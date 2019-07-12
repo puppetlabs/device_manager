@@ -89,7 +89,7 @@ describe 'device_manager' do
     it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
       is_expected.to contain_cron('run puppet device').with(
-        'command' => '/opt/puppetlabs/puppet/bin/puppet device --user=root --waitforcert=0 --verbose --logdest syslog',
+        'command' => '/opt/puppetlabs/puppet/bin/puppet device --verbose --waitforcert=0 --logdest=syslog --user=root',
       )
     }
   end
@@ -121,7 +121,7 @@ describe 'device_manager' do
     it { is_expected.to contain_device_manager__run__via_cron__device(title) }
     it {
       is_expected.to contain_cron("run puppet device target #{title}").with(
-        'command' => "/opt/puppetlabs/puppet/bin/puppet device --user=root --waitforcert=0 --verbose --logdest syslog --target=#{title}",
+        'command' => "/opt/puppetlabs/puppet/bin/puppet device --verbose --waitforcert=0 --logdest=syslog --user=root --target=#{title}",
         'hour'    => '*',
       )
     }
@@ -157,7 +157,41 @@ describe 'device_manager' do
     it {
       is_expected.to contain_scheduled_task("run puppet device target #{task_name}").with(
         'command'   => 'C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet',
-        'arguments' => "device --user=root --waitforcert=0 --verbose --logdest eventlog --target=#{title}",
+        'arguments' => "device --verbose --waitforcert=0 --logdest=eventlog --user=root --target=#{title}",
+      )
+    }
+  end
+
+  context 'declared on Linux, running Puppet 5.5, with run_interval and run_user' do
+    let(:title) { 'f5.example.com' }
+    let(:params) do
+      {
+        ensure: :present,
+        type: 'f5',
+        url: 'https://admin:password@10.0.0.245/',
+        run_interval: 30,
+        run_user:     'someone',
+      }
+    end
+    let(:facts) do
+      {
+        aio_agent_version: '5.5.0',
+        puppetversion: '5.5.0',
+        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
+        puppet_settings_confdir: '/etc/puppetlabs',
+        os: { family: 'redhat' },
+      }
+    end
+
+    it { is_expected.to contain_device_manager(title) }
+    it { is_expected.to contain_class('device_manager::conf') }
+    it { is_expected.to contain_class('device_manager::fact') }
+    it { is_expected.to contain_class('F5') }
+    it { is_expected.to contain_device_manager__run__via_cron__device(title) }
+    it {
+      is_expected.to contain_cron("run puppet device target #{title}").with(
+        'command' => "/opt/puppetlabs/puppet/bin/puppet device --verbose --waitforcert=0 --logdest=syslog --target=#{title} --user=someone",
+        'hour'    => '*',
       )
     }
   end
@@ -193,7 +227,7 @@ describe 'device_manager' do
     it { is_expected.to contain_device_manager__run__via_exec__device(title) }
     it {
       is_expected.to contain_exec("run puppet device target #{title}").with(
-        'command' => %("/opt/puppetlabs/puppet/bin/puppet" device --user=root --waitforcert=0 --verbose --logdest syslog --target=#{title}),
+        'command' => %("/opt/puppetlabs/puppet/bin/puppet" device --verbose --waitforcert=0 --logdest=syslog --user=root --target=#{title}),
       )
     }
   end
