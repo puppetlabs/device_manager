@@ -337,7 +337,17 @@ Setting `run_interval` to a value between 1 and 1440 will create a Cron (or on W
 
 [comment]: # (Doing so avoids impractical cron mathematics.)
 
-Note: On versions of Puppet (lower than Puppet 5.x.x) that do not support `puppet device --target`, this parameter will instead create one Cron (or Scheduled Task) resource that executes `puppet device` for all devices in `device.conf` every 60 minutes (at a randomized minute) on the proxy Puppet agent.
+Note: On versions of Puppet (older than 5.0.0) that do not support `puppet device --target`, this parameter will instead create one Cron (or Scheduled Task) resource that executes `puppet device` for all devices in `device.conf` every 60 minutes (at a randomized minute) on the proxy Puppet agent.
+
+### run_user
+
+Data type: String
+
+This parameter is optional.
+
+Specifies the `--user=` parameter when running `puppet device --user=` on the proxy Puppet agent.
+
+Requires Puppet 5.4.0 or newer.
 
 ## Orchestration
 

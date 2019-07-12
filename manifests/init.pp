@@ -12,6 +12,7 @@ define device_manager (
   Hash                   $credentials    = {},
   Boolean                $debug          = false,
   Integer[0,1440]        $run_interval   = 0,
+  String                 $run_user       = '',
   Boolean                $run_via_exec   = false,
   Boolean                $include_module = true,
   Enum[present, absent]  $ensure         = present,
@@ -29,6 +30,10 @@ define device_manager (
 
   if (($ensure == present) and empty($credentials) and ($url == '')) {
     fail('Parameter Error: either credentials or url must be specified')
+  }
+
+  if (($ensure == present) and ($run_user != '')) and (versioncmp($::puppetversion, '5.4.0') < 0) {
+    fail('Parameter Error: run_user requires Puppet 5.4.0 or newer')
   }
 
   # Add, update, or remove this device in the deviceconfig file.
@@ -53,18 +58,22 @@ define device_manager (
     device_manager::run::via_scheduled_task::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
+      run_user     => $run_user,
     }
   } else {
     device_manager::run::via_cron::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
+      run_user     => $run_user,
     }
   }
 
   # Optionally, declare a `puppet device` Exec for this device.
 
   if (($ensure == present) and ($run_via_exec == true)) {
-    device_manager::run::via_exec::device { $name: }
+    device_manager::run::via_exec::device { $name:
+      run_user     => $run_user,
+    }
   }
 
   # Some device modules implement a base class that implements an install class.
