@@ -16,9 +16,12 @@ class device_manager::conf {
   $devices_directory = "${::puppet_settings_confdir}/puppet/devices"
 
   file { $devices_directory:
-    ensure  => directory,
-    purge   => true,
-    recurse => true,
+    ensure       => directory,
+    owner        => $settings::user,
+    group        => $settings::group,
+    purge        => true,
+    recurse      => true,
+    recurselimit => 1,
   }
 
   # Use a fact to identify the deviceconfig file on this agent.
