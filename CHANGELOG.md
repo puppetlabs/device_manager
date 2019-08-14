@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.0.1](https://github.com/puppetlabs/device_manager/tree/v3.0.1) (2019-08-14)
+
+[Full Changelog](https://github.com/puppetlabs/device_manager/compare/v3.0.0...v3.0.1)
+
+### Fixed
+
+- \(MODULES-9628, PUP-8736\) don't purge device certificates on new puppet versions ([DavidS](https://github.com/DavidS))
+
 ## [v3.0.0](https://github.com/puppetlabs/device_manager/tree/v3.0.0) (2019-06-11)
 
 [Full Changelog](https://github.com/puppetlabs/device_manager/compare/v2.7.1...v3.0.0)
