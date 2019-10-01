@@ -17,8 +17,6 @@ class device_manager::conf {
 
   file { $devices_directory:
     ensure       => directory,
-    owner        => $settings::user,
-    group        => $settings::group,
     purge        => true,
     recurse      => true,
     recurselimit => 1,
