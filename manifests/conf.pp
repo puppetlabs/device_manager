@@ -4,21 +4,15 @@
 
 class device_manager::conf {
 
-  if ($facts['os']['family'] != 'windows') {
-    File {
-      owner => $::identity['user'],
-      group => $::identity['group'],
-      mode  => '0640',
-    }
-  }
+  # Cannot pass parameters to included classes.
+  $owner = lookup('device_manager::conf::owner', {'default_value' => $::identity['user']})
+  $group = lookup('device_manager::conf::group', {'default_value' => $::identity['group']})
 
   # Use a fact to identify the confdir file on this agent.
   $devices_directory = "${::puppet_settings_confdir}/puppet/devices"
 
   file { $devices_directory:
     ensure       => directory,
-    owner        => $settings::user,
-    group        => $settings::group,
     purge        => true,
     recurse      => true,
     recurselimit => 1,
@@ -32,8 +26,8 @@ class device_manager::conf {
   concat { $device_conf_file:
     backup    => false,
     show_diff => false,
-    owner     => $::identity['user'],
-    group     => $::identity['group'],
+    owner     => $owner,
+    group     => $group,
     mode      => '0640',
   }
 

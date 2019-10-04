@@ -3,6 +3,11 @@
 
 class device_manager::run {
 
+  include device_manager::conf
+
+  $owner = $device_manager::conf::owner
+  $group = $device_manager::conf::group
+
   if ($facts['os']['family'] == 'windows') {
     $command = "${::env_windows_installdir}\\bin\\puppet"
     $logdest = 'eventlog'
@@ -24,4 +29,5 @@ class device_manager::run {
   $targetable = (versioncmp($::puppetversion, '5.0.0') >= 0)
 
   $random_minute = sprintf('%02d', fqdn_rand(59, 'device_manager'))
+
 }
