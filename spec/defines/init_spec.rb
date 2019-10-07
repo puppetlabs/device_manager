@@ -198,30 +198,6 @@ describe 'device_manager' do
     }
   end
 
-  context 'declared on Linux, running Puppet 5.0, with run_interval and run_via_exec parameters' do
-    let(:title) { 'f5.example.com' }
-    let(:params) do
-      {
-        ensure: :present,
-        type: 'f5',
-        url: 'https://admin:password@10.0.0.245/',
-        run_interval: 30,
-        run_via_exec: true,
-      }
-    end
-    let(:facts) do
-      {
-        aio_agent_version: '5.0.0',
-        puppetversion: '5.0.0',
-        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
-        puppet_settings_confdir: '/etc/puppetlabs',
-        os: { family: 'redhat' },
-      }
-    end
-
-    it { is_expected.to raise_error(%r{are mutually-exclusive}) }
-  end
-
   context 'declared on Linux, running Puppet 5.5, with credentials' do
     let(:title) { 'cisco.example.com' }
     let(:params) do
@@ -252,28 +228,5 @@ describe 'device_manager' do
     # it {
     #   is_expected.to contain_concat_fragment("device_manager_conf [#{title}]").with('content').including("url file://#{device_credentials_file}")
     # }
-  end
-
-  context 'declared on Linux, running Puppet 5.5, with credentials and url parameters' do
-    let(:title) { 'cisco.example.com' }
-    let(:params) do
-      {
-        ensure: :present,
-        type: 'cisco_ios',
-        credentials: { 'address' => '10.0.0.245', 'port' => 22, 'username' => 'admin', 'password' => 'cisco', 'enable_password' => 'cisco' },
-        url: 'https://admin:cisco@10.0.0.245/',
-      }
-    end
-    let(:facts) do
-      {
-        aio_agent_version: '5.5.0',
-        puppetversion: '5.5.0',
-        puppet_settings_deviceconfig: '/etc/puppetlabs/puppet/device.conf',
-        puppet_settings_confdir: '/etc/puppetlabs',
-        os: { family: 'redhat' },
-      }
-    end
-
-    it { is_expected.to raise_error(%r{are mutually-exclusive}) }
   end
 end
