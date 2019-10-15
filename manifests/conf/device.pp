@@ -6,6 +6,8 @@ define device_manager::conf::device (
   String                    $type,
   String                    $url,
   Hash                      $credentials,
+  String                    $run_user,
+  String                    $run_group,
   Boolean                   $debug = false,
   Enum[present, absent]     $ensure = present,
 ) {
@@ -27,8 +29,8 @@ define device_manager::conf::device (
 
       file { $credentials_file:
         ensure  => file,
-        owner   => $::identity['user'],
-        group   => $::identity['group'],
+        owner   => $run_user,
+        group   => $run_group,
         mode    => '0640',
         content => $credentials_json,
       }

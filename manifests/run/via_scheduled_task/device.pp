@@ -4,6 +4,7 @@
 define device_manager::run::via_scheduled_task::device (
   String  $ensure,
   Integer $run_interval,
+  String  $run_user,
 ){
 
   include device_manager::run
@@ -28,7 +29,8 @@ define device_manager::run::via_scheduled_task::device (
         schedule         => 'daily',
         start_time       => $start_time,
         minutes_interval => $run_interval,
-      }
+      },
+      user      => $run_user,
     }
 
   } else {

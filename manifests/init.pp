@@ -13,6 +13,8 @@ define device_manager (
   Boolean                $debug          = false,
   Integer[0,1440]        $run_interval   = 0,
   Boolean                $run_via_exec   = false,
+  String                 $run_user       = $::identity['user'],
+  String                 $run_group      = $::identity['group'],
   Boolean                $include_module = true,
   Enum[present, absent]  $ensure         = present,
 ) {
@@ -38,6 +40,8 @@ define device_manager (
     type        => $type,
     url         => $url,
     credentials => $credentials,
+    run_user    => $run_user,
+    run_group   => $run_group,
     debug       => $debug,
   }
 
@@ -53,11 +57,13 @@ define device_manager (
     device_manager::run::via_scheduled_task::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
+      run_user     => $run_user,
     }
   } else {
     device_manager::run::via_cron::device { $name:
       ensure       => $ensure,
       run_interval => $run_interval,
+      run_user     => $run_user,
     }
   }
 

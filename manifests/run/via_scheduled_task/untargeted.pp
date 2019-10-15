@@ -5,15 +5,13 @@
 
 class device_manager::run::via_scheduled_task::untargeted {
 
-  $start_time = "00:${device_manager::run::random_minute}"
-
   scheduled_task { 'run puppet device':
     ensure    => present,
     command   => $device_manager::run::command,
     arguments => $device_manager::run::arguments,
     trigger   => {
       schedule         => 'daily',
-      start_time       => $start_time,
+      start_time       => "00:${device_manager::run::random_minute}",
       minutes_interval => '60',
     }
   }

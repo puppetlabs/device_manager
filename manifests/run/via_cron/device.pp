@@ -4,6 +4,7 @@
 define device_manager::run::via_cron::device (
   String  $ensure,
   Integer $run_interval,
+  String  $run_user,
 ){
 
   include device_manager::run
@@ -47,7 +48,7 @@ define device_manager::run::via_cron::device (
     cron { "run puppet device target ${name}":
       ensure  => $cron_ensure,
       command => "${device_manager::run::command} ${device_manager::run::arguments} --target=${name}",
-      user    => $::identity['user'],
+      user    => $run_user,
       hour    => $hour,
       minute  => $minute,
       # hour     => $cron_time['hour'],
