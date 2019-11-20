@@ -14,12 +14,6 @@ class device_manager::devices (
   Hash $defaults = {},
 ) {
 
-  # Validate node.
-
-  unless has_key($facts, 'aio_agent_version') {
-    fail("Classification Error: 'device_manager::devices' declared on a device instead of an agent.")
-  }
-
   # Initialize the concat resources used by conf and fact.
   # This allows an empty device_manager::devices hash to clear undeclared devices from conf and facts.
   # Note that concat is not used by run, resulting in orphaned Cron (or Scheduled Task) resources.
