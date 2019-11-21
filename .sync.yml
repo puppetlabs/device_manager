@@ -1,4 +1,6 @@
 ---
+".gitlab-ci.yml":
+  delete: true
 Gemfile:
   required:
     ":system_tests":
