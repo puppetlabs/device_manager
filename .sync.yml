@@ -26,3 +26,4 @@ spec/default_facts.yml:
       group: root
 spec/spec_helper.rb:
   mock_with: ":mocha"
+  coverage_report: true
