@@ -96,7 +96,8 @@ def run_puppet_device(devices, noop, timeout, apply)
             until oe.eof?
               line = oe.readline
               if (matched = line.match(%r{Error: (?<error>.*)}))
-                error_message << matched[:error]
+                error_message << line
+                results['error_count'] += 1
               end
               if (matched = line.match(%r{Exiting; (?<certificate>no certificate found and waitforcert is disabled)}))
                 error_message << matched[:certificate]
@@ -116,6 +117,7 @@ def run_puppet_device(devices, noop, timeout, apply)
       end
     rescue => e
       error_message << e.message
+      puts e.message
     end
 
     if error_message.empty?
@@ -123,7 +125,6 @@ def run_puppet_device(devices, noop, timeout, apply)
       result = "applied configuration version '#{configuration_version}' in #{catalog_seconds} seconds"
     else
       status = 'error'
-      results['error_count'] = results['error_count'] + 1
       results['error_message'] = error_message
     end
 
@@ -168,8 +169,9 @@ def return_results(params, results)
   if results['error_count'] > 0
     exit_code = 1
     error_s = (results['error_count'] == 1) ? 'error' : 'errors'
+    error_message = results['error_message'].join('')
     result[:_error] = {
-      msg: "puppet device run #{error_s}: review task status via the Console\n#{results['error_message']}",
+      msg: "puppet device run #{error_s}: review task status via the Console\n#{error_message}",
       kind: 'puppetlabs/device_manager',
       details: {
         params: {
