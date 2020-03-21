@@ -46,6 +46,13 @@ define device_manager::conf::device (
       tag     => "device_${name}",
     }
 
+    file { "${::puppet_settings_confdir}/puppet/devices/${name}":
+      ensure => directory,
+      owner  => $run_user,
+      group  => $run_group,
+      mode   => '0755',
+    }
+
   } else {
 
     file { $credentials_file:
