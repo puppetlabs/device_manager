@@ -15,6 +15,7 @@ define device_manager::conf::device (
   include device_manager::conf
 
   $credentials_file = "${device_manager::conf::devices_directory}/${name}.conf"
+  $device_directory = "${device_manager::conf::devices_directory}/${name}"
 
   if ($ensure == present) {
 
@@ -46,7 +47,7 @@ define device_manager::conf::device (
       tag     => "device_${name}",
     }
 
-    file { "${::puppet_settings_confdir}/puppet/devices/${name}":
+    file { $device_directory:
       ensure => directory,
       owner  => $run_user,
       group  => $run_group,
@@ -60,6 +61,10 @@ define device_manager::conf::device (
     }
 
     # Do not define a concat::fragment for this device, ensuring 'absent'.
+
+    file { $device_directory:
+      ensure => absent,
+    }
 
   }
 
