@@ -75,6 +75,8 @@ class device_manager::devices (
       run_interval   => $params['run_interval'],
       run_via_exec   => $params['run_via_exec'],
       include_module => $params['include_module'],
+      run_user       => $params['run_user'],
+      run_group      => $params['run_group'],
     }
   }
 }
