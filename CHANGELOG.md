@@ -2,13 +2,34 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.1.0](https://github.com/puppetlabs/device_manager/tree/v3.1.0) (2020-12-01)
+
+[Full Changelog](https://github.com/puppetlabs/device_manager/compare/v3.0.1...v3.1.0)
+
+### Added
+
+- \(MODULES-9191\) implement configurable run\_user per device [\#64](https://github.com/puppetlabs/device_manager/pull/64) ([tkishel](https://github.com/tkishel))
+- \(MODULES-9191\) support a non-root user [\#46](https://github.com/puppetlabs/device_manager/pull/46) ([tkishel](https://github.com/tkishel))
+
+### Fixed
+
+- run\_user and run\_group for device\_manager::devices [\#76](https://github.com/puppetlabs/device_manager/pull/76) ([bFekete](https://github.com/bFekete))
+- \(maint\) confine and variables and ensure [\#74](https://github.com/puppetlabs/device_manager/pull/74) ([tkishel](https://github.com/tkishel))
+- Manage devices' config folder [\#73](https://github.com/puppetlabs/device_manager/pull/73) ([JonasVerhofste](https://github.com/JonasVerhofste))
+- Do not require aio\_agent\_version to be present [\#66](https://github.com/puppetlabs/device_manager/pull/66) ([fizmat](https://github.com/fizmat))
+- \(MODULES-9628, PUP-8736\) don't purge device certificates on new puppet versions \(3.0.1 hotfix\) [\#58](https://github.com/puppetlabs/device_manager/pull/58) ([DavidS](https://github.com/DavidS))
+
 ## [v3.0.1](https://github.com/puppetlabs/device_manager/tree/v3.0.1) (2019-08-14)
 
 [Full Changelog](https://github.com/puppetlabs/device_manager/compare/v3.0.0...v3.0.1)
 
-### Fixed
+### Added
 
-- \(MODULES-9628, PUP-8736\) don't purge device certificates on new puppet versions ([DavidS](https://github.com/DavidS))
+- \(FM-8015\) adding tag to aid with Forge searches [\#51](https://github.com/puppetlabs/device_manager/pull/51) ([davidmalloncares](https://github.com/davidmalloncares))
+
+### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
+
+- \(MODULES-9252\) mergeback for v3.0.0 [\#50](https://github.com/puppetlabs/device_manager/pull/50) ([willmeek](https://github.com/willmeek))
 
 ## [v3.0.0](https://github.com/puppetlabs/device_manager/tree/v3.0.0) (2019-06-11)
 
