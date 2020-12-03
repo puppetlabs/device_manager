@@ -143,7 +143,8 @@ EOS
     end
     it 'undefine device management on the proxy agent' do
       run_puppet_agent(allow_changes: true)
-      run_puppet_agent(allow_changes: false)
+      # Commented out as changes made in `https://github.com/puppetlabs/device_manager/pull/73` render this non-idempotent
+      # run_puppet_agent(allow_changes: false)
     end
     describe file('/etc/puppetlabs/puppet/device.conf') do
       it { is_expected.to be_file }
