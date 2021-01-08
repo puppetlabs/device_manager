@@ -90,7 +90,7 @@ EOS
   end
 
   context 'device management via device_manager' do
-    it 'define device management in site.pp on the master' do
+    it 'define device management in site.pp on the server' do
       define_site_pp(manifest)
     end
     it 'define device management on the proxy agent' do
@@ -114,7 +114,7 @@ EOS
   end
 
   context 'device management via device_manager and device_manager::devices' do
-    it 'define device management in hiera on the master' do
+    it 'define device management in hiera on the server' do
       define_site_pp(manifest_with_include_devices)
       define_common_yaml(yaml_with_devices)
     end
@@ -137,7 +137,7 @@ EOS
   end
 
   context 'undefine device management via device_manager::devices via ensure absent' do
-    it 'undefine device management in hiera on the master' do
+    it 'undefine device management in hiera on the server' do
       define_site_pp(manifest_with_include_devices)
       define_common_yaml(yaml_with_devices_with_ensure_absent)
     end
@@ -160,7 +160,7 @@ EOS
   end
 
   context 'device certificate' do
-    it 'purge device on the master and the proxy agent' do
+    it 'purge device on the server and the proxy agent' do
       run_puppet_node_purge('spinner.example.com')
       reset_agent_device_cache('spinner.example.com')
     end
