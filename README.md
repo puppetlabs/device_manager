@@ -25,13 +25,13 @@ Agentless devices require a proxy Puppet agent to request certificates, collect 
 
 ### Install
 
-On the master, install the `device_manager` module:
+On the server, install the `device_manager` module:
 
 ```bash
 puppet module install puppetlabs-device_manager
 ```
 
-On the master, install the device-specific module associated with each device. For example:
+On the server, install the device-specific module associated with each device. For example:
 
 ```bash
 puppet module install f5-f5
@@ -43,7 +43,7 @@ puppet module install puppetlabs-cisco_ios
 
 ### Configure
 
-You can declare individual devices via a manifest, or multiple devices via Hiera or the Classifier. Using Hiera allows you to encrypt sensitive information, such as passwords, at rest on the master, using the hiera-eyaml backend.
+You can declare individual devices via a manifest, or multiple devices via Hiera or the Classifier. Using Hiera allows you to encrypt sensitive information, such as passwords, at rest on the server, using the hiera-eyaml backend.
 
 Note: If you declare the same device (identified by name) via Hiera and the Classifier, the declaration in the Classifier takes precedence.
 
@@ -240,7 +240,7 @@ Or:
 Exiting; no certificate found and waitforcert is disabled
 ```
 
-On the master, execute the following to sign the certificate for the device:
+On the server, execute the following to sign the certificate for the device:
 
 ```bash
 puppet cert sign bigip.example.com

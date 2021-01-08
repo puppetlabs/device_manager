@@ -29,6 +29,7 @@ RSpec.configure do |c|
   end
 end
 
+# Unable to remove master references while still relying on beaker
 def define_common_yaml(yaml)
   path = '/etc/puppetlabs/code/environments/production/data'
   on master, "mkdir -p #{path}"
