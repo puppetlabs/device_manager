@@ -5,7 +5,6 @@ require 'json'
 require 'open3'
 require 'puppet'
 require 'puppet/ssl/certificate'
-require 'puppet/ssl/host'
 require 'puppet/util/network_device/config'
 require 'timeout'
 
@@ -42,11 +41,7 @@ def read_device_certificate_fingerprints(cert_name)
   return nil unless certificate
   fingerprints = {}
   fingerprints['default'] = certificate.fingerprint
-  mdas = if Puppet.respond_to? :valid_digest_algorithms
-           Puppet.valid_digest_algorithms
-         else
-           Puppet::SSL::Host.new.suitable_message_digest_algorithms
-         end
+  mdas = Puppet.valid_digest_algorithms
   mdas.each do |mda|
     fingerprints[mda.to_s] = certificate.fingerprint(mda)
   end
@@ -64,8 +59,6 @@ def run_puppet_device(devices, noop, timeout)
   else
     puppet_command = '/opt/puppetlabs/puppet/bin/puppet'
   end
-  # PUP-1391 Puppet 5.4.0 does not require '--user=root'.
-  user = (Gem::Version.new(Puppet.version) > Gem::Version.new('5.4.0')) ? '' : '--user=root'
   results = {}
   results['error_count'] = 0
 
@@ -79,7 +72,7 @@ def run_puppet_device(devices, noop, timeout)
     result = ''
 
     begin
-      Open3.popen2e(puppet_command, 'device', user, '--waitforcert=0', '--verbose', target, noop) do |_, oe, w|
+      Open3.popen2e(puppet_command, 'device', '--waitforcert=0', '--verbose', target, noop) do |_, oe, w|
         begin
           Timeout.timeout(timeout) do
             until oe.eof?
