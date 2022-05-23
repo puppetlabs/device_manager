@@ -2,13 +2,25 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v3.1.0](https://github.com/puppetlabs/device_manager/tree/v3.1.0) (2020-12-01)
+## [v4.0.0](https://github.com/puppetlabs/device_manager/tree/v3.1.0) (2022-05-23)
+
+[Full Changelog](https://github.com/puppetlabs/device_manager/compare/v3.1.0...v3.1.0)
+
+### Changed
+
+- \(maint\) Remove support for Puppet 5 [\#91](https://github.com/puppetlabs/device_manager/pull/91) ([david22swan](https://github.com/david22swan))
+- OS support updated to match the current standard for supported modules [\#86](https://github.com/puppetlabs/device_manager/pull/86) ([tkishel](https://github.com/tkishel))
+
+### Added
+
+- Update for Puppet 7 compability [\#86](https://github.com/puppetlabs/device_manager/pull/86) ([tkishel](https://github.com/tkishel))
+
+## [v3.1.0](https://github.com/puppetlabs/device_manager/tree/v3.1.0) (2020-12-02)
 
 [Full Changelog](https://github.com/puppetlabs/device_manager/compare/v3.0.1...v3.1.0)
 
 ### Added
 
-- \(MODULES-9191\) implement configurable run\_user per device [\#64](https://github.com/puppetlabs/device_manager/pull/64) ([tkishel](https://github.com/tkishel))
 - \(MODULES-9191\) support a non-root user [\#46](https://github.com/puppetlabs/device_manager/pull/46) ([tkishel](https://github.com/tkishel))
 
 ### Fixed
@@ -25,19 +37,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- \(FM-8015\) adding tag to aid with Forge searches [\#51](https://github.com/puppetlabs/device_manager/pull/51) ([davidmalloncares](https://github.com/davidmalloncares))
-
-### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
-
-- \(MODULES-9252\) mergeback for v3.0.0 [\#50](https://github.com/puppetlabs/device_manager/pull/50) ([willmeek](https://github.com/willmeek))
+- \(MODULES-9191\) implement configurable run\_user per device [\#64](https://github.com/puppetlabs/device_manager/pull/64) ([tkishel](https://github.com/tkishel))
 
 ## [v3.0.0](https://github.com/puppetlabs/device_manager/tree/v3.0.0) (2019-06-11)
 
 [Full Changelog](https://github.com/puppetlabs/device_manager/compare/v2.7.1...v3.0.0)
-
-### Added
-
-- \(maint\) pdk update for the removal of Puppet 4 support [\#47](https://github.com/puppetlabs/device_manager/pull/47) ([Thomas-Franklin](https://github.com/Thomas-Franklin))
 
 ### Fixed
 
@@ -60,7 +64,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- \(FM-7281\) Update pdk templates to 1.7.0-0-g57412ed [\#26](https://github.com/puppetlabs/device_manager/pull/26) ([DavidS](https://github.com/DavidS))
 - \(FM-7230\) Specify defaults for multiple devices when using Hiera or Classifier [\#24](https://github.com/puppetlabs/device_manager/pull/24) ([tkishel](https://github.com/tkishel))
 - \(FM-7148\) logdest scheduled runs to system log [\#16](https://github.com/puppetlabs/device_manager/pull/16) ([tkishel](https://github.com/tkishel))
 - \(FM 7115\) return device certificates with task results [\#15](https://github.com/puppetlabs/device_manager/pull/15) ([tkishel](https://github.com/tkishel))

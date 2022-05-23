@@ -33,27 +33,22 @@
 
 ## Classes
 
-### `device_manager::conf`
+### <a name="device_managerconf"></a>`device_manager::conf`
 
 The device_manager::conf class.
 
-### `device_manager::devices`
+### <a name="device_managerdevices"></a>`device_manager::devices`
 
 The device_manager::devices class.
 
 #### Parameters
 
-The following parameters are available in the `device_manager::devices` class.
+The following parameters are available in the `device_manager::devices` class:
 
-##### `devices`
+* [`devices`](#devices)
+* [`defaults`](#defaults)
 
-Data type: `Hash`
-
-
-
-Default value: `{}`
-
-##### `defaults`
+##### <a name="devices"></a>`devices`
 
 Data type: `Hash`
 
@@ -61,43 +56,62 @@ Data type: `Hash`
 
 Default value: `{}`
 
-### `device_manager::fact`
+##### <a name="defaults"></a>`defaults`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+### <a name="device_managerfact"></a>`device_manager::fact`
 
 The device_manager::fact class.
 
-### `device_manager::run`
+### <a name="device_managerrun"></a>`device_manager::run`
 
 The device_manager::run class.
 
-### `device_manager::run::via_cron::untargeted`
+### <a name="device_managerrunvia_cronuntargeted"></a>`device_manager::run::via_cron::untargeted`
 
 The device_manager::run::via_cron::untargeted class.
 
-### `device_manager::run::via_exec::untargeted`
+### <a name="device_managerrunvia_execuntargeted"></a>`device_manager::run::via_exec::untargeted`
 
 The device_manager::run::via_exec::untargeted class.
 
-### `device_manager::run::via_scheduled_task::untargeted`
+### <a name="device_managerrunvia_scheduled_taskuntargeted"></a>`device_manager::run::via_scheduled_task::untargeted`
 
 The device_manager::run::via_scheduled_task::untargeted class.
 
 ## Defined types
 
-### `device_manager`
+### <a name="device_manager"></a>`device_manager`
 
 The device_manager class.
 
 #### Parameters
 
-The following parameters are available in the `device_manager` defined type.
+The following parameters are available in the `device_manager` defined type:
 
-##### `type`
+* [`type`](#type)
+* [`url`](#url)
+* [`credentials`](#credentials)
+* [`debug`](#debug)
+* [`run_interval`](#run_interval)
+* [`run_via_exec`](#run_via_exec)
+* [`run_user`](#run_user)
+* [`run_group`](#run_group)
+* [`include_module`](#include_module)
+* [`ensure`](#ensure)
+
+##### <a name="type"></a>`type`
 
 Data type: `String[1]`
 
 
 
-##### `url`
+##### <a name="url"></a>`url`
 
 Data type: `String`
 
@@ -105,7 +119,7 @@ Data type: `String`
 
 Default value: `''`
 
-##### `credentials`
+##### <a name="credentials"></a>`credentials`
 
 Data type: `Hash`
 
@@ -113,7 +127,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### `debug`
+##### <a name="debug"></a>`debug`
 
 Data type: `Boolean`
 
@@ -121,7 +135,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### `run_interval`
+##### <a name="run_interval"></a>`run_interval`
 
 Data type: `Integer[0,1440]`
 
@@ -129,7 +143,7 @@ Data type: `Integer[0,1440]`
 
 Default value: `0`
 
-##### `run_via_exec`
+##### <a name="run_via_exec"></a>`run_via_exec`
 
 Data type: `Boolean`
 
@@ -137,7 +151,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### `run_user`
+##### <a name="run_user"></a>`run_user`
 
 Data type: `String`
 
@@ -145,7 +159,7 @@ Data type: `String`
 
 Default value: `$::identity['user']`
 
-##### `run_group`
+##### <a name="run_group"></a>`run_group`
 
 Data type: `String`
 
@@ -153,7 +167,7 @@ Data type: `String`
 
 Default value: `$::identity['group']`
 
-##### `include_module`
+##### <a name="include_module"></a>`include_module`
 
 Data type: `Boolean`
 
@@ -161,7 +175,7 @@ Data type: `Boolean`
 
 Default value: ``true``
 
-##### `ensure`
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum[present, absent]`
 
@@ -169,45 +183,53 @@ Data type: `Enum[present, absent]`
 
 Default value: `present`
 
-### `device_manager::conf::device`
+### <a name="device_managerconfdevice"></a>`device_manager::conf::device`
 
 The device_manager::conf::device class.
 
 #### Parameters
 
-The following parameters are available in the `device_manager::conf::device` defined type.
+The following parameters are available in the `device_manager::conf::device` defined type:
 
-##### `type`
+* [`type`](#type)
+* [`url`](#url)
+* [`credentials`](#credentials)
+* [`run_user`](#run_user)
+* [`run_group`](#run_group)
+* [`debug`](#debug)
+* [`ensure`](#ensure)
+
+##### <a name="type"></a>`type`
 
 Data type: `String`
 
 
 
-##### `url`
+##### <a name="url"></a>`url`
 
 Data type: `String`
 
 
 
-##### `credentials`
+##### <a name="credentials"></a>`credentials`
 
 Data type: `Hash`
 
 
 
-##### `run_user`
+##### <a name="run_user"></a>`run_user`
 
 Data type: `String`
 
 
 
-##### `run_group`
+##### <a name="run_group"></a>`run_group`
 
 Data type: `String`
 
 
 
-##### `debug`
+##### <a name="debug"></a>`debug`
 
 Data type: `Boolean`
 
@@ -215,7 +237,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### `ensure`
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum[present, absent]`
 
@@ -223,15 +245,17 @@ Data type: `Enum[present, absent]`
 
 Default value: `present`
 
-### `device_manager::fact::device`
+### <a name="device_managerfactdevice"></a>`device_manager::fact::device`
 
 The device_manager::fact::device class.
 
 #### Parameters
 
-The following parameters are available in the `device_manager::fact::device` defined type.
+The following parameters are available in the `device_manager::fact::device` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum[present, absent]`
 
@@ -239,57 +263,65 @@ Data type: `Enum[present, absent]`
 
 Default value: `present`
 
-### `device_manager::run::via_cron::device`
+### <a name="device_managerrunvia_crondevice"></a>`device_manager::run::via_cron::device`
 
 The device_manager::run::via_cron::device class.
 
 #### Parameters
 
-The following parameters are available in the `device_manager::run::via_cron::device` defined type.
+The following parameters are available in the `device_manager::run::via_cron::device` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`run_interval`](#run_interval)
+* [`run_user`](#run_user)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `String`
 
 
 
-##### `run_interval`
+##### <a name="run_interval"></a>`run_interval`
 
 Data type: `Integer`
 
 
 
-##### `run_user`
+##### <a name="run_user"></a>`run_user`
 
 Data type: `String`
 
 
 
-### `device_manager::run::via_exec::device`
+### <a name="device_managerrunvia_execdevice"></a>`device_manager::run::via_exec::device`
 
 The device_manager::run::via_exec::device class.
 
-### `device_manager::run::via_scheduled_task::device`
+### <a name="device_managerrunvia_scheduled_taskdevice"></a>`device_manager::run::via_scheduled_task::device`
 
 The device_manager::run::via_scheduled_task::device class.
 
 #### Parameters
 
-The following parameters are available in the `device_manager::run::via_scheduled_task::device` defined type.
+The following parameters are available in the `device_manager::run::via_scheduled_task::device` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`run_interval`](#run_interval)
+* [`run_user`](#run_user)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `String`
 
 
 
-##### `run_interval`
+##### <a name="run_interval"></a>`run_interval`
 
 Data type: `Integer`
 
 
 
-##### `run_user`
+##### <a name="run_user"></a>`run_user`
 
 Data type: `String`
 
@@ -297,7 +329,7 @@ Data type: `String`
 
 ## Functions
 
-### `device_manager::interval_to_cron_time`
+### <a name="device_managerinterval_to_cron_time"></a>`device_manager::interval_to_cron_time`
 
 Type: Puppet Language
 
@@ -323,7 +355,7 @@ Data type: `Integer[0,59]`
 
 ## Tasks
 
-### `run_puppet_device`
+### <a name="run_puppet_device"></a>`run_puppet_device`
 
 Run puppet device on a (proxy) Puppet agent
 
