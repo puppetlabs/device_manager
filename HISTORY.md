@@ -35,10 +35,6 @@
 
 - \(MODULES-9191\) implement configurable run\_user per device [\#64](https://github.com/puppetlabs/device_manager/pull/64) ([tkishel](https://github.com/tkishel))
 
-### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
-
-- \(FM-8015\) adding tag to aid with Forge searches [\#51](https://github.com/puppetlabs/device_manager/pull/51) ([davidmalloncares](https://github.com/davidmalloncares))
-
 ## [v3.0.0](https://github.com/puppetlabs/device_manager/tree/v3.0.0) (2019-06-11)
 
 [Full Changelog](https://github.com/puppetlabs/device_manager/compare/v2.7.1...v3.0.0)
@@ -47,10 +43,6 @@
 
 - \(maint\) Relax version requirement for concat [\#49](https://github.com/puppetlabs/device_manager/pull/49) ([DavidS](https://github.com/DavidS))
 - \(FM-8238, FM-8137\) Dependency fixes [\#48](https://github.com/puppetlabs/device_manager/pull/48) ([DavidS](https://github.com/DavidS))
-
-### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
-
-- \(maint\) pdk update for the removal of Puppet 4 support [\#47](https://github.com/puppetlabs/device_manager/pull/47) ([Thomas-Franklin](https://github.com/Thomas-Franklin))
 
 ## [v2.7.1](https://github.com/puppetlabs/device_manager/tree/v2.7.1) (2019-04-10)
 
@@ -78,10 +70,6 @@
 - \(FM-7383\) allow device manager to work with Puppet 6 [\#27](https://github.com/puppetlabs/device_manager/pull/27) ([Thomas-Franklin](https://github.com/Thomas-Franklin))
 - Pass through credentials from device\_manager::devices [\#21](https://github.com/puppetlabs/device_manager/pull/21) ([DavidS](https://github.com/DavidS))
 - \(FM-7114\) purge conf devices directory [\#18](https://github.com/puppetlabs/device_manager/pull/18) ([tkishel](https://github.com/tkishel))
-
-### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
-
-- \(FM-7281\) Update pdk templates to 1.7.0-0-g57412ed [\#26](https://github.com/puppetlabs/device_manager/pull/26) ([DavidS](https://github.com/DavidS))
 
 ## [2.6.0](https://github.com/puppetlabs/device_manager/tree/2.6.0) (2018-05-31)
 
