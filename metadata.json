@@ -34,15 +34,12 @@
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6",
-        "7",
-        "8"
+        "7"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "14.04",
-        "16.04",
         "18.04",
         "20.04"
       ]
@@ -50,13 +47,10 @@
     {
       "operatingsystem": "Windows",
       "operatingsystemrelease": [
-        "2008 R2",
         "2012",
         "2012 R2",
         "2016",
         "2012 R2 Core",
-        "7",
-        "8.1",
         "10"
       ]
     },
