@@ -8,5 +8,9 @@ fixtures:
     concat: "https://github.com/puppetlabs/puppetlabs-concat.git"
     hocon: "https://github.com/puppetlabs/puppetlabs-hocon.git"
     stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    provision: "https://github.com/puppetlabs/provision.git"
     cron_core: "https://github.com/puppetlabs/puppetlabs-cron_core.git"
     scheduled_task: "https://github.com/puppetlabs/puppetlabs-scheduled_task.git"
+    puppet_agent: 
+      repo: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
+      ref: v4.12.1
