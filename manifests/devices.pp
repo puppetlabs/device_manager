@@ -55,7 +55,7 @@ class device_manager::devices (
 
     # Use the type to identify type-level defaults.
 
-    if has_key($_defaults, $_type) {
+    if $_type in $_defaults {
       $_device_type_defaults = $_defaults[$_type]
     } else {
       $_device_type_defaults = {}
