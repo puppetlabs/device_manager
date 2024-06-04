@@ -10,6 +10,7 @@
 1. [License](#license)
 1. [Reference](#reference)
 
+
 ## Description
 
 Agentless devices require a proxy Puppet agent to request certificates, collect facts, retrieve and apply catalogs, and store reports. This module manages the configuration files used by the `puppet device` command, installs libraries required by device modules, and provides additional resources for scheduling and orchestrating `puppet device` runs on those proxy Puppet agents.
